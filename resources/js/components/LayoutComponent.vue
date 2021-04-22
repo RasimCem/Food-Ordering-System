@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div @click="clickedItem">
         <nav
             class="h-13 bg-primarycolor lg:flex lg:justify-evenly px-12 relative"
         >
@@ -31,13 +31,39 @@
                             Restaurants</router-link
                         >
                     </li>
+                    <li class="mx-3 cursor-pointer" id="cart">
+                        <router-link
+                            class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
+                            style="text-decoration:none"
+                            to="/cart"
+                        >
+                            Cart</router-link
+                        >
+                    </li>
                     <li class="mx-3 cursor-pointer">
+                        <router-link
+                            class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
+                            style="text-decoration:none"
+                            to="/profile"
+                        >
+                            Profile</router-link
+                        >
+                    </li>
+                    <li class="mx-3 cursor-pointer" id="login">
                         <a
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
                             @click="openModal"
                         >
                             Login</a
+                        >
+                    </li>
+                    <li class="mx-3 cursor-pointer">
+                        <a
+                            class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
+                            style="text-decoration:none"
+                        >
+                            Logout</a
                         >
                     </li>
                 </ul>
@@ -62,10 +88,11 @@
                 </svg>
             </div>
         </nav>
-
-        <router-view></router-view>
+        <transition name="shiftx" mode="out-in">
+            <router-view></router-view>
+        </transition>
         <footer
-            class="mt-16 bg-yellow-400 w-full h-60 flex items-center justify-center"
+            class="mt-16 bg-yellow-400 w-full h-60 flex items-center justify-center "
         >
             <div class="px-5 flex items-center justify-center w-1/2">
                 <img
@@ -84,6 +111,7 @@
         </footer>
 
         <modal-component
+            id="modalTarget"
             v-if="isModalOpen"
             @closeModal="exitModal"
         ></modal-component>
@@ -111,8 +139,30 @@ export default {
         },
         exitModal() {
             this.isModalOpen = false;
+        },
+        clickedItem(event) {
+            const login = this.$el.querySelector("#login");
+            if (
+                this.isModalOpen &&
+                !event.target.parentElement.contains(login)
+            ) {
+                const modal = this.$el.querySelector("#modalTarget").firstChild
+                    .firstChild;
+                if (!modal.contains(event.target)) {
+                    this.isModalOpen = false;
+                }
+            }
+            //console.log(modal);
         }
     }
 };
 </script>
-<style></style>
+<style>
+.shiftx-enter-active,
+.shiftx-leave-active {
+    transition: all 0.6s ease-in-out;
+}
+.shiftx-enter, .shiftx-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    transform: translateX(800px);
+}
+</style>

@@ -6,7 +6,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <title>Food Orderin System</title>
     </head>
-    <body class="font-mono bg-gray-200" >
+    <body class="font-mono bg-gray-200 " >
         <div id="app">
             <layout-component></layout-component>
         </div>

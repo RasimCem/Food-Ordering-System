@@ -69,6 +69,7 @@
                 >
                     <button
                         class="border-2 border-yellow-400 py-2 px-4 rounded-lg hover:bg-yellow-300  hover:text-gray-100 flex"
+                        @click="giveAnOrder"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -144,3 +145,18 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data(){
+        return{
+
+        }
+    },
+    methods:{
+        giveAnOrder(){
+           this.$router.push('restaurant')
+        }
+    }
+}
+</script>

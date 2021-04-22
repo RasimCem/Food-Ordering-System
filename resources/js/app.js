@@ -22,6 +22,7 @@ window.Vue = require('vue').default;
 Vue.component('layout-component', require('./components/LayoutComponent.vue').default);
 Vue.component('home-component', require('./components/HomeComponent.vue').default);
 Vue.component('modal-component', require('./components/ModalComponent.vue').default);
+Vue.component('restaurant-component', require('./components/RestaurantComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
