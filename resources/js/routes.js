@@ -1,8 +1,8 @@
-import HomeComponent from './components/HomeComponent.vue';
-import RestaurantComponent from './components/RestaurantComponent.vue';
-import PaymentComponent from './components/PaymentComponent.vue';
-import CartComponent from './components/CartComponent.vue';
-import ProfileComponent from './components/ProfileComponent.vue';
+import HomeComponent from './components/client/HomeComponent.vue';
+import RestaurantComponent from './components/client/RestaurantComponent.vue';
+import PaymentComponent from './components/client/PaymentComponent.vue';
+import CartComponent from './components/client/CartComponent.vue';
+import ProfileComponent from './components/client/ProfileComponent.vue';
 export const routes = [
     {
         name: 'home',
