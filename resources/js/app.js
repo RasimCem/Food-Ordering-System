@@ -26,6 +26,9 @@ Vue.component('restaurant-component', require('./components/client/RestaurantCom
 
 // Admin Panel Components
 Vue.component('panel-layout-component', require('./components/admin-panel/PanelLayoutComponent.vue').default);
+Vue.component('panel-home-component', require('./components/admin-panel/PanelHomeComponent.vue').default);
+Vue.component('panel-my-restaurant-component', require('./components/admin-panel/PanelMyRestaurantComponent.vue').default);
+Vue.component('panel-menu-component', require('./components/admin-panel/PanelMenuComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
