@@ -4,7 +4,7 @@
             <h1 class="text-2xl mb-1 ml-2">Profile</h1>
             <hr />
             <div class="w-full p-2">
-                <div class="mt-2 text-base font-medium flex">
+                <div class="mt-2 font-medium flex">
                     <div class="w-full md:w-1/2">
                         <div class="w-full my-3">
                             <label for="" class="block mb-0"
@@ -90,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <div class="container py-1 px-5 ">
+        <div class="container p-5">
             <div class="w-full sm:w1/2 lg:w-1/3">
                 <h1 class="text-2xl mb-1 ml-2">Password Update</h1>
                 <hr />

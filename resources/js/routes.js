@@ -1,12 +1,15 @@
-import HomeComponent from './components/client/HomeComponent.vue';
-import RestaurantComponent from './components/client/RestaurantComponent.vue';
-import PaymentComponent from './components/client/PaymentComponent.vue';
-import CartComponent from './components/client/CartComponent.vue';
-import ProfileComponent from './components/client/ProfileComponent.vue';
-// Panel Components
-import PanelHomeComponent from './components/admin-panel/PanelHomeComponent.vue';
-import PanelMyRestaurantComponent from './components/admin-panel/PanelMyRestaurantComponent.vue';
-import PanelMenuComponent from './components/admin-panel/PanelMenuComponent.vue';
+import HomeComponent from './components/client/Home.vue';
+import RestaurantComponent from './components/client/Restaurant.vue';
+import PaymentComponent from './components/client/Payment.vue';
+import CartComponent from './components/client/Cart.vue';
+import ProfileComponent from './components/client/Profile.vue';
+// Restaurant Owner Components
+import OwnerHomeComponent from './components/owner/Home.vue';
+import OwnerMyRestaurantComponent from './components/owner/MyRestaurant.vue';
+import OwnerMenuComponent from './components/owner/Menu.vue';
+import OwnerMenuAddComponent from './components/owner/NewMenu.vue';
+import OwnerMenuEditComponent from './components/owner/MenuEdit.vue';
+import  OwnerOrderHistoryComponent from './components/owner/OrderHistory.vue';
 export const routes = [
     {
         name: 'home',
@@ -36,17 +39,32 @@ export const routes = [
     {
         name: 'panel-home',
         path: '/panel-home',
-        component: PanelHomeComponent
+        component: OwnerHomeComponent
     },
     {
         name: 'panel-my-restaurant',
         path: '/panel-my-restaurant',
-        component: PanelMyRestaurantComponent
+        component: OwnerMyRestaurantComponent
     },
     {
         name: 'panel-menu',
         path: '/panel-menu',
-        component: PanelMenuComponent
+        component: OwnerMenuComponent
+    },
+    {
+        name: 'panel-menu-add',
+        path: '/panel-menu-add',
+        component: OwnerMenuAddComponent
+    },
+    {
+        name: 'panel-menu-edit',
+        path: '/panel-menu-edit',
+        component: OwnerMenuEditComponent
+    },
+    {
+        name: 'panel-order-history',
+        path: '/panel-order-history',
+        component: OwnerOrderHistoryComponent
     },
 
 ];

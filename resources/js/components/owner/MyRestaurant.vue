@@ -103,7 +103,7 @@
                     <button class="button mt-2 text-xs md:text-base">Update</button>
                 </div>
                 <div class="m-3">
-                    <small>Slider 3 (Click On The Image to Upload</small>
+                    <small>Slider 3 (Click On The Image to Upload)</small>
                     <label for="fileInput3" class="block cursor-pointer">
                         <img
                             class="shadow-md rounded"

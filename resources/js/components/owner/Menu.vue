@@ -1,10 +1,33 @@
 <template>
     <div>
-        <h2 class="text-lg px-2 mt-3">Menu</h2>
+        <div class="flex justify-between">
+            <h2 class="text-lg px-2 mt-3">Menu</h2>
+
+            <button
+                class="button flex mb-1 mt-3 text-xs bg-green-400 hover:bg-green-500"
+                @click="goToAddMenu"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                </svg>
+                Add
+            </button>
+        </div>
         <hr />
         <div class=" my-2 md:p-3 ">
             <div class="overflow-x-auto">
-                <table class="content-table m-0 my-1 ">
+                <table class="content-table m-0 my-1 w-full">
                     <thead class="bg-yellow-400 text-xs">
                         <tr>
                             <th
@@ -79,7 +102,8 @@
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
                                 <button
-                                    class="button bg-green-300 hover:bg-green-500 m-1"
+                                    class="button bg-blue-400 hover:bg-blue-500 m-1"
+                                    @click="goToEditMenu"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +121,7 @@
                                     </svg>
                                 </button>
                                 <button
-                                    class="button bg-red-500 hover:bg-red-600 m-1"
+                                    class="button bg-red-400 hover:bg-red-500 m-1"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +140,6 @@
                                 </button>
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -125,5 +148,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+    methods: {
+        goToAddMenu() {
+            this.$router.push("panel-menu-add");
+        },
+        goToEditMenu() {
+            this.$router.push("panel-menu-edit");
+        }
+    }
+};
 </script>

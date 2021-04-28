@@ -24,7 +24,7 @@
                 <ul class="lg:flex lg:items-center lg:justify-content-center">
                     <li class="mx-3 cursor-pointer">
                         <router-link
-                            to="/"
+                            :to="{name:'home'}"
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
                         >
@@ -35,7 +35,7 @@
                         <router-link
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
-                            to="/cart"
+                           :to="{name:'cart'}"
                         >
                             Cart</router-link
                         >
@@ -44,7 +44,7 @@
                         <router-link
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
-                            to="/profile"
+                            :to="{name:'profile'}"
                         >
                             Profile</router-link
                         >

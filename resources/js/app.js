@@ -18,17 +18,22 @@ window.Vue = require('vue').default;
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// CLIENT COMPONENTS
+Vue.component('layout-component', require('./components/client/Layout.vue').default);
+Vue.component('home-component', require('./components/client/Home.vue').default);
+Vue.component('modal-component', require('./components/client/Modal.vue').default);
+Vue.component('restaurant-component', require('./components/client/Restaurant.vue').default);
 
-Vue.component('layout-component', require('./components/client/LayoutComponent.vue').default);
-Vue.component('home-component', require('./components/client/HomeComponent.vue').default);
-Vue.component('modal-component', require('./components/client/ModalComponent.vue').default);
-Vue.component('restaurant-component', require('./components/client/RestaurantComponent.vue').default);
+// RESTAURANT OWNER Components
+Vue.component('panel-layout-component', require('./components/panel-common/Layout.vue').default);
+Vue.component('home-owner-component', require('./components/owner/Home.vue').default);
+Vue.component('my-restaurant-component', require('./components/owner/MyRestaurant.vue').default);
+Vue.component('menu-component', require('./components/owner/Menu.vue').default);
+Vue.component('menu-add-component', require('./components/owner/NewMenu.vue').default);
+Vue.component('menu-edit-component', require('./components/owner/MenuEdit.vue').default);
+Vue.component('order-history-component', require('./components/owner/OrderHistory.vue').default);
 
-// Admin Panel Components
-Vue.component('panel-layout-component', require('./components/admin-panel/PanelLayoutComponent.vue').default);
-Vue.component('panel-home-component', require('./components/admin-panel/PanelHomeComponent.vue').default);
-Vue.component('panel-my-restaurant-component', require('./components/admin-panel/PanelMyRestaurantComponent.vue').default);
-Vue.component('panel-menu-component', require('./components/admin-panel/PanelMenuComponent.vue').default);
+// ADMIN COMPONENTS
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

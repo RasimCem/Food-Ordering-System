@@ -6,7 +6,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <title>FOS Panel</title>
     </head>
-    <body class="font-mono bg-gray-200 " >
+    <body class="font-mono bg-gray-200 tracking-wide " >
         <div id="panel">
            <panel-layout-component></panel-layout-component>
         </div>

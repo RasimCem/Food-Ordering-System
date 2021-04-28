@@ -51,10 +51,10 @@
             <div
                 class="w-full h-auto text-md p-2 rounded justify-center items-center md:flex"
             >
-                You have items in your <router-link to="/cart" class="text-primarycolor mx-2" style="text-decoration:none"> CART! </router-link> Click button to Order!
+                You have items in your <router-link  :to="{name:'cart'}" class="text-primarycolor mx-2" style="text-decoration:none"> CART! </router-link> Click button to Order!
                 <router-link
                     class="border-2 border-yellow-500 ml-2 rounded px-4 py-1 bg-yellow-300  hover:bg-yellow-500 flex cursor-pointer w-48 md:w-auto text-sm"
-                    to="/payment"
+                    :to="{name:'payment'}"
                     style="text-decoration:none"
                 >
                     <svg
