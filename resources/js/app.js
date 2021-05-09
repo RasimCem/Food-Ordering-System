@@ -32,8 +32,19 @@ Vue.component('menu-component', require('./components/owner/Menu.vue').default);
 Vue.component('menu-add-component', require('./components/owner/NewMenu.vue').default);
 Vue.component('menu-edit-component', require('./components/owner/MenuEdit.vue').default);
 Vue.component('order-history-component', require('./components/owner/OrderHistory.vue').default);
-
 // ADMIN COMPONENTS
+Vue.component('admin-home-component', require('./components/admin/Home.vue').default);
+Vue.component('admin-client-component', require('./components/admin/Clients.vue').default);
+Vue.component('admin-restaurants-component', require('./components/admin/Restaurants.vue').default);
+Vue.component('admin-restaurant-details-component', require('./components/admin/RestaurantDetails.vue').default);
+Vue.component('admin-restaurant-menus-component', require('./components/admin/RestaurantMenus.vue').default);
+Vue.component('admin-restaurant-menus-edit-component', require('./components/admin/RestaurantMenusEdit.vue').default);
+Vue.component('admin-restaurant-edit-component', require('./components/admin/RestaurantEdit.vue').default);
+Vue.component('admin-restaurant-add-component', require('./components/admin/RestaurantAdd.vue').default);
+Vue.component('admin-complaints-component', require('./components/admin/Complaints.vue').default);
+Vue.component('admin-orders-component', require('./components/admin/Orders.vue').default);
+Vue.component('admin-orders-details-component', require('./components/admin/OrdersDetails.vue').default);
+Vue.component('admin-orders-comments', require('./components/admin/OrdersDetails.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -40,7 +40,9 @@
                 class="w-full text-center my-2  clear-right "
                 v-show="sideBarOpen"
             >
-                <h2 class="text-yellow-400 text-xl sm:text-2xl">Panel</h2>
+                <h2 class="text-yellow-400 text-xl sm:text-2xl ">
+                    Control Panel
+                </h2>
             </div>
             <div class="w-full my-16 text-white text-lg px-3  h-screen ">
                 <ul v-show="sideBarOpen">
@@ -66,7 +68,7 @@
                                 </svg>
                             </div>
                             <router-link
-                                to="panel-home"
+                                :to="{ name: 'panel-home' }"
                                 style="text-decoration:none"
                                 class=" hover:text-yellow-400"
                                 >Home</router-link
@@ -92,7 +94,7 @@
                                 </svg>
                             </div>
                             <router-link
-                                to="panel-my-restaurant"
+                                :to="{ name: 'panel-my-restaurant' }"
                                 style="text-decoration:none"
                                 class=" hover:text-yellow-400"
                                 >My Restaurant</router-link
@@ -118,7 +120,7 @@
                                 </svg>
                             </div>
                             <router-link
-                                to="panel-menu"
+                                :to="{ name: 'panel-menu' }"
                                 style="text-decoration:none"
                                 class=" hover:text-yellow-400"
                                 >Menu</router-link
@@ -144,7 +146,7 @@
                                 </svg>
                             </div>
                             <router-link
-                                to="panel-order-history"
+                                :to="{ name: 'panel-order-history' }"
                                 style="text-decoration:none"
                                 class=" hover:text-yellow-400"
                                 >Order History</router-link
@@ -173,13 +175,169 @@
                                 </svg>
                             </div>
                             <router-link
-                                to="panel-home"
+                                :to="{ name: 'panel-admin-home' }"
                                 style="text-decoration:none"
                                 class=" hover:text-yellow-400"
                                 >Home</router-link
                             >
                         </li>
+                        <li
+                            class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
+                        >
+                            <div class="icon mr-3 ">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                                    />
+                                </svg>
+                            </div>
+                            <router-link
+                                :to="{ name: 'panel-admin-clients' }"
+                                style="text-decoration:none"
+                                class=" hover:text-yellow-400"
+                                >Clients</router-link
+                            >
+                        </li>
+                        <li
+                            class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
+                        >
+                            <div class="icon mr-3 ">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
+                                    />
+                                </svg>
+                            </div>
+                            <router-link
+                                :to="{ name: 'panel-admin-restaurants' }"
+                                style="text-decoration:none"
+                                class=" hover:text-yellow-400 whitespace-nowrap"
+                                >Restaurants</router-link
+                            >
+                        </li>
+                        <li
+                            class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
+                        >
+                            <div class="icon mr-3 ">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                                    />
+                                </svg>
+                            </div>
+                            <router-link
+                                :to="{ name: 'panel-admin-complaints' }"
+                                style="text-decoration:none"
+                                class=" hover:text-yellow-400"
+                                >Complaints</router-link
+                            >
+                        </li>
+                        <li
+                            class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
+                        >
+                            <div class="icon mr-3 ">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                                    />
+                                </svg>
+                            </div>
+                            <router-link
+                                :to="{ name: 'panel-admin-orders' }"
+                                style="text-decoration:none"
+                                class=" hover:text-yellow-400"
+                                >Orders</router-link
+                            >
+                        </li>
+                        <li
+                            class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
+                        >
+                            <div class="icon mr-3 ">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                                    />
+                                </svg>
+                            </div>
+                            <router-link
+                                :to="{ name: 'panel-admin-comments' }"
+                                style="text-decoration:none"
+                                class=" hover:text-yellow-400"
+                                >Comments</router-link
+                            >
+                        </li>
                     </div>
+                    <li
+                        class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
+                    >
+                        <div class="icon mr-3 ">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                />
+                            </svg>
+                        </div>
+                        <router-link
+                            :to="{ name: 'panel-home' }"
+                            style="text-decoration:none"
+                            class=" hover:text-yellow-400"
+                            >LogOut</router-link
+                        >
+                    </li>
                 </ul>
             </div>
         </div>
@@ -201,7 +359,7 @@
                             alt="icon"
                         />
                         <span
-                            class="ml-3 text-white block text-sm sm:text-lg font-bold text-center whitespace-nowrap"
+                            class="ml-3 text-white block text-sm sm:text-md font-bold text-center whitespace-nowrap"
                             >FOOD ORDERING SYSTEM</span
                         >
                     </div>
@@ -221,7 +379,7 @@ export default {
     data() {
         return {
             sideBarOpen: true,
-            role: "owner"
+            role: "admin"
         };
     },
     methods: {
@@ -237,7 +395,13 @@ export default {
         }
     },
     mounted() {
-        this.$router.push("panel-home");
+        if (this.role == "owner") {
+            // console.log("this is owner");
+            this.$router.push({ name: "panel-home" });
+        } else {
+            //  console.log("this is admin");
+            this.$router.push({ name: "panel-admin-home" });
+        }
     }
 };
 </script>
