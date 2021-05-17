@@ -24,7 +24,7 @@
                 <ul class="lg:flex lg:items-center lg:justify-content-center">
                     <li class="mx-3 cursor-pointer">
                         <router-link
-                            :to="{name:'home'}"
+                            :to="{ name: 'home' }"
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
                         >
@@ -35,7 +35,7 @@
                         <router-link
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
-                           :to="{name:'cart'}"
+                            :to="{ name: 'cart' }"
                         >
                             Cart</router-link
                         >
@@ -44,7 +44,7 @@
                         <router-link
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
-                            :to="{name:'profile'}"
+                            :to="{ name: 'profile' }"
                         >
                             Profile</router-link
                         >
@@ -58,8 +58,9 @@
                             Login</a
                         >
                     </li>
-                    <li class="mx-3 cursor-pointer">
+                    <li class="mx-3 cursor-pointer" >
                         <a
+                            @click="logout"
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
                         >
@@ -119,11 +120,24 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
-            isModalOpen: false
+            isModalOpen: false,
         };
+    },
+    mounted() {
+        //state
+        //  console.log(this.$store.state.token);
+        // getters
+        // console.log(this.$store.getters.getToken);
+        // mutations
+        // this.$store.commit('updateToken','what is new token');
+        //console.log(this.$store.getters.getToken);
+        //actions
+        //    this.$store.dispatch('updateToken','my token');
+        //     console.log(this.$store.getters.getToken);
     },
     methods: {
         openMenu() {
@@ -153,6 +167,29 @@ export default {
                 }
             }
             //console.log(modal);
+        },
+        logout() {
+            const token = this.$store.getters.getToken;
+            //console.log(token);
+            axios
+                .post(
+                    "http://localhost:8000/api/logout",
+                    {},
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization: "Bearer " + token
+                        }
+                    }
+                )
+                .then(response => {
+                    if(response.data.status===200){
+                        console.log("logging Out successfull!")
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 };

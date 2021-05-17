@@ -23,7 +23,14 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
+//window.axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.getToken}`;
+// window.axios.defaults.headers.common = {
+//     'Accept': 'application/json',
+//     'Content-Type': 'application/json',
+//     'Access-Control-Allow-Origin': '*',
+//     'Access-Control-Allow-Headers': '*',
+//     'Authorization': 'Bearer' + store.getters.getToken
+// }
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

@@ -19,6 +19,7 @@ class CreateCustomersTable extends Migration
             $table->char('phone', 25);
             $table->string('country',50);
             $table->string('city',50);
+            $table->string('district',50);
             $table->string('street',50);
             $table->longText('address_description');
         });

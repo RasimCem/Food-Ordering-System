@@ -11,7 +11,8 @@
                 >
                     <img
                         :src="
-                            require('../../../../public/images/icon.svg').default
+                            require('../../../../public/images/icon.svg')
+                                .default
                         "
                         class="w-8"
                         alt="icon"
@@ -65,17 +66,11 @@
                     <form action="">
                         <div class="mt-2 text-base font-medium">
                             <label for="" class="block mb-0">User Mail</label>
-                            <input
-                                class="input py-1"
-                                type="text"
-                            />
+                            <input class="input py-1" type="text" />
                         </div>
                         <div class="mt-2 text-base font-medium">
                             <label for="" class="block mb-0">Password</label>
-                            <input
-                                class="input py-1"
-                                type="text"
-                            />
+                            <input class="input py-1" type="text" />
                         </div>
 
                         <div class="my-4 text-base font-medium text-center">
@@ -91,7 +86,10 @@
                     <h2 class="text-center text-xl font-semibold mt-2">
                         Create An Account
                     </h2>
-                    <div class="w-full h-auto bg-red-500 px-5 py-2 rounded">
+                    <div
+                        class="w-full h-auto bg-red-500 px-5 py-2 rounded"
+                        v-if="errors"
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="h-6 w-6 md:h-8 md:w-8 float-right text-white"
@@ -104,12 +102,11 @@
                                 clip-rule="evenodd"
                             />
                         </svg>
-                        <ul>
-                            <li>birinci hata</li>
-                            <li>Ikinci hata</li>
+                        <ul v-for="error in errors" :key="error[0]">
+                            <li>{{ error[0] }}</li>
                         </ul>
                     </div>
-                    <form action="">
+                    <form action="" method="POST">
                         <div class="mt-2 text-base font-medium">
                             <label for="" class="block mb-0"
                                 >Email Address*</label
@@ -117,6 +114,7 @@
                             <input
                                 class="input py-1"
                                 type="mail"
+                                v-model="user.mail"
                             />
                         </div>
                         <div class="mt-2 text-base font-medium">
@@ -124,6 +122,8 @@
                             <input
                                 class="input py-1"
                                 type="password"
+                                v-model="user.password"
+                                autocomplete="on"
                             />
                             <small class="text-xs"
                                 >Passwords Should Match</small
@@ -134,12 +134,14 @@
                             <input
                                 class="input py-1"
                                 type="password"
+                                v-model="user.password2"
+                                autocomplete="on"
                             />
                             <small class="text-xs"
                                 >Passwords Should Match</small
                             >
                         </div>
-                        <div class="mt-2 text-base font-medium">
+                        <!-- <div class="mt-2 text-base font-medium">
                             <label for="" class="block mb-0"
                                 >Phone Number*</label
                             >
@@ -152,37 +154,32 @@
                             <small class="text-xs"
                                 >Valid Format: 123-456-78-91</small
                             >
-                        </div>
+                        </div> -->
                         <div class="flex justify-between">
                             <div class="mt-2 text-base font-medium">
-                                <label for="" class="block mb-0">City*</label>
+                                <label for="" class="block mb-0">Name*</label>
                                 <input
                                     class="input py-1"
                                     type="text"
+                                    v-model="user.name"
                                 />
                             </div>
                             <div class="mt-2 text-base font-medium ml-1">
-                                <label for="" class="block mb-0">Street*</label>
+                                <label for="" class="block mb-0"
+                                    >Surname*</label
+                                >
                                 <input
                                     class="input py-1"
                                     type="text"
+                                    v-model="user.surname"
                                 />
                             </div>
-                        </div>
-
-                        <div class="mt-2 text-base font-medium">
-                            <label for="" class="block mb-0"
-                                >Detailed Address Description*</label
-                            >
-                            <textarea
-                                class="input py-1"
-                                type="text"
-                            ></textarea>
                         </div>
 
                         <div class="my-4 text-base font-medium text-center">
                             <button
                                 class="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                                @click="register"
                             >
                                 Confirm
                             </button>
@@ -194,15 +191,43 @@
     </div>
 </template>
 <script>
+import axios from "axios";
 export default {
     data() {
         return {
-            activeWindow: false
+            activeWindow: false,
+            user: {
+                name: null,
+                surname: null,
+                mail: null,
+                password: null,
+                password2: null
+            },
+            errors: null,
+            accessToken: null
         };
     },
     methods: {
         closeModal() {
             this.$emit("closeModal");
+        },
+        register(e) {
+            e.preventDefault();
+            axios
+                .post("http://localhost:8000/api/register", this.user)
+                .then(response => {
+                    this.errors = [];
+                    this.$emit("closeModal");
+                    this.accessToken = response.data.access_token;
+                    this.$store.commit("updateToken", this.accessToken);
+                    //console.log(this.$store.getters.getToken);
+                })
+                .catch(error => {
+                    if (typeof error !== "undefined") {
+                        this.errors = error.response.data.errors;
+                        this.errors = Object.values(this.errors);
+                    }
+                });
         }
     }
 };

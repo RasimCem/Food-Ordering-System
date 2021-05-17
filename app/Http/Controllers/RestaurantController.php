@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
 use App\Http\Resources\RestaurantResource;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
-
+use Illuminate\Support\Facades\Auth;
+use Stevebauman\Location\Facades\Location;
 class RestaurantController extends Controller
 {
     /**
@@ -15,7 +16,27 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return RestaurantResource::collection(Restaurant::all());
+        if (Auth::guard('api')->check()) {
+            $user = Auth::guard('api')->user();
+            $userDetails = User::find($user->id)->customer();
+            //$user['user_details']=$userDetails;
+            $country = $userDetails->country;
+            $city = $userDetails->city;
+            $district = $userDetails->district;
+            return RestaurantResource::collection(Restaurant::where('country',$country)
+            ->where('city',$city)
+            ->where('district',$district)->get());
+        }else{
+            $ip =request()->ip();
+            $data = Location::get($ip);
+            if (!$data){
+                return RestaurantResource::collection(Restaurant::all()->take(7));
+            }
+            $city = $data->cityName;
+            return RestaurantResource::collection(Restaurant::where('city',$city)->get());
+        }
+
+
     }
 
     /**
@@ -82,5 +103,10 @@ class RestaurantController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchForRestaurant($restaurantName){
+        $restaurant = Restaurant::where('name','LIKE','%'.$restaurantName.'%')->get();
+        return RestaurantResource::collection($restaurant);
     }
 }

@@ -14,7 +14,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     use HasApiTokens, HasFactory;
-    // public function getUserDetails(){
-    //     return $this->belongsTo(Customer::class);
-    // }
+
+    public function customer(){
+        return $this->hasOne(Customer::class)->first();
+    }
 }

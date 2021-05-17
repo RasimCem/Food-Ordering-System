@@ -45,11 +45,16 @@ Vue.component('admin-complaints-component', require('./components/admin/Complain
 Vue.component('admin-orders-component', require('./components/admin/Orders.vue').default);
 Vue.component('admin-orders-details-component', require('./components/admin/OrdersDetails.vue').default);
 Vue.component('admin-orders-comments', require('./components/admin/OrdersDetails.vue').default);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+
+
+import Vuex from 'vuex'
+Vue.use(Vuex)
+import storeData from "./store/token"
+
+const store = new Vuex.Store(
+   storeData
+)
+
  import VueRouter from 'vue-router';
  import { routes } from './routes';
  Vue.use(VueRouter);
@@ -60,7 +65,8 @@ Vue.component('admin-orders-comments', require('./components/admin/OrdersDetails
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store
 });
 
 const panel = new Vue({
