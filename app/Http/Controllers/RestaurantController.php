@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\RestaurantRequest;
 use App\Models\User;
 use App\Http\Resources\RestaurantResource;
 use Illuminate\Http\Request;
@@ -46,7 +48,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -55,9 +57,17 @@ class RestaurantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RestaurantRequest $request)
     {
-        //
+        Restaurant::create([
+            "name"=>$request->name,
+            "description"=>$request->description,
+            "chef" => $request->chef,
+            "country"=>$request->country,
+            "city"=>$request->city,
+            "district" => $request->district
+        ]);
+        return response()->json("Restaurant Created",200);
     }
 
     /**
@@ -68,7 +78,7 @@ class RestaurantController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -89,9 +99,21 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RestaurantRequest $request, $id)
     {
-        //
+        $restaurant = Restaurant::find($id);
+        if($restaurant){
+            $restaurant->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'chef' => $request->chef,
+                'country'=>$request->country,
+                'city'=>$request->city,
+                'district'=>$request->district
+            ]);
+            return response()->json("Restaurant Updated",200);
+        }
+        return response()->json("Restaurant Not Found",404);
     }
 
     /**
@@ -102,7 +124,12 @@ class RestaurantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $restaurant = Restaurant::find($id);
+        if($restaurant){
+            $restaurant->delete();
+			return response()->json("Restaurant Deleted",200);
+		}
+		return response()->json("Restaurant Not Found",404);
     }
 
     public function searchForRestaurant($restaurantName){

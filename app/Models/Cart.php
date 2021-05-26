@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Cart extends Model
 {
     use HasFactory;
-
     protected $guarded=[];
 
-    public $timestamps = false;
+    public function menus(){
+        return $this->hasOne(Menu::class,'id','menu_id');
+    }
 }

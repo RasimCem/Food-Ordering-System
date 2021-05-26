@@ -1,14 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\UserRegistrationRequest;
 use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserProfileRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Customer;
 class UserController extends Controller
 {
     // login ve logout
@@ -42,5 +46,43 @@ class UserController extends Controller
         $token->revoke();
         $response = ['message' => 'You have been successfully logged out!','user'=>$request->user()];
         return response($response, 200);
+   }
+
+   public function getAllUsers(){
+        return UserResource::collection(User::all());
+   }
+
+   public function updateContactInformation(CustomerRequest $request,$userId){
+        $customer = Customer::where('user_id',$userId)->get();
+       if($customer->isNotEmpty()){
+            Customer::where('user_id',$userId)
+            ->update([
+                "phone"=>$request->phone,
+                "country"=>$request->country,
+                "city"=>$request->city,
+                "district"=>$request->district,
+                "street"=>$request->street,
+                "address_description"=>$request->address_description
+            ]);
+            return response()->json('Details Updated',201);
+       }else{
+           Customer::create([
+                "user_id"=>$request->userId,
+                "phone"=>$request->phone,
+                "country"=>$request->country,
+                "city"=>$request->city,
+                "district"=>$request->district,
+                "street"=>$request->street,
+                "address_description"=>$request->address_description
+           ]);
+             return response()->json('Details Created',201);
+       }
+   }
+   public function updateUserInformation(UserProfileRequest $request, $userId){
+        User::find($userId)->update([
+            "name"=>$request->name,
+            "surname"=>$request->surname
+        ]);
+        return response()->json('Profile Updated',201);
    }
 }
