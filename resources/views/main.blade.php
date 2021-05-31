@@ -6,9 +6,11 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <title>Food Orderin System</title>
     </head>
-    <body class="font-mono bg-gray-200 " >
+    <body class="font-mono bg-gray-200  tracking-wide" >
         <div id="app">
-            <layout-component></layout-component>
+            <main-component></main-component>
+            {{-- <layout-component></layout-component> --}}
+            {{-- <panel-layout-component></panel-layout-component> --}}
         </div>
         <script src={{mix('js/app.js')}}></script>
     </body>

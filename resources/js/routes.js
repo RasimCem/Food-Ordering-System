@@ -4,6 +4,10 @@ import RestaurantComponent from "./components/client/Restaurant.vue";
 import PaymentComponent from "./components/client/Payment.vue";
 import CartComponent from "./components/client/Cart.vue";
 import ProfileComponent from "./components/client/Profile.vue";
+
+// Admin and Owner Panel 
+import PanelComponent from "./components/panel-common/Layout.vue";
+
 // Restaurant Owner Routes
 import OwnerHomeComponent from "./components/owner/Home.vue";
 import OwnerMyRestaurantComponent from "./components/owner/MyRestaurant.vue";
@@ -28,7 +32,7 @@ import AdminCommentsComponent from "./components/admin/Comments.vue";
 export const routes = [
     {
         name: "home",
-        path: "/",
+        path: "/home",
         component: HomeComponent
     },
     {
@@ -50,6 +54,11 @@ export const routes = [
         name: "profile",
         path: "/profile",
         component: ProfileComponent
+    },
+    {
+        name: "panel",
+        path: "/panel",
+        component: PanelComponent
     },
     {
         name: "panel-home",
@@ -103,27 +112,27 @@ export const routes = [
     },
     {
         name: "panel-admin-restaurant-details",
-        path: "restaurant-details",
+        path: "/restaurant-details",
         component: AdminRestaurantDetailsComponent
     },
     {
         name: "panel-admin-restaurant-menus",
-        path: "restaurant-menus",
+        path: "/restaurant-menus",
         component: AdminRestaurantMenusComponent
     },
     {
         name: "panel-admin-restaurant-menus-edit",
-        path: "restaurant-menus-edit",
+        path: "/restaurant-menus-edit",
         component: AdminRestaurantMenusEditComponent
     },
     {
         name: "panel-admin-restaurant-edit",
-        path: "restaurant-edit",
+        path: "/restaurant-edit",
         component: AdminRestaurantEditComponent
     },
     {
         name: "panel-admin-restaurant-add",
-        path: "restaurant-add",
+        path: "/restaurant-add",
         component: AdminRestaurantAddComponent
     },
     {

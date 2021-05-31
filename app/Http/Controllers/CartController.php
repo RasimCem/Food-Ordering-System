@@ -1,29 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 class CartController extends Controller
 {
-    public function addItemToCart($userId, $menuId){
+    public function addItemToCart($menuId){
         Cart::create([
             "menu_id"=>$menuId,
-            "user_id"=>$userId
+            "user_id"=> Auth::user()->id
         ]);
         return response()->json('Item Added to Cart',200);
     }
 
-    public function removeItemFromCart($userId, $menuId){
-        $removedItem = Cart::where('user_id',$userId)->where('menu_id',$menuId)->delete();
+    public function removeItemFromCart($cartId){
+        $removedItem = Cart::where('user_id',Auth::user()->id)->where('id',$cartId)->first()->delete();
         if($removedItem){
             return response()->json('Item Removed From Cart',200);
         }
         return response()->json('This Item is not Exist',404);
     }
 
-    public function showCart($userId){
-        $cart = Cart::where('user_id',$userId)->with('menus')->get();
+    public function showMyCart(){
+        $cart = Cart::where('user_id',Auth::user()->id)->with('menus')->get();
         if($cart){
             return response()->json($cart,200);
         }

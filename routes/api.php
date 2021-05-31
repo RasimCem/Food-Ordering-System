@@ -13,8 +13,9 @@ Route::post('login',[ App\Http\Controllers\UserController::class,'login']);
 Route::middleware('auth:api')->group(function () {
 	Route::post('logout',[ App\Http\Controllers\UserController::class,'logout']);
     Route::get('users',[ App\Http\Controllers\UserController::class,'getAllUsers']);
-    Route::put('client-update/{userId}',[ App\Http\Controllers\UserController::class,'updateContactInformation']);
-    Route::put('user-update/{userId}',[ App\Http\Controllers\UserController::class,'updateUserInformation']);
+    Route::get('my-information',[ App\Http\Controllers\UserController::class,'showMyInformation']);
+    Route::post('my-information/update',[ App\Http\Controllers\UserController::class,'updateUserInformation']);
+    Route::post('my-contact-information/update',[ App\Http\Controllers\UserController::class,'updateContactInformation']);
 
     //Restaurant Admin Operations
     Route::post('restaurant',[ App\Http\Controllers\RestaurantController::class,'store']);
@@ -29,9 +30,9 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('menu/{menuId}', [App\Http\Controllers\MenuController::class,'destroy']);
 
     // Add Item To Cart
-    Route::get('cart/{userId}/{menuId}', [App\Http\Controllers\CartController::class,'addItemToCart']);
-    Route::delete('cart/{userId}/{menuId}', [App\Http\Controllers\CartController::class,'removeItemFromCart']);
-    Route::get('cart/{userId}', [App\Http\Controllers\CartController::class,'showCart']);
+    Route::get('cart/{menuId}', [App\Http\Controllers\CartController::class,'addItemToCart']);
+    Route::get('cart-delete/{cartId}', [App\Http\Controllers\CartController::class,'removeItemFromCart']);
+    Route::get('cart', [App\Http\Controllers\CartController::class,'showMyCart']);
 
     // Create An Order
     Route::get('order/create/{userId}', [App\Http\Controllers\OrderController::class,'createOrder']);

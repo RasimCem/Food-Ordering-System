@@ -331,11 +331,11 @@
                                 />
                             </svg>
                         </div>
-                        <router-link
-                            :to="{ name: 'panel-home' }"
+                        <a
                             style="text-decoration:none"
                             class=" hover:text-yellow-400"
-                            >LogOut</router-link
+                            @click="logOut"
+                            >LogOut</a
                         >
                     </li>
                 </ul>
@@ -375,11 +375,13 @@
 </template>
 
 <script>
+import { ToastSuccess } from "../../toasters";
+import axios from "axios";
 export default {
     data() {
         return {
             sideBarOpen: true,
-            role: "admin"
+            role: "owner"
         };
     },
     methods: {
@@ -392,6 +394,28 @@ export default {
                 this.sideBarOpen = true;
                 // sidebar.classList.remove("w-1/2");
             }
+        },
+        logOut(){
+              axios
+                .post(
+                    "http://localhost:8000/api/logout",
+                    {},
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization: "Bearer " + this.$store.getters.getToken
+                        }
+                    }
+                )
+                .then(response => {
+                    this.$store.commit("updateToken", null);
+                    // console.log("logging Out successfull!");
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: "Logged out successfully"
+                    });
+                    this.$store.commit("updateRole",null);
+                });
         }
     },
     mounted() {

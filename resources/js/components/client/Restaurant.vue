@@ -51,10 +51,18 @@
             <div
                 class="w-full h-auto text-md p-2 rounded justify-center items-center md:flex"
             >
-                You have items in your <router-link  :to="{name:'cart'}" class="text-primarycolor mx-2" style="text-decoration:none"> CART! </router-link> Click button to Order!
+                You have items in your
+                <router-link
+                    :to="{ name: 'cart' }"
+                    class="text-primarycolor mx-2"
+                    style="text-decoration:none"
+                >
+                    CART!
+                </router-link>
+                Click button to Order!
                 <router-link
                     class="border-2 border-yellow-500 ml-2 rounded px-4 py-1 bg-yellow-300  hover:bg-yellow-500 flex cursor-pointer w-48 md:w-auto text-sm"
-                    :to="{name:'payment'}"
+                    :to="{ name: 'payment' }"
                     style="text-decoration:none"
                 >
                     <svg
@@ -82,6 +90,8 @@
             </h2>
             <div
                 class="container border-2 my-4 border-primarycolor p-3 sm:flex "
+                v-for="menu in menus"
+                :key="menu.id"
             >
                 <div class="relative w-full sm:w-64 ">
                     <img
@@ -95,9 +105,9 @@
                 </div>
                 <div class="w-3/6 p-3 tracking-wide ">
                     <h3 class="text-2xl cursor-pointer hover:text-yellow-400">
-                        Meal Name
+                        {{ menu.name }}
                     </h3>
-                    <p class="text-md cursor-pointer">Ingredients....</p>
+                    <p class="text-md cursor-pointer">{{ menu.ingredient }}</p>
                     <p class="text-md cursor-pointer"><i>Chef: </i>Andre</p>
                 </div>
                 <div
@@ -105,6 +115,7 @@
                 >
                     <button
                         class="border-2 border-primarycolor py-2 px-4 rounded-lg hover:bg-yellow-300  hover:text-gray-100 flex"
+                        @click="addItem(menu.id)"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -128,12 +139,31 @@
     </div>
 </template>
 <script>
+import { ToastSuccess } from "../../toasters";
+import axios from "axios";
 export default {
     data() {
         return {
             currentImgId: 0,
-            images: ["slider-img.jpg", "hamburger.jpg", "icon.svg"]
+            images: ["slider-img.jpg", "hamburger.jpg", "icon.svg"],
+            menus: null,
+            token:null
         };
+    },
+    mounted() {
+        const restaurantId = this.$route.params.restaurantId;
+        this.token = this.$store.getters.getToken;
+        // console.log(token);
+        axios
+            .get("http://localhost:8000/api/menu/" + restaurantId, {
+                headers: {
+                    Accept: "application/json",
+                    Authorization: "Bearer " + this.token
+                }
+            })
+            .then(response => {
+                this.menus = response.data.data;
+            });
     },
     methods: {
         nextImg() {
@@ -149,6 +179,21 @@ export default {
             } else {
                 this.currentImgId--;
             }
+        },
+        addItem(menuId) {
+            axios
+                .get("http://localhost:8000/api/cart/" + menuId, {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.token
+                    }
+                })
+                .then(response => {
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: response.data
+                    });
+                });
         }
     }
 };

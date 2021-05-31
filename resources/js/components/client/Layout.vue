@@ -31,7 +31,11 @@
                             Restaurants</router-link
                         >
                     </li>
-                    <li class="mx-3 cursor-pointer" id="cart">
+                    <li
+                        class="mx-3 cursor-pointer"
+                        id="cart"
+                        v-if="$store.getters.getToken"
+                    >
                         <router-link
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
@@ -40,7 +44,10 @@
                             Cart</router-link
                         >
                     </li>
-                    <li class="mx-3 cursor-pointer">
+                    <li
+                        class="mx-3 cursor-pointer"
+                        v-if="$store.getters.getToken"
+                    >
                         <router-link
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
@@ -49,7 +56,11 @@
                             Profile</router-link
                         >
                     </li>
-                    <li class="mx-3 cursor-pointer" id="login">
+                    <li
+                        class="mx-3 cursor-pointer"
+                        id="login"
+                        v-if="!$store.getters.getToken"
+                    >
                         <a
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
                             style="text-decoration:none"
@@ -58,7 +69,10 @@
                             Login</a
                         >
                     </li>
-                    <li class="mx-3 cursor-pointer" >
+                    <li
+                        class="mx-3 cursor-pointer"
+                        v-if="$store.getters.getToken"
+                    >
                         <a
                             @click="logout"
                             class="lg:text-gray-900 no-underline text-yellow-200 hover:text-yellow-200 duration-300 ease-in-out"
@@ -120,14 +134,23 @@
 </template>
 
 <script>
+import { ToastSuccess } from "../../toasters";
 import axios from "axios";
 export default {
     data() {
         return {
-            isModalOpen: false,
+            isModalOpen: false
         };
     },
     mounted() {
+        if (
+            this.$store.getters.getRole == "restaurantOwner" ||
+            this.$store.getters.getRole == "admin"
+        ) {
+            this.$router.push({ name: "panel" });
+        }else{
+             this.$router.push({ name: "home" });
+        }
         //state
         //  console.log(this.$store.state.token);
         // getters
@@ -170,7 +193,7 @@ export default {
         },
         logout() {
             const token = this.$store.getters.getToken;
-            //console.log(token);
+            // console.log(token);
             axios
                 .post(
                     "http://localhost:8000/api/logout",
@@ -183,9 +206,12 @@ export default {
                     }
                 )
                 .then(response => {
-                    if(response.data.status===200){
-                        console.log("logging Out successfull!")
-                    }
+                    this.$store.commit("updateToken", null);
+                    // console.log("logging Out successfull!");
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: "Logged out successfully"
+                    });
                 })
                 .catch(error => {
                     console.log(error);

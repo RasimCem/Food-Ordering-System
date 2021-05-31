@@ -4,9 +4,7 @@
             <div>
                 <h1 class="text-2xl ml-3">My Cart</h1>
                 <hr />
-                <table
-                    class="content-table"
-                >
+                <table class="content-table">
                     <thead class="bg-yellow-400">
                         <tr>
                             <th class="border-2 border-gray-600 p-2">Image</th>
@@ -19,7 +17,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr v-for="menu in menus" :key="menu.id">
                             <td class="border-2 border-gray-600 p-2">
                                 <img
                                     class=" object-contain  w-80 h-20 rounded"
@@ -31,12 +29,17 @@
                                 />
                             </td>
                             <td class="border-2 border-gray-600 p-2">
-                                Hambuger
+                                {{ menu.menus.name }}
                             </td>
                             <td class="border-2 border-gray-600 p-2">x3</td>
-                            <td class="border-2 border-gray-600 p-2">15$</td>
+                            <td class="border-2 border-gray-600 p-2">
+                                {{ menu.menus.price }}
+                            </td>
                             <td class="border-2 border-gray-600 p-2 ">
-                                <a href="" class="hover:text-red-500 ">
+                                <a
+                                    class="hover:text-red-500 "
+                                    @click="removeItem(menu.id)"
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-6 w-6 m-auto "
@@ -87,10 +90,7 @@
                 <strong>Order History</strong></a
             >
             <transition name="fade">
-                <table
-                    v-if="showOrderHistory"
-                    class="content-table"
-                >
+                <table v-if="showOrderHistory" class="content-table">
                     <thead class="bg-yellow-400">
                         <tr>
                             <th class="border-2 border-gray-600 p-2">
@@ -160,54 +160,51 @@
                 <div class=" py-2 px-4">
                     <div class="">
                         <div
-                    class="absolute top-1 right-1 cursor-pointer hover:text-yellow-400"
-                    @click="isComplainOpen=false"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </div>
+                            class="absolute top-1 right-1 cursor-pointer hover:text-yellow-400"
+                            @click="isComplainOpen = false"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-6 w-6"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </div>
                         <h2 class="text-center text-xl font-semibold mt-2">
                             Welcome Back!
                         </h2>
-                        <form>
-                                <div class="mt-2 text-base font-medium">
-                                <label for="" class="block mb-0"
-                                    >Title</label
-                                >
-                                <input
-                                    class="w-full py-1 px-2 border-2 border-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-                                    type="text"
-                                />
-                            </div>
-                            <div class="mt-2 text-base font-medium">
-                                <label for="" class="block mb-0"
-                                    >Description Of Your Complain</label
-                                >
-                                 <textarea
+
+                        <div class="mt-2 text-base font-medium">
+                            <label for="" class="block mb-0">Title</label>
+                            <input
+                                class="w-full py-1 px-2 border-2 border-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                                type="text"
+                            />
+                        </div>
+                        <div class="mt-2 text-base font-medium">
+                            <label for="" class="block mb-0"
+                                >Description Of Your Complain</label
+                            >
+                            <textarea
                                 class="w-full py-1 px-2 border-2 border-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                                 type="text"
                             ></textarea>
-                            </div>
-                            <div class="my-4 text-base font-medium text-center">
-                                <button
-                                    class="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded"
-                                >
-                                    Send
-                                </button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="my-4 text-base font-medium text-center">
+                            <button
+                                class="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded"
+                            >
+                                Send
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -217,12 +214,51 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import { ToastSuccess } from "../../toasters";
 export default {
     data() {
         return {
             showOrderHistory: false,
-            isComplainOpen: false
+            isComplainOpen: false,
+            menus: null,
+            token: null
         };
+    },
+    mounted() {
+        this.getMyCart();
+    },
+    methods: {
+        removeItem(menuId) {
+            axios
+                .get("http://localhost:8000/api/cart-delete/" + menuId, {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.token
+                    }
+                })
+                .then(response => {
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: response.data
+                    });
+                    this.getMyCart();
+                });
+        },
+        getMyCart() {
+            this.token = this.$store.getters.getToken;
+            axios
+                .get("http://localhost:8000/api/cart", {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.token
+                    }
+                })
+                .then(response => {
+                    this.menus = response.data;
+                    //console.log(this.menus);
+                });
+        }
     }
 };
 </script>

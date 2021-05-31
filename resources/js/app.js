@@ -8,16 +8,9 @@
 
 window.Vue = require('vue').default;
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.component('main-component', require('./components/Main').default);
+
 // CLIENT COMPONENTS
 Vue.component('layout-component', require('./components/client/Layout.vue').default);
 Vue.component('home-component', require('./components/client/Home.vue').default);
@@ -50,10 +43,20 @@ Vue.component('admin-orders-comments', require('./components/admin/OrdersDetails
 import Vuex from 'vuex'
 Vue.use(Vuex)
 import storeData from "./store/token"
+import storeRole from "./store/role"
+import VuexPersistence from 'vuex-persist'
+const vuexLocal = new VuexPersistence({
+    storage: window.localStorage
+  })
 
-const store = new Vuex.Store(
-   storeData
-)
+const store = new Vuex.Store({
+    modules:{
+        storeData,
+        storeRole
+    },
+   plugins: [vuexLocal.plugin],
+})
+
 
  import VueRouter from 'vue-router';
  import { routes } from './routes';
@@ -67,9 +70,4 @@ const app = new Vue({
     el: '#app',
     router,
     store
-});
-
-const panel = new Vue({
-    el: '#panel',
-    router
 });

@@ -28,8 +28,8 @@ class CustomerRequest extends FormRequest
             'country'=>'required|min:3|max:150',
             'city'=>'required|min:3|max:150',
             'district'=>'required|min:3|max:150',
-            'street'=>'required|min:3|max:150',
-            'address_description'=>'required|min:5|max:250'
+            'street'=>'required|max:150',
+            'address_description'=>'required|min:5|max:350'
         ];
     }
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator) : void

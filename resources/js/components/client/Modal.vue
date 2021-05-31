@@ -66,16 +66,25 @@
                     <form action="">
                         <div class="mt-2 text-base font-medium">
                             <label for="" class="block mb-0">User Mail</label>
-                            <input class="input py-1" type="text" />
+                            <input
+                                class="input py-1"
+                                type="mail"
+                                v-model="user.mail"
+                            />
                         </div>
                         <div class="mt-2 text-base font-medium">
                             <label for="" class="block mb-0">Password</label>
-                            <input class="input py-1" type="text" />
+                            <input
+                                class="input py-1"
+                                type="password"
+                                v-model="user.password"
+                            />
                         </div>
 
                         <div class="my-4 text-base font-medium text-center">
                             <button
                                 class="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded"
+                                @click="login"
                             >
                                 Confirm
                             </button>
@@ -191,6 +200,7 @@
     </div>
 </template>
 <script>
+import { ToastSuccess } from "../../toasters";
 import axios from "axios";
 export default {
     data() {
@@ -220,7 +230,36 @@ export default {
                     this.$emit("closeModal");
                     this.accessToken = response.data.access_token;
                     this.$store.commit("updateToken", this.accessToken);
-                    //console.log(this.$store.getters.getToken);
+                    // console.log(this.$store.getters.getToken);
+                    //Toaster
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: "Signed up successfully"
+                    });
+                })
+                .catch(error => {
+                    if (typeof error !== "undefined") {
+                        this.errors = error.response.data.errors;
+                        this.errors = Object.values(this.errors);
+                    }
+                });
+        },
+        login(e) {
+            e.preventDefault();
+            axios
+                .post("http://localhost:8000/api/login", this.user)
+                .then(response => {
+                    this.errors = [];
+                    this.$emit("closeModal");
+                    this.accessToken = response.data.access_token;
+                    this.$store.commit("updateToken", this.accessToken);
+                    // console.log(this.$store.getters.getToken);
+                    //Toaster
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: "Signed in successfully"
+                    });
+                  this.$store.commit("updateRole",response.data.role);
                 })
                 .catch(error => {
                     if (typeof error !== "undefined") {

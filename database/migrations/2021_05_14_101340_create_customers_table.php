@@ -14,7 +14,7 @@ class CreateCustomersTable extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users');
             $table->char('phone', 25);
             $table->string('country',50);

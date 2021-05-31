@@ -32,11 +32,11 @@ class UserController extends Controller
    }
 
    public function login(UserLoginRequest $request){
-        //$user = User::where('mail',$request->mail)->where('password',$request->password)->first();
+        $user = User::where('mail',$request->mail)->first();
         if(Auth::attempt(['mail' => $request->mail, 'password' => $request->password])){
             $user = $request->user();
             $accessToken = $user->createToken('authToken')->accessToken;
-                return response()->json(["message"=>"success","access_token"=>$accessToken],201);
+            return response()->json(["message"=>"success","role"=>$user->role,"access_token"=>$accessToken],201);
         }
         return response()->json(["message"=>"Unauthorized"],401);
    }
@@ -52,10 +52,10 @@ class UserController extends Controller
         return UserResource::collection(User::all());
    }
 
-   public function updateContactInformation(CustomerRequest $request,$userId){
-        $customer = Customer::where('user_id',$userId)->get();
+   public function updateContactInformation(CustomerRequest $request){
+        $customer = Customer::where('user_id',Auth::user()->id)->get();
        if($customer->isNotEmpty()){
-            Customer::where('user_id',$userId)
+            Customer::where('user_id',Auth::user()->id)
             ->update([
                 "phone"=>$request->phone,
                 "country"=>$request->country,
@@ -67,7 +67,7 @@ class UserController extends Controller
             return response()->json('Details Updated',201);
        }else{
            Customer::create([
-                "user_id"=>$request->userId,
+                "user_id"=>Auth::user()->id,
                 "phone"=>$request->phone,
                 "country"=>$request->country,
                 "city"=>$request->city,
@@ -78,11 +78,18 @@ class UserController extends Controller
              return response()->json('Details Created',201);
        }
    }
-   public function updateUserInformation(UserProfileRequest $request, $userId){
-        User::find($userId)->update([
+   public function updateUserInformation(UserProfileRequest $request){
+        User::find(Auth::user()->id)->update([
             "name"=>$request->name,
             "surname"=>$request->surname
         ]);
         return response()->json('Profile Updated',201);
+   }
+
+   public function showMyInformation(){
+        $user = User::where('id',Auth::user()->id)->first();
+        $user['contact'] = $user->customer();
+        return response()->json($user,201);
+
    }
 }
