@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Cart;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
+use App\Models\RestaurantOwner;
+use Illuminate\Support\Carbon;
 class OrderController extends Controller
 {
     public function createOrder($userId){
@@ -61,5 +64,33 @@ class OrderController extends Controller
     public function updateOrderStatus($orderId, $status){
         Order::where('id',$orderId)->update(['status'=>$status]);
         return response()->json("Status Updated",'201');
+    }
+
+    public function showMyRestaurantsActiveOrders(){
+        $owner = User::where('id',Auth::user()->id)->first();
+        $id = $owner->restaurantOwner->myRestaurant->id;
+        $myOrders = Order::where('restaurant_id',$id)->where('status','waiting')->get();
+        foreach($myOrders as $myOrder){
+            $myOrder->user->customer;
+        }
+        return response()->json($myOrders,201);
+
+    }
+
+    public function showMyRestaurantOrderHistory(){
+        $restaurantId = RestaurantOwner::where('user_id',(Auth::user()->id))->first()->restaurant_id;
+        $orders = Order::where('restaurant_id',$restaurantId)->get();
+        foreach($orders as $order){
+            $order->user->customer;
+        }
+        return response()->json($orders,200);
+    }
+
+    public function showMyRestaurantOrderHistoryInMonthly(){
+        $restaurantId = RestaurantOwner::where('user_id',(Auth::user()->id))->first()->restaurant_id;
+        $orders = Order::whereYear('created_at',2021)->where('restaurant_id',$restaurantId)->orderBy('created_at')->get()->groupBy(function($date){
+           return Carbon::parse($date->created_at)->format('m');
+        });
+        return response()->json($orders,200);
     }
 }

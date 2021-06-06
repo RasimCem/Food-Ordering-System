@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Resources\RestaurantResource;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
+use App\Models\RestaurantOwner;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 class RestaurantController extends Controller
@@ -135,5 +136,24 @@ class RestaurantController extends Controller
     public function searchForRestaurant($restaurantName){
         $restaurant = Restaurant::where('name','LIKE','%'.$restaurantName.'%')->get();
         return RestaurantResource::collection($restaurant);
+    }
+
+    public function getMyRestaurantDetails(){
+        $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
+        $restaurant = Restaurant::where('id',$restaurantId)->first();
+        return response()->json($restaurant,200);
+    }
+
+    public function updateMyRestaurantDetails(RestaurantRequest $request){
+        $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
+        Restaurant::find($restaurantId)->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'chef' => $request->chef,
+            'country'=>$request->country,
+            'city'=>$request->city,
+            'district'=>$request->district
+        ]);
+        return response()->json("Restaurant Updated",200);
     }
 }

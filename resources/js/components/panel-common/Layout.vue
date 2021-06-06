@@ -47,7 +47,7 @@
             <div class="w-full my-16 text-white text-lg px-3  h-screen ">
                 <ul v-show="sideBarOpen">
                     <!-- Restaurant Owner  -->
-                    <div v-if="role == 'owner'">
+                    <div v-if="role == 'restaurantOwner'">
                         <li
                             class="flex m-3 justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
                         >
@@ -154,7 +154,7 @@
                         </li>
                     </div>
                     <!-- Admin Panel -->
-                    <div v-else>
+                    <div v-else-if="role=='admin'">
                         <li
                             class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
                         >
@@ -381,7 +381,7 @@ export default {
     data() {
         return {
             sideBarOpen: true,
-            role: "owner"
+            role:null
         };
     },
     methods: {
@@ -419,12 +419,13 @@ export default {
         }
     },
     mounted() {
-        if (this.role == "owner") {
-            // console.log("this is owner");
+        this.role =   this.$store.getters.getRole;
+        if (this.role == 'restaurantOwner') {
             this.$router.push({ name: "panel-home" });
-        } else {
-            //  console.log("this is admin");
+        } else if(this.role == 'admin'){
             this.$router.push({ name: "panel-admin-home" });
+        }else{
+            this.logOut();
         }
     }
 };

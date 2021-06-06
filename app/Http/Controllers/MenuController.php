@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\MenuRequest;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
 use App\Models\Menu;
+use App\Models\RestaurantOwner;
 use App\Http\Resources\MenuResource;
 class MenuController extends Controller
 {
@@ -35,12 +36,9 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MenuRequest $request, $restaurantId)
+    public function storeMyMenu(MenuRequest $request)
     {
-        $restaurant = Restaurant::find($restaurantId);
-        if(empty($restaurant)){
-            return response()->json("Restaurant Not Found",404);
-        }
+        $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
         Menu::create([
             "restaurant_id"=>$restaurantId,
             "name"=>$request->name,
@@ -50,6 +48,23 @@ class MenuController extends Controller
         ]);
         return response()->json("Menu Created",200);
 
+    }
+
+    public function showMyMenu(){
+        $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
+        return MenuResource::collection(Menu::where('restaurant_id',$restaurantId)->get());
+    }
+
+    public function deleteMyMenu($menuId){
+        $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
+        Menu::where('id',$menuId)->where('restaurant_id',$restaurantId)->delete();
+        return response()->json('Menu Deleted',200);
+    }
+
+    public function getMyMenuById($menuId){
+        $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
+        $menu  = Menu::where('id',$menuId)->where('restaurant_id',$restaurantId)->first();
+        return response()->json($menu,200);
     }
 
     /**
@@ -86,9 +101,10 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MenuRequest $request, $menuId)
+    public function updateMyMenu(MenuRequest $request, $menuId)
     {
-        $menu = Menu::find($menuId);
+        $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
+        $menu  = Menu::where('id',$menuId)->where('restaurant_id',$restaurantId)->first();
         if($menu){
             $menu->update([
                 "name"=>$request->name,

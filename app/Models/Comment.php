@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class RestaurantOwner extends Model
+use App\Models\Order;
+class Comment extends Model
 {
+    protected $guarded =[];
     use HasFactory;
 
-    public function myRestaurant(){
-        return $this->hasOne(Restaurant::class,'id','restaurant_id');
+    public function order(){
+        return $this->belongsTo(Order::class);
     }
 }

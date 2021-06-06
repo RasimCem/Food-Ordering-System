@@ -10,11 +10,11 @@
                 </div>
                 <div class="mt-2 font-medium ">
                     <label for="" class="block mb-0">Name</label>
-                    <input class="input py-1" type="mail" />
+                    <input class="input py-1" type="mail" v-model="myRestaurantDetail.name" />
                 </div>
                 <div class="mt-2  font-medium ">
                     <label for="" class="block mb-0">Chef</label>
-                    <input class="input py-1" type="mail" />
+                    <input class="input py-1" type="mail"  v-model="myRestaurantDetail.chef" />
                 </div>
                 <div class="mt-2 font-medium">
                     <label for="" class="block mb-0">Description</label>
@@ -22,10 +22,25 @@
                         rows="4"
                         class="input py-1"
                         placeholder="max:50"
+                         v-model="myRestaurantDetail.description"
                     ></textarea>
                 </div>
+                <div class="mt-2  font-medium ">
+                    <label for="" class="block mb-0">Country</label>
+                    <input class="input py-1" type="mail"  v-model="myRestaurantDetail.country" />
+                </div>
+                <div class="mt-2  font-medium ">
+                    <label for="" class="block mb-0">City</label>
+                    <input class="input py-1" type="mail"  v-model="myRestaurantDetail.city"/>
+                </div>
+                <div class="mt-2  font-medium ">
+                    <label for="" class="block mb-0">District</label>
+                    <input class="input py-1" type="mail"  v-model="myRestaurantDetail.district" />
+                </div>
             </form>
-             <button class="button mt-2 text-xs md:text-base w-36">Update</button>
+            <button class="button mt-2 text-xs md:text-base w-36" @click="updateMyRestaurantDetails">
+                Update
+            </button>
         </div>
         <h2 class="text-lg px-2 mt-3">Restaurant Sliders</h2>
         <hr />
@@ -65,7 +80,9 @@
                         type="file"
                         @change="fileChanged"
                     />
-                    <button class="button mt-2 text-xs md:text-base">Update</button>
+                    <button class="button mt-2 text-xs md:text-base">
+                        Update
+                    </button>
                 </div>
                 <div class="m-3">
                     <small>Slider 2 (Click On The Image to Upload</small>
@@ -100,7 +117,9 @@
                         type="file"
                         @change="fileChanged"
                     />
-                    <button class="button mt-2 text-xs md:text-base">Update</button>
+                    <button class="button mt-2 text-xs md:text-base">
+                        Update
+                    </button>
                 </div>
                 <div class="m-3">
                     <small>Slider 3 (Click On The Image to Upload)</small>
@@ -135,7 +154,9 @@
                         type="file"
                         @change="fileChanged"
                     />
-                    <button class="button mt-2 text-xs md:text-base">Update</button>
+                    <button class="button mt-2 text-xs md:text-base">
+                        Update
+                    </button>
                 </div>
             </div>
         </div>
@@ -143,13 +164,24 @@
 </template>
 
 <script>
+import { ToastSuccess } from "../../toasters";
+import axios from "axios";
 export default {
     data() {
         return {
             slider1Url: null,
             slider2Url: null,
             slider3Url: null,
-            sliders: ["asdasd"]
+            sliders: ["asdasd"],
+            myRestaurantDetail:{
+                name:null,
+                chef:null,
+                description:null,
+                country:null,
+                city:null,
+                district:null
+            },
+            token:null,
         };
     },
     methods: {
@@ -172,7 +204,39 @@ export default {
             };
             reader.readAsDataURL(file);
             e.target.value = "";
+        },
+        getMyRestaurantDetails() {
+            this.token = this.$store.getters.getToken;
+            axios
+                .get("http://localhost:8000/api/my-restaurant/details", {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.token
+                    }
+                })
+                .then(response => {
+                    this.myRestaurantDetail = response.data;
+                });
+        },
+        updateMyRestaurantDetails(){
+              axios
+                .post("http://localhost:8000/api/my-restaurant/update",this.myRestaurantDetail,{
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.token
+                    }
+                })
+                .then(response => {
+                     ToastSuccess.fire({
+                        icon: "success",
+                        title:response.data
+                    });
+                });
         }
+    },
+    mounted(){
+        this.getMyRestaurantDetails();
     }
+
 };
 </script>

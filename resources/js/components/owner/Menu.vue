@@ -49,7 +49,7 @@
                             <th
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Chef
+                                Description
                             </th>
                             <th
                                 class="border-2 border-gray-600 p-2 text-center"
@@ -64,7 +64,7 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs">
-                        <tr>
+                        <tr v-for="menu in menus" :key="menu.id">
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
@@ -80,30 +80,30 @@
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Hamburger
+                                {{menu.name}}
                             </td>
 
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Pickle, beef, onion
+                              {{menu.ingredient}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                RasimCem
+                                {{menu.description}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                75 $
+                                {{menu.price}} $
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
                                 <button
                                     class="button bg-blue-400 hover:bg-blue-500 m-1"
-                                    @click="goToEditMenu"
+                                    @click="goToEditMenu(menu.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -122,6 +122,7 @@
                                 </button>
                                 <button
                                     class="button bg-red-400 hover:bg-red-500 m-1"
+                                    @click="deleteMenu(menu.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -148,14 +149,52 @@
 </template>
 
 <script>
+import axios from "axios";
+import { ToastSuccess } from "../../toasters";
 export default {
+    data() {
+        return {
+            menus:null
+        }
+    },
     methods: {
         goToAddMenu() {
-            this.$router.push("panel-menu-add");
+            this.$router.push({name:"panel-menu-add"});
         },
-        goToEditMenu() {
-            this.$router.push("panel-menu-edit");
+        goToEditMenu(id) {
+            this.$router.push({ name: 'panel-menu-edit', params: { id: id }});
+        },
+        getMyMenus(){
+              axios
+                .get("http://localhost:8000/api/my-menu/show",{
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.menus = response.data.data;
+                });
+        },
+        deleteMenu(id){
+             axios
+                .get("http://localhost:8000/api/my-menu/delete/"+id,{
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title:response.data
+                    });
+                });
+                this.getMyMenus();
         }
+    },
+    mounted(){
+        this.getMyMenus();
     }
 };
 </script>

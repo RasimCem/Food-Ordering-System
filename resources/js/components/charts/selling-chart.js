@@ -18,7 +18,7 @@ export const sellingChart = {
         datasets: [
             {
                 label: "# of Orders",
-                data: [5, 19, 3, 5, 2, 3, 65, 9, 9, 45, 25, 56],
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 backgroundColor: "#ffffcc",
                 borderColor: "#fbbf24",
                 fill: true,
@@ -31,7 +31,9 @@ export const sellingChart = {
     scales: {
         yAxes: [{
             ticks: {
-                beginAtZero:true
+                beginAtZero:true,
+                precision: 0,
+                stepSize: 1,
             }
         }]
     }

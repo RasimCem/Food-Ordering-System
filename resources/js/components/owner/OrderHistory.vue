@@ -40,58 +40,46 @@
                             <th
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Note
-                            </th>
-                            <th
-                                class="border-2 border-gray-600 p-2 text-center"
-                            >
                                 Total Price
                             </th>
                         </tr>
                     </thead>
                     <tbody class="text-xs">
-                        <tr>
+                        <tr v-for="order in orders" :key="order.id">
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                RasimCem Aytan
+                               {{order.user.name}} {{order.user.surname}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Kurttepe mah. 3513. sok ev no 2
+                              {{order.user.customer.address_description}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                21.10.2021
+                                {{order.created_at.substring(0,10)}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                20:00
+                                {{order.created_at.substring(11,16)}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Hambuger x3, Cola x2, Ayran x1
+                                {{order.content}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                Accepted
-                            </td>
-                            <td
-                                class="border-2 border-gray-600 p-2 text-center"
-                            >
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Vel voluptate laudantium
-                                facilis fugit praesentium doloremque!
+                                {{order.status}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-primarycolor text-center"
                             >
-                                95 $
+                              {{order.total_price}} $
                             </td>
                         </tr>
                     </tbody>
@@ -100,3 +88,30 @@
         </div>
     </div>
 </template>
+<script>
+import axios from "axios";
+export default {
+    data() {
+        return{
+            orders:null
+        }
+    },
+    methods:{
+        getMyOrderHistory(){
+              axios
+                .get("http://localhost:8000/api/orders/my-restaurant",{
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.orders=response.data;
+                });
+        }
+    },
+    mounted(){
+        this.getMyOrderHistory();
+    }
+}
+</script>

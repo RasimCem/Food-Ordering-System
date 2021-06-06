@@ -24,7 +24,7 @@
                             width="350"
                             height="100"
                             :src="
-                               imageFromDB
+                                imageFromDB
                                     ? require('../../../../public/images/hamburger.jpg')
                                           .default
                                     : require('../../../../public/images/no-image.png')
@@ -42,37 +42,60 @@
                 </div>
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Name</label>
-                    <input class="input py-1" type="text" />
+                    <input class="input py-1" type="text" v-model="menu.name" />
                 </div>
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Ingredients</label>
-                    <input class="input py-1" type="text" />
+                    <input
+                        class="input py-1"
+                        type="text"
+                        v-model="menu.ingredient"
+                    />
                     <small
                         >Plese Add Items with comma (e.g onion, beef,
                         tomato...)</small
                     >
                 </div>
                 <div class="mt-1 font-medium ">
-                    <label for="" class="block mb-0">Chef</label>
-                    <input class="input py-1" type="text" />
+                    <label for="" class="block mb-0">Description</label>
+                    <input
+                        class="input py-1"
+                        type="text"
+                        v-model="menu.description"
+                    />
                 </div>
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Price ($) </label>
-                    <input class="input py-1" type="number" />
+                    <input
+                        class="input py-1"
+                        type="number"
+                        v-model="menu.price"
+                    />
                 </div>
             </form>
-            <button class="button mt-2 text-xs md:text-base w-36">
+            <button
+                class="button mt-2 text-xs md:text-base w-36"
+                @click="updateMyMenu(menu.id)"
+            >
                 Update
             </button>
         </div>
     </div>
 </template>
 <script>
+import axios from "axios";
+import { ToastSuccess } from "../../toasters";
 export default {
     data() {
         return {
             image: null,
-            imageFromDB:'asdas'
+            imageFromDB: "asdas",
+            menu: {
+                name: null,
+                ingredient: null,
+                description: null,
+                price: null
+            }
         };
     },
     methods: {
@@ -84,7 +107,44 @@ export default {
             };
             reader.readAsDataURL(file);
             e.target.value = "";
+        },
+        getMenu() {
+            const id = this.$route.params.id;
+            axios
+                .get("http://localhost:8000/api/my-menu/get/" + id, {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.menu = response.data;
+                });
+        },
+        updateMyMenu(menuId) {
+            axios
+                .put(
+                    "http://localhost:8000/api/my-menu/update/" + menuId,
+                    this.menu,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization:
+                                "Bearer " + this.$store.getters.getToken
+                        }
+                    }
+                )
+                .then(response => {
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: response.data
+                    });
+                });
+            this.$router.push({ name: "panel-menu" });
         }
+    },
+    mounted() {
+        this.getMenu();
     }
 };
 </script>

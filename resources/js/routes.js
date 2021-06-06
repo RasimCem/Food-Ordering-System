@@ -5,7 +5,7 @@ import PaymentComponent from "./components/client/Payment.vue";
 import CartComponent from "./components/client/Cart.vue";
 import ProfileComponent from "./components/client/Profile.vue";
 
-// Admin and Owner Panel 
+// Admin and Owner Panel
 import PanelComponent from "./components/panel-common/Layout.vue";
 
 // Restaurant Owner Routes
@@ -82,7 +82,7 @@ export const routes = [
     },
     {
         name: "panel-menu-edit",
-        path: "/panel/menu-edit",
+        path: "/panel/menu-edit/:id",
         component: OwnerMenuEditComponent
     },
     {
