@@ -132,4 +132,18 @@ class MenuController extends Controller
 		}
 		return response()->json("Menu Not Found",404);
     }
+
+    public function showMenu($menuId){
+        return new MenuResource(Menu::where('id',$menuId)->first());
+    }
+
+    public function updateMenu(MenuRequest $request, $menuId){
+        Menu::where('id',$menuId)->first()->update([
+            "name"=>$request->name,
+            "ingredient"=>$request->ingredient,
+            "description" => $request->description,
+            "price"=>$request->price,
+        ]);
+        return response()->json('Menu Updated',200);
+    }
 }

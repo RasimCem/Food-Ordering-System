@@ -12,4 +12,8 @@ class RestaurantOwner extends Model
     public function myRestaurant(){
         return $this->hasOne(Restaurant::class,'id','restaurant_id');
     }
+
+    public function user(){
+        return $this->hasOne(User::class,'id','user_id');
+    }
 }

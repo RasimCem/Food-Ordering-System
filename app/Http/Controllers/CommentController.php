@@ -41,4 +41,18 @@ class CommentController extends Controller
         }
         return response()->json($ownersComments,201);
     }
+
+    public function getAllComments(){
+        $comments = Comment::all();
+        foreach($comments as $comment){
+            $comment->user;
+            $comment->order->restaurant;
+        }
+        return response()->json($comments,200);
+    }
+
+    public function deleteComment($commentId){
+        Comment::find($commentId)->delete();
+        return response()->json('Comment Deleted',200);
+    }
 }

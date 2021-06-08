@@ -4,7 +4,7 @@
         <hr />
         <div class=" my-2 md:p-3 ">
             <div class="overflow-x-auto">
-                <table class="content-table m-0 my-1 ">
+                <table class="content-table m-0 my-1 w-full">
                     <thead class="bg-yellow-400 text-xs">
                         <tr>
                             <th
@@ -33,16 +33,7 @@
                             >
                                 City
                             </th>
-                            <th
-                                class="border-2 border-gray-600 p-2 text-center"
-                            >
-                                Street
-                            </th>
-                            <th
-                                class="border-2 border-gray-600 p-2 text-center"
-                            >
-                                Address Des.
-                            </th>
+
                             <th
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
@@ -51,51 +42,54 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs">
-                        <tr>
+                        <tr v-for="client in clients" :key="client.id">
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                1
+                                {{ client.id }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                cemaytan@hotmail.com
+                                {{ client.mail }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                RasimCem Aytan
+                                {{ client.name }} {{ client.surname }}
                             </td>
 
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
+                                v-if="client.customer"
                             >
-                                0533 840 18 35
+                                {{ client.customer.phone }}
+                            </td>
+                            <td
+                                v-else
+                                class="border-2 border-gray-600 p-2 text-primarycolor text-center"
+                            >
+                                -
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
+                                v-if="client.customer"
                             >
-                                Fagamusta
-                            </td>
-                            <td
-                                class="border-2 border-gray-600 p-2 text-center"
-                            >
-                                Akhisar Street
+                                {{ client.customer.city }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-primarycolor text-center"
+                                v-else
                             >
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Vel voluptate laudantium
-                                facilis fugit praesentium doloremque!
+                                -
                             </td>
+
                             <td
-                                class=" p-2 text-center whitespace-nowrap"
+                                class=" p-2 text-center whitespace-nowrap border-2 border-gray-600"
                             >
                                 <button
                                     class="button bg-blue-500 hover:bg-blue-400 m-1"
-                                    @click="goToClientsEdit"
+                                    @click="updateCustomer(client.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -114,6 +108,7 @@
                                 </button>
                                 <button
                                     class="button bg-red-500 hover:bg-red-400 m-1"
+                                    @click="deleteCustomer(client.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -139,11 +134,56 @@
     </div>
 </template>
 <script>
+import { ToastSuccess } from "../../toasters";
+import axios from "axios";
 export default {
+    data() {
+        return {
+            clients: null
+        };
+    },
     methods: {
-        goToClientsEdit(){
-             this.$router.push({ name: "panel-admin-edit-clients" });
+        getAllClients() {
+            axios
+                .get("http://localhost:8000/api/customers", {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.clients = response.data.data;
+                });
+        },
+        updateCustomer(customerId) {
+            this.$router.push({
+                name: "panel-admin-edit-clients",
+                params: { id: customerId }
+            });
+        },
+        deleteCustomer(customerId) {
+            axios
+                .get(
+                    "http://localhost:8000/api/customer-delete/" + customerId,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization:
+                                "Bearer " + this.$store.getters.getToken
+                        }
+                    }
+                )
+                .then(response => {
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: response.data
+                    });
+                    this.getAllClients();
+                });
         }
+    },
+    mounted() {
+        this.getAllClients();
     }
-}
+};
 </script>

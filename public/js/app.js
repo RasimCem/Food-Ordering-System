@@ -1845,6 +1845,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -1980,18 +1983,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      clients: null
+    };
+  },
   methods: {
-    goToClientsEdit: function goToClientsEdit() {
+    getAllClients: function getAllClients() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/customers", {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.clients = response.data.data;
+      });
+    },
+    updateCustomer: function updateCustomer(customerId) {
       this.$router.push({
-        name: "panel-admin-edit-clients"
+        name: "panel-admin-edit-clients",
+        params: {
+          id: customerId
+        }
+      });
+    },
+    deleteCustomer: function deleteCustomer(customerId) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/customer-delete/" + customerId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+
+        _this2.getAllClients();
       });
     }
+  },
+  mounted: function mounted() {
+    this.getAllClients();
   }
 });
 
@@ -2008,6 +2048,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2108,11 +2151,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      comments: null
+    };
+  },
+  mounted: function mounted() {
+    this.getAllComments();
+  },
   methods: {
-    goToOrdersDetails: function goToOrdersDetails() {
-      this.$router.push({
-        name: "panel-admin-orders-details"
+    deleteComment: function deleteComment(commentId) {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().delete("http://localhost:8000/api/comment/" + commentId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+
+        _this.getAllComments();
+      });
+    },
+    getAllComments: function getAllComments() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/comments", {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this2.comments = response.data;
       });
     }
   }
@@ -2131,6 +2208,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2173,7 +2253,134 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      customer: {
+        name: null,
+        surname: null,
+        mail: null,
+        customer: {
+          phone: null,
+          country: null,
+          city: null,
+          district: null,
+          street: null,
+          address_description: null
+        }
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.getCustomerInformation();
+  },
+  methods: {
+    getCustomerInformation: function getCustomerInformation() {
+      var _this = this;
+
+      var customerId = this.$route.params.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/customer/" + customerId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.customer = response.data;
+      });
+    },
+    updateCustomerPersonalInformation: function updateCustomerPersonalInformation(customerId) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().put("http://localhost:8000/api/customer/update/" + customerId, this.customer, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+      });
+    },
+    updateCustomerContactInformation: function updateCustomerContactInformation(customerId) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().put("http://localhost:8000/api/customer/update-contact/" + customerId, this.customer.customer, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -2207,6 +2414,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2313,11 +2522,158 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      orders: null
+    };
+  },
+  mounted: function mounted() {
+    this.getAllOrders();
+  },
   methods: {
-    goToOrdersDetails: function goToOrdersDetails() {
+    goToOrdersDetails: function goToOrdersDetails(orderId) {
       this.$router.push({
-        name: "panel-admin-orders-details"
+        name: "panel-admin-orders-details",
+        params: {
+          id: orderId
+        }
+      });
+    },
+    getAllOrders: function getAllOrders() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("http://localhost:8000/api/orders", {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.orders = response.data;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/OrdersDetails.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/OrdersDetails.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      order: {
+        user: {},
+        restaurant: {}
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.getOrderDetails();
+  },
+  methods: {
+    getOrderDetails: function getOrderDetails() {
+      var _this = this;
+
+      var orderId = this.$route.params.id;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("http://localhost:8000/api/order/show/" + orderId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.order = response.data;
       });
     }
   }
@@ -2336,6 +2692,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2398,6 +2757,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      restaurant: {
+        name: null,
+        description: null,
+        chef: null,
+        country: null,
+        city: null,
+        district: null
+      }
+    };
+  },
+  methods: {
+    createRestaurant: function createRestaurant() {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post("http://localhost:8000/api/restaurant", this.restaurant, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+      });
+      this.$router.push({
+        name: "panel-admin-restaurants"
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantDetails.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantDetails.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2410,7 +2819,138 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      restaurant: {
+        restaurant_owner: {
+          user: {}
+        }
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.getRestaurantDetails();
+  },
+  methods: {
+    getRestaurantDetails: function getRestaurantDetails() {
+      var _this = this;
+
+      var restaurantId = this.$route.params.id;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("http://localhost:8000/api/restaurant/show/" + restaurantId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.restaurant = response.data.data;
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -2425,6 +2965,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2484,7 +3027,84 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      restaurant: {
+        name: null,
+        description: null,
+        chef: null,
+        country: null,
+        city: null,
+        district: null
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.getRestaurantDetails();
+  },
+  methods: {
+    getRestaurantDetails: function getRestaurantDetails() {
+      var _this = this;
+
+      var restaurantId = this.$route.params.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/restaurant/show/" + restaurantId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.restaurant = response.data.data;
+      });
+    },
+    updateRestaurant: function updateRestaurant(restaurantId) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post("http://localhost:8000/api/restaurant/update/" + restaurantId, this.restaurant, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+
+        _this2.$router.push({
+          name: "panel-admin-restaurants"
+        });
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -2499,6 +3119,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2609,13 +3232,149 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      menus: null
+    };
+  },
   methods: {
-    editMenu: function editMenu() {
+    editMenu: function editMenu(menuId) {
       this.$router.push({
-        name: "panel-admin-restaurant-menus-edit"
+        name: "panel-admin-restaurant-menus-edit",
+        params: {
+          id: menuId
+        }
+      });
+    },
+    deleteMenu: function deleteMenu(menuId) {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().delete("http://localhost:8000/api/menu/" + menuId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+
+        _this.getMenus();
+      });
+    },
+    getMenus: function getMenus() {
+      var _this2 = this;
+
+      var restaurantId = this.$route.params.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/menu/" + restaurantId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this2.menus = response.data.data;
       });
     }
+  },
+  mounted: function mounted() {
+    this.getMenus();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantMenusEdit.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantMenusEdit.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      menu: {
+        name: null,
+        ingredient: null,
+        description: null,
+        price: null
+      }
+    };
+  },
+  methods: {
+    getMenu: function getMenu() {
+      var _this = this;
+
+      var menuId = this.$route.params.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/menu/show/" + menuId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.menu = response.data.data;
+      });
+    },
+    updateMenu: function updateMenu(menuId) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().put("http://localhost:8000/api/menu/update/" + menuId, this.menu, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+
+        _this2.$router.push({
+          name: "panel-admin-restaurants"
+        });
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getMenu();
   }
 });
 
@@ -2632,6 +3391,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _toasters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../toasters */ "./resources/js/toasters.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2809,31 +3571,103 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      restaurants: null
+    };
+  },
   methods: {
     goToAddMenu: function goToAddMenu() {
       this.$router.push("panel-menu-add");
     },
-    goToRestaurantDetails: function goToRestaurantDetails() {
+    goToRestaurantDetails: function goToRestaurantDetails(restaurantId) {
       this.$router.push({
-        name: "panel-admin-restaurant-details"
+        name: "panel-admin-restaurant-details",
+        params: {
+          id: restaurantId
+        }
       });
     },
-    goToMenu: function goToMenu() {
+    goToMenu: function goToMenu(restaurantId) {
       this.$router.push({
-        name: "panel-admin-restaurant-menus"
+        name: "panel-admin-restaurant-menus",
+        params: {
+          id: restaurantId
+        }
       });
     },
-    goToEditMenu: function goToEditMenu() {
+    goToEditRestaurant: function goToEditRestaurant(restaurantId) {
       this.$router.push({
-        name: "panel-admin-restaurant-edit"
+        name: "panel-admin-restaurant-edit",
+        params: {
+          id: restaurantId
+        }
       });
     },
     goToAddRestaurant: function goToAddRestaurant() {
       this.$router.push({
         name: "panel-admin-restaurant-add"
       });
+    },
+    getAllRestaurants: function getAllRestaurants() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/restaurants", {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _this.restaurants = response.data.data;
+      });
+    },
+    deleteRestaurant: function deleteRestaurant(restaurantId) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/restaurant/delete/" + restaurantId, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + this.$store.getters.getToken
+        }
+      }).then(function (response) {
+        _toasters__WEBPACK_IMPORTED_MODULE_0__.ToastSuccess.fire({
+          icon: "success",
+          title: response.data
+        });
+
+        _this2.getAllRestaurants();
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getAllRestaurants();
   }
 });
 
@@ -3310,6 +4144,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3340,6 +4175,14 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         alert("Yoy have to login for give an order!");
       }
+    },
+    goToComments: function goToComments(restaurantId) {
+      this.$router.push({
+        name: "restaurant-menu",
+        params: {
+          id: restaurantId
+        }
+      });
     }
   },
   watch: {
@@ -3529,7 +4372,9 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         name: "home"
       });
-    } //state
+    } //reset Storage
+    //this.$store.commit("updateToken", null);
+    //state
     //  console.log(this.$store.state.token);
     // getters
     // console.log(this.$store.getters.getToken);
@@ -4217,7 +5062,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.token = this.$store.getters.getToken;
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/my-information/", {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://localhost:8000/api/my-information", {
         headers: {
           Accept: "application/json",
           Authorization: "Bearer " + this.token
@@ -4276,10 +5121,135 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/Restaurant.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/Restaurant.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantComment.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantComment.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {};
+  },
+  mounted: function mounted() {
+    console.log(this.$route.params.id);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantMenu.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantMenu.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6206,7 +7176,8 @@ Vue.component('main-component', __webpack_require__(/*! ./components/Main */ "./
 Vue.component('layout-component', __webpack_require__(/*! ./components/client/Layout.vue */ "./resources/js/components/client/Layout.vue").default);
 Vue.component('home-component', __webpack_require__(/*! ./components/client/Home.vue */ "./resources/js/components/client/Home.vue").default);
 Vue.component('modal-component', __webpack_require__(/*! ./components/client/Modal.vue */ "./resources/js/components/client/Modal.vue").default);
-Vue.component('restaurant-component', __webpack_require__(/*! ./components/client/Restaurant.vue */ "./resources/js/components/client/Restaurant.vue").default); // RESTAURANT OWNER Components
+Vue.component('restaurant-menu-component', __webpack_require__(/*! ./components/client/RestaurantMenu.vue */ "./resources/js/components/client/RestaurantMenu.vue").default);
+Vue.component('restaurant-comment-component', __webpack_require__(/*! ./components/client/RestaurantComment.vue */ "./resources/js/components/client/RestaurantComment.vue").default); // RESTAURANT OWNER Components
 
 Vue.component('panel-layout-component', __webpack_require__(/*! ./components/panel-common/Layout.vue */ "./resources/js/components/panel-common/Layout.vue").default);
 Vue.component('home-owner-component', __webpack_require__(/*! ./components/owner/Home.vue */ "./resources/js/components/owner/Home.vue").default);
@@ -6309,31 +7280,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "routes": () => (/* binding */ routes)
 /* harmony export */ });
 /* harmony import */ var _components_client_Home_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/client/Home.vue */ "./resources/js/components/client/Home.vue");
-/* harmony import */ var _components_client_Restaurant_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/client/Restaurant.vue */ "./resources/js/components/client/Restaurant.vue");
-/* harmony import */ var _components_client_Payment_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/client/Payment.vue */ "./resources/js/components/client/Payment.vue");
-/* harmony import */ var _components_client_Cart_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/client/Cart.vue */ "./resources/js/components/client/Cart.vue");
-/* harmony import */ var _components_client_Profile_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/client/Profile.vue */ "./resources/js/components/client/Profile.vue");
-/* harmony import */ var _components_panel_common_Layout_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/panel-common/Layout.vue */ "./resources/js/components/panel-common/Layout.vue");
-/* harmony import */ var _components_owner_Home_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/owner/Home.vue */ "./resources/js/components/owner/Home.vue");
-/* harmony import */ var _components_owner_MyRestaurant_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/owner/MyRestaurant.vue */ "./resources/js/components/owner/MyRestaurant.vue");
-/* harmony import */ var _components_owner_Menu_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/owner/Menu.vue */ "./resources/js/components/owner/Menu.vue");
-/* harmony import */ var _components_owner_NewMenu_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/owner/NewMenu.vue */ "./resources/js/components/owner/NewMenu.vue");
-/* harmony import */ var _components_owner_MenuEdit_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/owner/MenuEdit.vue */ "./resources/js/components/owner/MenuEdit.vue");
-/* harmony import */ var _components_owner_OrderHistory_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/owner/OrderHistory.vue */ "./resources/js/components/owner/OrderHistory.vue");
-/* harmony import */ var _components_admin_Home_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/admin/Home.vue */ "./resources/js/components/admin/Home.vue");
-/* harmony import */ var _components_admin_Clients_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/admin/Clients.vue */ "./resources/js/components/admin/Clients.vue");
-/* harmony import */ var _components_admin_EditClients_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/admin/EditClients.vue */ "./resources/js/components/admin/EditClients.vue");
-/* harmony import */ var _components_admin_Restaurants_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/admin/Restaurants.vue */ "./resources/js/components/admin/Restaurants.vue");
-/* harmony import */ var _components_admin_RestaurantDetails_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/admin/RestaurantDetails.vue */ "./resources/js/components/admin/RestaurantDetails.vue");
-/* harmony import */ var _components_admin_RestaurantMenus_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/admin/RestaurantMenus.vue */ "./resources/js/components/admin/RestaurantMenus.vue");
-/* harmony import */ var _components_admin_RestaurantMenusEdit_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/admin/RestaurantMenusEdit.vue */ "./resources/js/components/admin/RestaurantMenusEdit.vue");
-/* harmony import */ var _components_admin_RestaurantEdit_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/admin/RestaurantEdit.vue */ "./resources/js/components/admin/RestaurantEdit.vue");
-/* harmony import */ var _components_admin_RestaurantAdd_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/admin/RestaurantAdd.vue */ "./resources/js/components/admin/RestaurantAdd.vue");
-/* harmony import */ var _components_admin_Complaints_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/admin/Complaints.vue */ "./resources/js/components/admin/Complaints.vue");
-/* harmony import */ var _components_admin_Orders_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/admin/Orders.vue */ "./resources/js/components/admin/Orders.vue");
-/* harmony import */ var _components_admin_OrdersDetails_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/admin/OrdersDetails.vue */ "./resources/js/components/admin/OrdersDetails.vue");
-/* harmony import */ var _components_admin_Comments_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/admin/Comments.vue */ "./resources/js/components/admin/Comments.vue");
+/* harmony import */ var _components_client_RestaurantMenu_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/client/RestaurantMenu.vue */ "./resources/js/components/client/RestaurantMenu.vue");
+/* harmony import */ var _components_client_RestaurantComment_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/client/RestaurantComment.vue */ "./resources/js/components/client/RestaurantComment.vue");
+/* harmony import */ var _components_client_Payment_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/client/Payment.vue */ "./resources/js/components/client/Payment.vue");
+/* harmony import */ var _components_client_Cart_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/client/Cart.vue */ "./resources/js/components/client/Cart.vue");
+/* harmony import */ var _components_client_Profile_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/client/Profile.vue */ "./resources/js/components/client/Profile.vue");
+/* harmony import */ var _components_panel_common_Layout_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/panel-common/Layout.vue */ "./resources/js/components/panel-common/Layout.vue");
+/* harmony import */ var _components_owner_Home_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/owner/Home.vue */ "./resources/js/components/owner/Home.vue");
+/* harmony import */ var _components_owner_MyRestaurant_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/owner/MyRestaurant.vue */ "./resources/js/components/owner/MyRestaurant.vue");
+/* harmony import */ var _components_owner_Menu_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/owner/Menu.vue */ "./resources/js/components/owner/Menu.vue");
+/* harmony import */ var _components_owner_NewMenu_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/owner/NewMenu.vue */ "./resources/js/components/owner/NewMenu.vue");
+/* harmony import */ var _components_owner_MenuEdit_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/owner/MenuEdit.vue */ "./resources/js/components/owner/MenuEdit.vue");
+/* harmony import */ var _components_owner_OrderHistory_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/owner/OrderHistory.vue */ "./resources/js/components/owner/OrderHistory.vue");
+/* harmony import */ var _components_admin_Home_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/admin/Home.vue */ "./resources/js/components/admin/Home.vue");
+/* harmony import */ var _components_admin_Clients_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/admin/Clients.vue */ "./resources/js/components/admin/Clients.vue");
+/* harmony import */ var _components_admin_EditClients_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/admin/EditClients.vue */ "./resources/js/components/admin/EditClients.vue");
+/* harmony import */ var _components_admin_Restaurants_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/admin/Restaurants.vue */ "./resources/js/components/admin/Restaurants.vue");
+/* harmony import */ var _components_admin_RestaurantDetails_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/admin/RestaurantDetails.vue */ "./resources/js/components/admin/RestaurantDetails.vue");
+/* harmony import */ var _components_admin_RestaurantMenus_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/admin/RestaurantMenus.vue */ "./resources/js/components/admin/RestaurantMenus.vue");
+/* harmony import */ var _components_admin_RestaurantMenusEdit_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/admin/RestaurantMenusEdit.vue */ "./resources/js/components/admin/RestaurantMenusEdit.vue");
+/* harmony import */ var _components_admin_RestaurantEdit_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/admin/RestaurantEdit.vue */ "./resources/js/components/admin/RestaurantEdit.vue");
+/* harmony import */ var _components_admin_RestaurantAdd_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/admin/RestaurantAdd.vue */ "./resources/js/components/admin/RestaurantAdd.vue");
+/* harmony import */ var _components_admin_Complaints_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/admin/Complaints.vue */ "./resources/js/components/admin/Complaints.vue");
+/* harmony import */ var _components_admin_Orders_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/admin/Orders.vue */ "./resources/js/components/admin/Orders.vue");
+/* harmony import */ var _components_admin_OrdersDetails_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/admin/OrdersDetails.vue */ "./resources/js/components/admin/OrdersDetails.vue");
+/* harmony import */ var _components_admin_Comments_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/admin/Comments.vue */ "./resources/js/components/admin/Comments.vue");
 // Clients Routes
+
 
 
 
@@ -6369,99 +7342,103 @@ var routes = [{
 }, {
   name: "restaurant",
   path: "/restaurant",
-  component: _components_client_Restaurant_vue__WEBPACK_IMPORTED_MODULE_1__.default
+  component: _components_client_RestaurantMenu_vue__WEBPACK_IMPORTED_MODULE_1__.default
+}, {
+  name: "restaurant-menu",
+  path: "/restaurant-menu/:id",
+  component: _components_client_RestaurantComment_vue__WEBPACK_IMPORTED_MODULE_2__.default
 }, {
   name: "payment",
   path: "/payment",
-  component: _components_client_Payment_vue__WEBPACK_IMPORTED_MODULE_2__.default
+  component: _components_client_Payment_vue__WEBPACK_IMPORTED_MODULE_3__.default
 }, {
   name: "cart",
   path: "/cart",
-  component: _components_client_Cart_vue__WEBPACK_IMPORTED_MODULE_3__.default
+  component: _components_client_Cart_vue__WEBPACK_IMPORTED_MODULE_4__.default
 }, {
   name: "profile",
   path: "/profile",
-  component: _components_client_Profile_vue__WEBPACK_IMPORTED_MODULE_4__.default
+  component: _components_client_Profile_vue__WEBPACK_IMPORTED_MODULE_5__.default
 }, {
   name: "panel",
   path: "/panel",
-  component: _components_panel_common_Layout_vue__WEBPACK_IMPORTED_MODULE_5__.default
+  component: _components_panel_common_Layout_vue__WEBPACK_IMPORTED_MODULE_6__.default
 }, {
   name: "panel-home",
   path: "/panel/home",
-  component: _components_owner_Home_vue__WEBPACK_IMPORTED_MODULE_6__.default
+  component: _components_owner_Home_vue__WEBPACK_IMPORTED_MODULE_7__.default
 }, {
   name: "panel-my-restaurant",
   path: "/panel/my-restaurant",
-  component: _components_owner_MyRestaurant_vue__WEBPACK_IMPORTED_MODULE_7__.default
+  component: _components_owner_MyRestaurant_vue__WEBPACK_IMPORTED_MODULE_8__.default
 }, {
   name: "panel-menu",
   path: "/panel/menu",
-  component: _components_owner_Menu_vue__WEBPACK_IMPORTED_MODULE_8__.default
+  component: _components_owner_Menu_vue__WEBPACK_IMPORTED_MODULE_9__.default
 }, {
   name: "panel-menu-add",
   path: "/panel/menu-add",
-  component: _components_owner_NewMenu_vue__WEBPACK_IMPORTED_MODULE_9__.default
+  component: _components_owner_NewMenu_vue__WEBPACK_IMPORTED_MODULE_10__.default
 }, {
   name: "panel-menu-edit",
   path: "/panel/menu-edit/:id",
-  component: _components_owner_MenuEdit_vue__WEBPACK_IMPORTED_MODULE_10__.default
+  component: _components_owner_MenuEdit_vue__WEBPACK_IMPORTED_MODULE_11__.default
 }, {
   name: "panel-order-history",
   path: "/panel/order-history",
-  component: _components_owner_OrderHistory_vue__WEBPACK_IMPORTED_MODULE_11__.default
+  component: _components_owner_OrderHistory_vue__WEBPACK_IMPORTED_MODULE_12__.default
 }, {
   name: "panel-admin-home",
   path: "/panel/admin/home",
-  component: _components_admin_Home_vue__WEBPACK_IMPORTED_MODULE_12__.default
+  component: _components_admin_Home_vue__WEBPACK_IMPORTED_MODULE_13__.default
 }, {
   name: "panel-admin-clients",
   path: "/panel/admin/clients",
-  component: _components_admin_Clients_vue__WEBPACK_IMPORTED_MODULE_13__.default
+  component: _components_admin_Clients_vue__WEBPACK_IMPORTED_MODULE_14__.default
 }, {
   name: "panel-admin-edit-clients",
-  path: "/panel/admin/edit-clients",
-  component: _components_admin_EditClients_vue__WEBPACK_IMPORTED_MODULE_14__.default
+  path: "/panel/admin/edit-clients/:id",
+  component: _components_admin_EditClients_vue__WEBPACK_IMPORTED_MODULE_15__.default
 }, {
   name: "panel-admin-restaurants",
   path: "/panel/admin/restaurants",
-  component: _components_admin_Restaurants_vue__WEBPACK_IMPORTED_MODULE_15__.default
+  component: _components_admin_Restaurants_vue__WEBPACK_IMPORTED_MODULE_16__.default
 }, {
   name: "panel-admin-restaurant-details",
-  path: "/restaurant-details",
-  component: _components_admin_RestaurantDetails_vue__WEBPACK_IMPORTED_MODULE_16__.default
+  path: "/restaurant-details/:id",
+  component: _components_admin_RestaurantDetails_vue__WEBPACK_IMPORTED_MODULE_17__.default
 }, {
   name: "panel-admin-restaurant-menus",
-  path: "/restaurant-menus",
-  component: _components_admin_RestaurantMenus_vue__WEBPACK_IMPORTED_MODULE_17__.default
+  path: "/restaurant-menus/:id",
+  component: _components_admin_RestaurantMenus_vue__WEBPACK_IMPORTED_MODULE_18__.default
 }, {
   name: "panel-admin-restaurant-menus-edit",
-  path: "/restaurant-menus-edit",
-  component: _components_admin_RestaurantMenusEdit_vue__WEBPACK_IMPORTED_MODULE_18__.default
+  path: "/restaurant-menus-edit/:id",
+  component: _components_admin_RestaurantMenusEdit_vue__WEBPACK_IMPORTED_MODULE_19__.default
 }, {
   name: "panel-admin-restaurant-edit",
-  path: "/restaurant-edit",
-  component: _components_admin_RestaurantEdit_vue__WEBPACK_IMPORTED_MODULE_19__.default
+  path: "/restaurant-edit/:id",
+  component: _components_admin_RestaurantEdit_vue__WEBPACK_IMPORTED_MODULE_20__.default
 }, {
   name: "panel-admin-restaurant-add",
   path: "/restaurant-add",
-  component: _components_admin_RestaurantAdd_vue__WEBPACK_IMPORTED_MODULE_20__.default
+  component: _components_admin_RestaurantAdd_vue__WEBPACK_IMPORTED_MODULE_21__.default
 }, {
   name: "panel-admin-complaints",
   path: "/panel/admin/complaints",
-  component: _components_admin_Complaints_vue__WEBPACK_IMPORTED_MODULE_21__.default
+  component: _components_admin_Complaints_vue__WEBPACK_IMPORTED_MODULE_22__.default
 }, {
   name: "panel-admin-orders",
   path: "/panel/admin/orders",
-  component: _components_admin_Orders_vue__WEBPACK_IMPORTED_MODULE_22__.default
+  component: _components_admin_Orders_vue__WEBPACK_IMPORTED_MODULE_23__.default
 }, {
   name: "panel-admin-orders-details",
-  path: "/panel/admin/orders-details",
-  component: _components_admin_OrdersDetails_vue__WEBPACK_IMPORTED_MODULE_23__.default
+  path: "/panel/admin/orders-details/:id",
+  component: _components_admin_OrdersDetails_vue__WEBPACK_IMPORTED_MODULE_24__.default
 }, {
   name: "panel-admin-comments",
   path: "/panel/admin/comments",
-  component: _components_admin_Comments_vue__WEBPACK_IMPORTED_MODULE_24__.default
+  component: _components_admin_Comments_vue__WEBPACK_IMPORTED_MODULE_25__.default
 }];
 
 /***/ }),
@@ -48283,15 +49260,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _OrdersDetails_vue_vue_type_template_id_3d23ac42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrdersDetails.vue?vue&type=template&id=3d23ac42& */ "./resources/js/components/admin/OrdersDetails.vue?vue&type=template&id=3d23ac42&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _OrdersDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrdersDetails.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/OrdersDetails.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _OrdersDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _OrdersDetails_vue_vue_type_template_id_3d23ac42___WEBPACK_IMPORTED_MODULE_0__.render,
   _OrdersDetails_vue_vue_type_template_id_3d23ac42___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -48359,15 +49338,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _RestaurantDetails_vue_vue_type_template_id_8e0ce32c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RestaurantDetails.vue?vue&type=template&id=8e0ce32c& */ "./resources/js/components/admin/RestaurantDetails.vue?vue&type=template&id=8e0ce32c&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _RestaurantDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RestaurantDetails.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/RestaurantDetails.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _RestaurantDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _RestaurantDetails_vue_vue_type_template_id_8e0ce32c___WEBPACK_IMPORTED_MODULE_0__.render,
   _RestaurantDetails_vue_vue_type_template_id_8e0ce32c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -48474,15 +49455,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _RestaurantMenusEdit_vue_vue_type_template_id_c3c36d74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RestaurantMenusEdit.vue?vue&type=template&id=c3c36d74& */ "./resources/js/components/admin/RestaurantMenusEdit.vue?vue&type=template&id=c3c36d74&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _RestaurantMenusEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RestaurantMenusEdit.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/RestaurantMenusEdit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _RestaurantMenusEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _RestaurantMenusEdit_vue_vue_type_template_id_c3c36d74___WEBPACK_IMPORTED_MODULE_0__.render,
   _RestaurantMenusEdit_vue_vue_type_template_id_c3c36d74___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -48776,10 +49759,10 @@ component.options.__file = "resources/js/components/client/Profile.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/client/Restaurant.vue":
-/*!*******************************************************!*\
-  !*** ./resources/js/components/client/Restaurant.vue ***!
-  \*******************************************************/
+/***/ "./resources/js/components/client/RestaurantComment.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/client/RestaurantComment.vue ***!
+  \**************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -48787,8 +49770,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Restaurant_vue_vue_type_template_id_16e6cce6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true& */ "./resources/js/components/client/Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true&");
-/* harmony import */ var _Restaurant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Restaurant.vue?vue&type=script&lang=js& */ "./resources/js/components/client/Restaurant.vue?vue&type=script&lang=js&");
+/* harmony import */ var _RestaurantComment_vue_vue_type_template_id_05145349___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RestaurantComment.vue?vue&type=template&id=05145349& */ "./resources/js/components/client/RestaurantComment.vue?vue&type=template&id=05145349&");
+/* harmony import */ var _RestaurantComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RestaurantComment.vue?vue&type=script&lang=js& */ "./resources/js/components/client/RestaurantComment.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -48798,19 +49781,58 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _Restaurant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _Restaurant_vue_vue_type_template_id_16e6cce6_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Restaurant_vue_vue_type_template_id_16e6cce6_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _RestaurantComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _RestaurantComment_vue_vue_type_template_id_05145349___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RestaurantComment_vue_vue_type_template_id_05145349___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  "16e6cce6",
+  null,
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/client/Restaurant.vue"
+component.options.__file = "resources/js/components/client/RestaurantComment.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/client/RestaurantMenu.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/client/RestaurantMenu.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RestaurantMenu_vue_vue_type_template_id_fd6ab036_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true& */ "./resources/js/components/client/RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true&");
+/* harmony import */ var _RestaurantMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RestaurantMenu.vue?vue&type=script&lang=js& */ "./resources/js/components/client/RestaurantMenu.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _RestaurantMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _RestaurantMenu_vue_vue_type_template_id_fd6ab036_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RestaurantMenu_vue_vue_type_template_id_fd6ab036_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "fd6ab036",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/client/RestaurantMenu.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -49172,6 +50194,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/OrdersDetails.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/admin/OrdersDetails.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrdersDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OrdersDetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/OrdersDetails.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrdersDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/RestaurantAdd.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/admin/RestaurantAdd.vue?vue&type=script&lang=js& ***!
@@ -49185,6 +50223,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantAdd_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantAdd.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantAdd.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantAdd_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/RestaurantDetails.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/admin/RestaurantDetails.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantDetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantDetails.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -49217,6 +50271,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantMenus.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantMenus.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/RestaurantMenusEdit.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/admin/RestaurantMenusEdit.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenusEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantMenusEdit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/RestaurantMenusEdit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenusEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -49332,10 +50402,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/client/Restaurant.vue?vue&type=script&lang=js&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/components/client/Restaurant.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************/
+/***/ "./resources/js/components/client/RestaurantComment.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/client/RestaurantComment.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -49343,8 +50413,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Restaurant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Restaurant.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/Restaurant.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Restaurant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantComment.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantComment.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/client/RestaurantMenu.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/client/RestaurantMenu.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantMenu.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantMenu.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -49800,19 +50886,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/client/Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/components/client/Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true& ***!
-  \**************************************************************************************************/
+/***/ "./resources/js/components/client/RestaurantComment.vue?vue&type=template&id=05145349&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/client/RestaurantComment.vue?vue&type=template&id=05145349& ***!
+  \*********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Restaurant_vue_vue_type_template_id_16e6cce6_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Restaurant_vue_vue_type_template_id_16e6cce6_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantComment_vue_vue_type_template_id_05145349___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantComment_vue_vue_type_template_id_05145349___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Restaurant_vue_vue_type_template_id_16e6cce6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantComment_vue_vue_type_template_id_05145349___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantComment.vue?vue&type=template&id=05145349& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantComment.vue?vue&type=template&id=05145349&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/client/RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/client/RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true& ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenu_vue_vue_type_template_id_fd6ab036_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenu_vue_vue_type_template_id_fd6ab036_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RestaurantMenu_vue_vue_type_template_id_fd6ab036_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true&");
 
 
 /***/ }),
@@ -50027,153 +51130,193 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: " my-2 md:p-3 " }, [
       _c("div", { staticClass: "overflow-x-auto" }, [
-        _c("table", { staticClass: "content-table m-0 my-1 " }, [
+        _c("table", { staticClass: "content-table m-0 my-1 w-full" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("tbody", { staticClass: "text-xs" }, [
-            _c("tr", [
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            1\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            cemaytan@hotmail.com\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            RasimCem Aytan\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            0533 840 18 35\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            Fagamusta\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            Akhisar Street\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-primarycolor text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            Lorem ipsum dolor sit amet consectetur\n                            adipisicing elit. Vel voluptate laudantium\n                            facilis fugit praesentium doloremque!\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("td", { staticClass: " p-2 text-center whitespace-nowrap" }, [
+          _c(
+            "tbody",
+            { staticClass: "text-xs" },
+            _vm._l(_vm.clients, function(client) {
+              return _c("tr", { key: client.id }, [
                 _c(
-                  "button",
-                  {
-                    staticClass: "button bg-blue-500 hover:bg-blue-400 m-1",
-                    on: { click: _vm.goToClientsEdit }
-                  },
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
                   [
-                    _c(
-                      "svg",
-                      {
-                        staticClass: "h-3 w-3",
-                        attrs: {
-                          xmlns: "http://www.w3.org/2000/svg",
-                          fill: "none",
-                          viewBox: "0 0 24 24",
-                          stroke: "currentColor"
-                        }
-                      },
-                      [
-                        _c("path", {
-                          attrs: {
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d:
-                              "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          }
-                        })
-                      ]
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(client.id) +
+                        "\n                        "
                     )
                   ]
                 ),
                 _vm._v(" "),
                 _c(
-                  "button",
-                  { staticClass: "button bg-red-500 hover:bg-red-400 m-1" },
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(client.mail) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(client.name) +
+                        " " +
+                        _vm._s(client.surname) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                client.customer
+                  ? _c(
+                      "td",
+                      {
+                        staticClass: "border-2 border-gray-600 p-2 text-center"
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(client.customer.phone) +
+                            "\n                        "
+                        )
+                      ]
+                    )
+                  : _c(
+                      "td",
+                      {
+                        staticClass:
+                          "border-2 border-gray-600 p-2 text-primarycolor text-center"
+                      },
+                      [
+                        _vm._v(
+                          "\n                            -\n                        "
+                        )
+                      ]
+                    ),
+                _vm._v(" "),
+                client.customer
+                  ? _c(
+                      "td",
+                      {
+                        staticClass:
+                          "border-2 border-gray-600 p-2 text-red-500 text-center"
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(client.customer.city) +
+                            "\n                        "
+                        )
+                      ]
+                    )
+                  : _c(
+                      "td",
+                      {
+                        staticClass:
+                          "border-2 border-gray-600 p-2 text-primarycolor text-center"
+                      },
+                      [
+                        _vm._v(
+                          "\n                            -\n                        "
+                        )
+                      ]
+                    ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      " p-2 text-center whitespace-nowrap border-2 border-gray-600"
+                  },
                   [
                     _c(
-                      "svg",
+                      "button",
                       {
-                        staticClass: "h-3 w-3",
-                        attrs: {
-                          xmlns: "http://www.w3.org/2000/svg",
-                          fill: "none",
-                          viewBox: "0 0 24 24",
-                          stroke: "currentColor"
+                        staticClass: "button bg-blue-500 hover:bg-blue-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.updateCustomer(client.id)
+                          }
                         }
                       },
                       [
-                        _c("path", {
-                          attrs: {
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d:
-                              "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-3 w-3",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button bg-red-500 hover:bg-red-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteCustomer(client.id)
                           }
-                        })
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-3 w-3",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              }
+                            })
+                          ]
+                        )
                       ]
                     )
                   ]
                 )
               ])
-            ])
-          ])
+            }),
+            0
+          )
         ])
       ])
     ])
@@ -50210,18 +51353,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "border-2 border-gray-600 p-2 text-center" }, [
           _vm._v("\n                            City\n                        ")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "border-2 border-gray-600 p-2 text-center" }, [
-          _vm._v(
-            "\n                            Street\n                        "
-          )
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "border-2 border-gray-600 p-2 text-center" }, [
-          _vm._v(
-            "\n                            Address Des.\n                        "
-          )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "border-2 border-gray-600 p-2 text-center" }, [
@@ -50265,107 +51396,106 @@ var render = function() {
         _c("table", { staticClass: "content-table m-0 my-1 w-full" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("tbody", { staticClass: "text-xs" }, [
-            _c("tr", [
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            1\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            RasimCem\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            Zimbalazup Restorant\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
+          _c(
+            "tbody",
+            { staticClass: "text-xs" },
+            _vm._l(_vm.comments, function(comment) {
+              return _c("tr", { key: comment.id }, [
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(comment.id) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(comment.user.mail) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(comment.order.restaurant.name) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("td", {
                   staticClass:
                     "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            12.01.2020\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
+                }),
+                _vm._v(" "),
+                _c("td", {
                   staticClass:
                     "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            16.32\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "button bg-red-500 hover:bg-red-400 m-1",
-                      on: { click: _vm.goToOrdersDetails }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+                }),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button bg-red-500 hover:bg-red-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteComment(comment.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ]
-              )
-            ])
-          ])
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
         ])
       ])
     ])
@@ -50612,87 +51742,351 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h2", { staticClass: "text-lg mt-3" }, [_vm._v("Edit Clients")]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
-        _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Full Name")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
+  return _c("div", [
+    _c("h2", { staticClass: "text-lg mt-3" }, [_vm._v("Edit Client")]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
+      _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Name")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Mail Address")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Address Description")
-            ]),
-            _vm._v(" "),
-            _c("textarea", { staticClass: "input py-1" })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Phone Number")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("City")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Street")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "input py-1",
-              attrs: { type: "number" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Phone Number")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ])
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.customer.name,
+                expression: "customer.name"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.customer.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.customer, "name", $event.target.value)
+              }
+            }
+          })
         ]),
         _vm._v(" "),
-        _c("button", { staticClass: "button mt-2 text-xs md:text-base w-36" }, [
-          _vm._v("\n            Update\n        ")
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Surname")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.customer.surname,
+                expression: "customer.surname"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.customer.surname },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.customer, "surname", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Mail Address")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.customer.mail,
+                expression: "customer.mail"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text", disabled: "" },
+            domProps: { value: _vm.customer.mail },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.customer, "mail", $event.target.value)
+              }
+            }
+          })
         ])
-      ])
-    ])
-  }
-]
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "button mt-2 text-xs md:text-base w-36",
+          on: {
+            click: function($event) {
+              return _vm.updateCustomerPersonalInformation(_vm.customer.id)
+            }
+          }
+        },
+        [_vm._v("\n            Update\n        ")]
+      )
+    ]),
+    _vm._v(" "),
+    _vm.customer.customer
+      ? _c("div", [
+          _c("h2", { staticClass: "text-lg mt-3" }, [
+            _vm._v("Edit Contact Informations")
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
+            _c(
+              "form",
+              { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" },
+              [
+                _c("div", { staticClass: "mt-1 font-medium " }, [
+                  _c(
+                    "label",
+                    { staticClass: "block mb-0", attrs: { for: "" } },
+                    [_vm._v("Phone Number")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.customer.customer.phone,
+                        expression: "customer.customer.phone"
+                      }
+                    ],
+                    staticClass: "input py-1",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.customer.customer.phone },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.customer.customer,
+                          "phone",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-1 font-medium " }, [
+                  _c(
+                    "label",
+                    { staticClass: "block mb-0", attrs: { for: "" } },
+                    [_vm._v("Country")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.customer.customer.country,
+                        expression: "customer.customer.country"
+                      }
+                    ],
+                    staticClass: "input py-1",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.customer.customer.country },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.customer.customer,
+                          "country",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-1 font-medium " }, [
+                  _c(
+                    "label",
+                    { staticClass: "block mb-0", attrs: { for: "" } },
+                    [_vm._v("City")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.customer.customer.city,
+                        expression: "customer.customer.city"
+                      }
+                    ],
+                    staticClass: "input py-1",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.customer.customer.city },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.customer.customer,
+                          "city",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-1 font-medium " }, [
+                  _c(
+                    "label",
+                    { staticClass: "block mb-0", attrs: { for: "" } },
+                    [_vm._v("District")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.customer.customer.district,
+                        expression: "customer.customer.district"
+                      }
+                    ],
+                    staticClass: "input py-1",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.customer.customer.district },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.customer.customer,
+                          "district",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-1 font-medium " }, [
+                  _c(
+                    "label",
+                    { staticClass: "block mb-0", attrs: { for: "" } },
+                    [_vm._v("Street")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.customer.customer.street,
+                        expression: "customer.customer.street"
+                      }
+                    ],
+                    staticClass: "input py-1",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.customer.customer.street },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.customer.customer,
+                          "street",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-1 font-medium " }, [
+                  _c(
+                    "label",
+                    { staticClass: "block mb-0", attrs: { for: "" } },
+                    [_vm._v("Address Description")]
+                  ),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.customer.customer.address_description,
+                        expression: "customer.customer.address_description"
+                      }
+                    ],
+                    staticClass: "input py-1",
+                    attrs: { rows: "3" },
+                    domProps: {
+                      value: _vm.customer.customer.address_description
+                    },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.customer.customer,
+                          "address_description",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "button mt-2 text-xs md:text-base w-36",
+                on: {
+                  click: function($event) {
+                    return _vm.updateCustomerContactInformation(_vm.customer.id)
+                  }
+                }
+              },
+              [_vm._v("\n            Update\n        ")]
+            )
+          ])
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -50769,116 +52163,138 @@ var render = function() {
         _c("table", { staticClass: "content-table m-0 my-1 w-full" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("tbody", { staticClass: "text-xs" }, [
-            _c("tr", [
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            1\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            RasimCem\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            Zimbalazup Restorant\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            12.01.2020\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            16.32\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "button bg-green-500 hover:bg-green-400 m-1",
-                      on: { click: _vm.goToOrdersDetails }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+          _c(
+            "tbody",
+            { staticClass: "text-xs" },
+            _vm._l(_vm.orders, function(order) {
+              return _c("tr", { key: order.id }, [
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                          " +
+                        _vm._s(order.id) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                           " +
+                        _vm._s(order.user.name) +
+                        " " +
+                        _vm._s(order.user.surname) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(order.restaurant.name) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-red-500 text-center"
+                  },
+                  [
+                    _vm._v(
+                      "\n                          " +
+                        _vm._s(order.created_at.substring(0, 10)) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-red-500 text-center"
+                  },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(order.created_at.substring(11, 16)) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "button bg-green-500 hover:bg-green-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.goToOrdersDetails(order.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ]
-              )
-            ])
-          ])
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
         ])
       ])
     ])
@@ -50946,140 +52362,147 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("h2", { staticClass: "text-lg px-2 mt-5" }, [_vm._v("Order Details")]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: " my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4" },
+      [
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Order Id: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.id))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Status: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.status))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("From: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [
+              _vm._v(
+                _vm._s(_vm.order.user.name) +
+                  " " +
+                  _vm._s(_vm.order.user.surname)
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Order Owner Mail: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.user.mail))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Meals: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.content))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Price: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.total_price))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Date: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.created_at))]
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c("h2", { staticClass: "text-lg px-2 mt-5" }, [
+      _vm._v("Restaurant Details")
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: " my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4" },
+      [
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Restaurant Id: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.restaurant_id))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Restaurant Id: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.restaurant.name))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Country: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.restaurant.country))]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", { attrs: { for: "" } }, [_vm._v("City: ")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+            [_vm._v(_vm._s(_vm.order.restaurant.city))]
+          )
+        ])
+      ]
+    )
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h2", { staticClass: "text-lg px-2 mt-5" }, [_vm._v("Order Details")]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: " my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4" },
-        [
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Order Id: ")]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [_vm._v("1")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [_vm._v("From: ")]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [_vm._v("RasimCem")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Meals: ")]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [_vm._v("3x hambuger, 2 cola")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [
-              _vm._v("Order Owner Address Description: ")
-            ]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [
-                _vm._v(
-                  "Lorem ipsum dolor sit amet consectetur adipisicing elit.\n                Quam, vitae perferendis voluptates enim, voluptatum possimus\n                iste modi magnam est aliquid saepe laboriosam rerum beatae\n                obcaecati."
-                )
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [
-              _vm._v("Order Owner Phone Number: ")
-            ]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [_vm._v("0533 840 18 35")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Country: ")]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [_vm._v("turkey")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [_vm._v("City: ")]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [_vm._v("adana")]
-            )
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c("h2", { staticClass: "text-lg px-2 mt-5" }, [
-        _vm._v("Restaurant Details")
-      ]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: " my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4" },
-        [
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Restaurant Id: ")]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [_vm._v("4")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Address: ")]),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-              [
-                _vm._v(
-                  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint distinctio placeat eveniet eos nam voluptates?"
-                )
-              ]
-            )
-          ])
-        ]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51109,177 +52532,186 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
       _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _vm._m(3),
-        _vm._v(" "),
-        _vm._m(4),
-        _vm._v(" "),
-        _vm._m(5),
-        _vm._v(" "),
-        _vm._m(6),
-        _vm._v(" "),
-        _vm._m(7),
-        _vm._v(" "),
-        _vm._m(8),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Restaurant Name")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.name,
+                expression: "restaurant.name"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "name", $event.target.value)
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "mt-1 font-medium " }, [
           _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-            _vm._v("Password")
+            _vm._v("Restaurant Description")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "flex" }, [
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } }),
-            _vm._v(" "),
-            _c("button", { staticClass: "button p-1 mx-1" }, [
-              _c(
-                "svg",
-                {
-                  staticClass: "h-6 w-6",
-                  attrs: {
-                    xmlns: "http://www.w3.org/2000/svg",
-                    fill: "none",
-                    viewBox: "0 0 24 24",
-                    stroke: "currentColor"
-                  }
-                },
-                [
-                  _c("path", {
-                    attrs: {
-                      "stroke-linecap": "round",
-                      "stroke-linejoin": "round",
-                      "stroke-width": "2",
-                      d:
-                        "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                    }
-                  })
-                ]
-              )
-            ])
-          ])
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.description,
+                expression: "restaurant.description"
+              }
+            ],
+            staticClass: "input py-1",
+            domProps: { value: _vm.restaurant.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "description", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Chef")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.chef,
+                expression: "restaurant.chef"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.chef },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "chef", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Country")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.country,
+                expression: "restaurant.country"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.country },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "country", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("City")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.city,
+                expression: "restaurant.city"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.city },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "city", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("District")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.district,
+                expression: "restaurant.district"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.district },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "district", $event.target.value)
+              }
+            }
+          })
         ])
       ]),
       _vm._v(" "),
-      _c("button", { staticClass: "button mt-2 text-xs md:text-base w-36" }, [
-        _vm._v("\n            Create\n        ")
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "button mt-2 text-xs md:text-base w-36",
+          on: { click: _vm.createRestaurant }
+        },
+        [_vm._v("\n            Create\n        ")]
+      )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Restaurant Name")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Restaurant Description")
-      ]),
-      _vm._v(" "),
-      _c("textarea", { staticClass: "input py-1" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Address Description")
-      ]),
-      _vm._v(" "),
-      _c("textarea", { staticClass: "input py-1" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("City")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Country")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Owner Name")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Owner Surname")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Phone Number")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-1 font-medium " }, [
-      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-        _vm._v("Mail Address")
-      ]),
-      _vm._v(" "),
-      _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51309,7 +52741,79 @@ var render = function() {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _vm._m(0),
+    _c("div", { staticClass: " my-2 md:p-3 grid grid-cols-2 gap-4 " }, [
+      _c("div", [
+        _c("label", { attrs: { for: "" } }, [_vm._v("Restaurant Name: ")]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+          [_vm._v(_vm._s(_vm.restaurant.name))]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-span-2" }, [
+        _c("label", { attrs: { for: "" } }, [_vm._v("Description: ")]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "font-extrabold text-gray-900 text-opacity-50 " },
+          [_vm._v("\n                " + _vm._s(_vm.restaurant.description))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("label", { attrs: { for: "" } }, [_vm._v("Chef: ")]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+          [_vm._v(_vm._s(_vm.restaurant.chef))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("label", { attrs: { for: "" } }, [_vm._v("Country: ")]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+          [_vm._v(_vm._s(_vm.restaurant.country))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("label", { attrs: { for: "" } }, [_vm._v("City: ")]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+          [_vm._v(_vm._s(_vm.restaurant.city))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("label", { attrs: { for: "" } }, [_vm._v("District: ")]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+          [_vm._v(_vm._s(_vm.restaurant.district))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("label", { attrs: { for: "" } }, [_vm._v("Phone: ")]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+          [_vm._v(_vm._s(_vm.restaurant.restaurant_owner.phone))]
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c(
       "div",
@@ -51365,55 +52869,7 @@ var render = function() {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _vm._m(1)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: " my-2 md:p-3 grid grid-cols-2 gap-4 " }, [
-      _c("div", [
-        _c("label", { attrs: { for: "" } }, [_vm._v("Restaurant Name: ")]),
-        _vm._v(" "),
-        _c(
-          "span",
-          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-          [_vm._v("Sasama Restorant")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("label", { attrs: { for: "" } }, [_vm._v("Points: ")]),
-        _vm._v(" "),
-        _c(
-          "span",
-          { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-          [_vm._v("10")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-span-2" }, [
-        _c("label", { attrs: { for: "" } }, [_vm._v("Description: ")]),
-        _vm._v(" "),
-        _c(
-          "span",
-          { staticClass: "font-extrabold text-gray-900 text-opacity-50 " },
-          [
-            _vm._v(
-              "\n                Lorem ipsum dolor sit amet consectetur adipisicing elit.\n                Nisi quaerat recusandae temporibus ipsa dicta deleniti\n                dolore quos corporis at fugit, dolor vel optio officia\n                soluta aspernatur. Accusantium id temporibus quae."
-            )
-          ]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
+    _c(
       "div",
       { staticClass: " my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4" },
       [
@@ -51423,7 +52879,13 @@ var staticRenderFns = [
           _c(
             "span",
             { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-            [_vm._v("RasimCem Aytan")]
+            [
+              _vm._v(
+                _vm._s(_vm.restaurant.restaurant_owner.user.name) +
+                  "\n                " +
+                  _vm._s(_vm.restaurant.restaurant_owner.user.surname)
+              )
+            ]
           )
         ]),
         _vm._v(" "),
@@ -51433,57 +52895,27 @@ var staticRenderFns = [
           _c(
             "span",
             { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-            [_vm._v("cemaytan_01@hotmail.com")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("label", { attrs: { for: "" } }, [
-            _vm._v("Address Description: ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "span",
-            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-            [
-              _vm._v(
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit.\n                Quam, vitae perferendis voluptates enim, voluptatum possimus\n                iste modi magnam est aliquid saepe laboriosam rerum beatae\n                obcaecati."
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("label", { attrs: { for: "" } }, [_vm._v("Phone Number: ")]),
-          _vm._v(" "),
-          _c(
-            "span",
-            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-            [_vm._v("0533 840 18 35")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("label", { attrs: { for: "" } }, [_vm._v("Country: ")]),
-          _vm._v(" "),
-          _c(
-            "span",
-            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-            [_vm._v("turkey")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("label", { attrs: { for: "" } }, [_vm._v("City: ")]),
-          _vm._v(" "),
-          _c(
-            "span",
-            { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
-            [_vm._v("adana")]
+            [_vm._v(_vm._s(_vm.restaurant.restaurant_owner.user.mail))]
           )
         ])
       ]
     )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("label", { attrs: { for: "" } }, [_vm._v("Points: ")]),
+      _vm._v(" "),
+      _c(
+        "span",
+        { staticClass: "font-extrabold text-gray-900 text-opacity-50" },
+        [_vm._v("10 Duzelt!!!!")]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -51508,112 +52940,184 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("h2", { staticClass: "text-lg mt-3" }, [_vm._v("Edit Restaurant")]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
+      _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Restaurant Name")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.name,
+                expression: "restaurant.name"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "name", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Chef")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.chef,
+                expression: "restaurant.chef"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.chef },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "chef", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Restaurant Description")
+          ]),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.description,
+                expression: "restaurant.description"
+              }
+            ],
+            staticClass: "input py-1",
+            domProps: { value: _vm.restaurant.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "description", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Country")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.country,
+                expression: "restaurant.country"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.country },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "country", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("City")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.restaurant.city,
+                expression: "restaurant.city"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.restaurant.city },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.restaurant, "city", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "button mt-2 text-xs md:text-base w-36",
+          on: {
+            click: function($event) {
+              return _vm.updateRestaurant(_vm.restaurant.id)
+            }
+          }
+        },
+        [_vm._v("\n            Update\n        ")]
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h2", { staticClass: "text-lg mt-3" }, [_vm._v("Edit Restaurant")]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
-        _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Restaurant Name")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Points")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "input py-1",
-              attrs: { type: "text", disabled: "" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Restaurant Description")
-            ]),
-            _vm._v(" "),
-            _c("textarea", { staticClass: "input py-1" })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Address Description")
-            ]),
-            _vm._v(" "),
-            _c("textarea", { staticClass: "input py-1" })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("City")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Country")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "button mt-2 text-xs md:text-base w-36" }, [
-          _vm._v("\n            Update\n        ")
-        ])
+    return _c("div", { staticClass: "mt-1 font-medium " }, [
+      _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+        _vm._v("Points")
       ]),
       _vm._v(" "),
-      _c("h2", { staticClass: "text-lg mt-3" }, [_vm._v("Edit Owner")]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
-        _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Name")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Surname")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Phone Number")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "button mt-2 text-xs md:text-base w-36" }, [
-          _vm._v("\n            Update\n        ")
-        ])
-      ])
+      _c("input", {
+        staticClass: "input py-1",
+        attrs: { type: "text", disabled: "" }
+      })
     ])
   }
 ]
@@ -51651,130 +53155,151 @@ var render = function() {
         _c("table", { staticClass: "content-table m-0 my-1 w-full" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("tbody", { staticClass: "text-xs" }, [
-            _c("tr", [
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            1\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            Hamburger\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            Pickle, tomato, beef, onion\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            25 $\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "button bg-blue-500 hover:bg-blue-400 m-1",
-                      on: { click: _vm.editMenu }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+          _c(
+            "tbody",
+            { staticClass: "text-xs" },
+            _vm._l(_vm.menus, function(menu) {
+              return _c("tr", { key: menu.id }, [
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                           " +
+                        _vm._s(menu.id) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                          " +
+                        _vm._s(menu.name) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-red-500 text-center"
+                  },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(menu.ingredient) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-red-500 text-center"
+                  },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(menu.price) +
+                        " $\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button bg-blue-500 hover:bg-blue-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.editMenu(menu.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "button bg-red-500 hover:bg-red-400 m-1",
-                      on: { click: _vm.deleteMenu }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button bg-red-500 hover:bg-red-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteMenu(menu.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ]
-              )
-            ])
-          ])
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
         ])
       ])
     ])
@@ -51838,57 +53363,116 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h2", { staticClass: "text-lg mt-3" }, [
-        _vm._v("Edit Restaurant Menus")
-      ]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
-        _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Meal Name")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
+  return _c("div", [
+    _c("h2", { staticClass: "text-lg mt-3" }, [
+      _vm._v("Edit Restaurant Menus")
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("div", { staticClass: " my-2 md:p-3 overflow-x-auto " }, [
+      _c("form", { staticClass: " p-1 text-sm grid md:grid-cols-2 gap-4" }, [
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Meal Name")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Gradients")
-            ]),
-            _vm._v(" "),
-            _c("input", { staticClass: "input py-1", attrs: { type: "text" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-medium " }, [
-            _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
-              _vm._v("Unit Price")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "input py-1",
-              attrs: { type: "text", placeholder: "in $" }
-            })
-          ])
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.menu.name,
+                expression: "menu.name"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.menu.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.menu, "name", $event.target.value)
+              }
+            }
+          })
         ]),
         _vm._v(" "),
-        _c("button", { staticClass: "button mt-2 text-xs md:text-base w-36" }, [
-          _vm._v("\n            Update\n        ")
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Ingradients")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.menu.ingredient,
+                expression: "menu.ingredient"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text" },
+            domProps: { value: _vm.menu.ingredient },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.menu, "ingredient", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-1 font-medium " }, [
+          _c("label", { staticClass: "block mb-0", attrs: { for: "" } }, [
+            _vm._v("Unit Price")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.menu.price,
+                expression: "menu.price"
+              }
+            ],
+            staticClass: "input py-1",
+            attrs: { type: "text", placeholder: "in $" },
+            domProps: { value: _vm.menu.price },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.menu, "price", $event.target.value)
+              }
+            }
+          })
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "button mt-2 text-xs md:text-base w-36",
+          on: {
+            click: function($event) {
+              return _vm.updateMenu(_vm.menu.id)
+            }
+          }
+        },
+        [_vm._v("\n            Update\n        ")]
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51957,204 +53541,268 @@ var render = function() {
         _c("table", { staticClass: "content-table m-0 my-1 w-full" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("tbody", { staticClass: "text-xs" }, [
-            _c("tr", [
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            1\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticClass: "border-2 border-gray-600 p-2 text-center" },
-                [
-                  _vm._v(
-                    "\n                            Cemocan Restorant\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            Adana\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-red-500 text-center"
-                },
-                [
-                  _vm._v(
-                    "\n                            Turkey\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass:
-                    "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "button bg-purple-500 hover:bg-purple-400 m-1",
-                      on: { click: _vm.goToMenu }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+          _c(
+            "tbody",
+            { staticClass: "text-xs" },
+            _vm._l(_vm.restaurants, function(restaurant) {
+              return _c("tr", { key: restaurant.id }, [
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(restaurant.id) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "border-2 border-gray-600 p-2 text-center" },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(restaurant.name) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-red-500 text-center"
+                  },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(restaurant.city) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-red-500 text-center"
+                  },
+                  [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(restaurant.country) +
+                        "\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  {
+                    staticClass:
+                      "border-2 border-gray-600 p-2 text-center whitespace-nowrap"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "button bg-purple-500 hover:bg-purple-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.goToMenu(restaurant.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "button bg-yellow-500 hover:bg-yellow-400 m-1",
-                      on: { click: _vm.goToRestaurantDetails }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button bg-pink-500 hover:bg-pink-400 m-1"
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "button bg-yellow-500 hover:bg-yellow-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.goToRestaurantDetails(restaurant.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "button bg-blue-500 hover:bg-blue-400 m-1",
-                      on: { click: _vm.goToEditMenu }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button bg-blue-500 hover:bg-blue-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.goToEditRestaurant(restaurant.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    { staticClass: "button bg-red-500 hover:bg-red-400 m-1" },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor"
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button bg-red-500 hover:bg-red-400 m-1",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteRestaurant(restaurant.id)
                           }
-                        },
-                        [
-                          _c("path", {
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "h-4 w-4",
                             attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor"
                             }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ]
-              )
-            ])
-          ])
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
         ])
       ])
     ])
@@ -52926,7 +54574,12 @@ var render = function() {
                       "small",
                       {
                         staticClass:
-                          "text-sm cursor-pointer hover:text-yellow-400"
+                          "text-sm cursor-pointer hover:text-yellow-400",
+                        on: {
+                          click: function($event) {
+                            return _vm.goToComments(restaurant.id)
+                          }
+                        }
                       },
                       [_vm._v("Go To Comments")]
                     )
@@ -54401,10 +56054,202 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true&":
-/*!*****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/Restaurant.vue?vue&type=template&id=16e6cce6&scoped=true& ***!
-  \*****************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantComment.vue?vue&type=template&id=05145349&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantComment.vue?vue&type=template&id=05145349& ***!
+  \************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "w-full h-64" }, [
+      _c("img", {
+        staticClass: "w-full h-full object-cover",
+        attrs: {
+          alt: "",
+          src: __webpack_require__("./public/images sync recursive ^\\.\\/.*$")("./" +
+            _vm.images[_vm.currentImgId]).default
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "ml-auto w-36  h-7  bg-gray-300 flex justify-evenly items-center"
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "cursor-pointer", on: { click: _vm.previousImg } },
+          [
+            _c(
+              "svg",
+              {
+                staticClass: "h-6 w-6 text-yellow-400",
+                attrs: {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  fill: "none",
+                  viewBox: "0 0 24 24",
+                  stroke: "currentColor"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M15 19l-7-7 7-7"
+                  }
+                })
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cursor-pointer", on: { click: _vm.nextImg } },
+          [
+            _c(
+              "svg",
+              {
+                staticClass: "h-6 w-6 text-yellow-400",
+                attrs: {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  fill: "none",
+                  viewBox: "0 0 24 24",
+                  stroke: "currentColor"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d: "M9 5l7 7-7 7"
+                  }
+                })
+              ]
+            )
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "cotainer  h-full  my-16 p-1 sm:p-5  rounded " }, [
+      _c(
+        "h2",
+        { staticClass: "text-gray-900 font-bold text-2xl text-center" },
+        [_vm._v("\n            Most Popular Meals Of The Restaurant\n        ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "container border-2 my-4 border-primarycolor p-3 sm:flex "
+        },
+        [
+          _c("div", { staticClass: "relative w-full sm:w-64 " }, [
+            _c("img", {
+              staticClass: "w-full  object-cover rounded h-54 sm:h-full",
+              attrs: {
+                alt: "",
+                src: __webpack_require__(/*! ../../../../public/images/hamburger.jpg */ "./public/images/hamburger.jpg").default
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "md:w-2/6 flex items-center justify-center font-bold m-1 w-full"
+            },
+            [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "border-2 border-primarycolor py-2 px-4 rounded-lg hover:bg-yellow-300  hover:text-gray-100 flex"
+                },
+                [
+                  _c(
+                    "svg",
+                    {
+                      staticClass: "h-5 w-5 mr-2",
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        fill: "none",
+                        viewBox: "0 0 24 24",
+                        stroke: "currentColor"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round",
+                          "stroke-width": "2",
+                          d: "M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v("\n                    Add To Cart\n                ")
+                ]
+              )
+            ]
+          )
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-3/6 p-3 tracking-wide " }, [
+      _c("h3", {
+        staticClass: "text-2xl cursor-pointer hover:text-yellow-400"
+      }),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-md cursor-pointer" }),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-md cursor-pointer" }, [
+        _c("i", [_vm._v("Chef: ")]),
+        _vm._v("Andre")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/client/RestaurantMenu.vue?vue&type=template&id=fd6ab036&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";

@@ -41,39 +41,39 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs">
-                        <tr>
+                        <tr v-for="comment in comments" :key="comment.id">
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                1
+                                {{ comment.id }}
                             </td>
 
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                RasimCem
+                                {{ comment.user.mail }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Zimbalazup Restorant
+                                {{ comment.order.restaurant.name }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                12.01.2020
+                                <!-- {{comment.created_at.substring(0,10)}} -->
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                16.32
+                                <!-- {{comment.created_at.substring(11,16)}} -->
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center whitespace-nowrap"
                             >
                                 <button
                                     class="button bg-red-500 hover:bg-red-400 m-1"
-                                    @click="goToOrdersDetails"
+                                    @click="deleteComment(comment.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -99,10 +99,45 @@
     </div>
 </template>
 <script>
+import { ToastSuccess } from "../../toasters";
+import axios from "axios";
 export default {
+    data() {
+        return {
+            comments: null
+        };
+    },
+    mounted() {
+        this.getAllComments();
+    },
     methods: {
-        goToOrdersDetails() {
-            this.$router.push({ name: "panel-admin-orders-details" });
+        deleteComment(commentId) {
+            axios
+                .delete("http://localhost:8000/api/comment/" + commentId, {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: response.data
+                    });
+                    this.getAllComments();
+                });
+        },
+        getAllComments() {
+            axios
+                .get("http://localhost:8000/api/comments", {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.comments = response.data;
+                });
         }
     }
 };

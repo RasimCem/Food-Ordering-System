@@ -5,24 +5,51 @@
         <div class=" my-2 md:p-3 grid grid-cols-2 gap-4 ">
             <div>
                 <label for="">Restaurant Name: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >Sasama Restorant</span
-                >
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    restaurant.name
+                }}</span>
             </div>
             <div>
                 <label for="">Points: </label>
                 <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >10</span
+                    >10 Duzelt!!!!</span
                 >
             </div>
             <div class="col-span-2">
                 <label for="">Description: </label>
                 <span class="font-extrabold text-gray-900 text-opacity-50 ">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Nisi quaerat recusandae temporibus ipsa dicta deleniti
-                    dolore quos corporis at fugit, dolor vel optio officia
-                    soluta aspernatur. Accusantium id temporibus quae.</span
+                    {{ restaurant.description }}</span
                 >
+            </div>
+            <div>
+                <label for="">Chef: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    restaurant.chef
+                }}</span>
+            </div>
+            <div>
+                <label for="">Country: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    restaurant.country
+                }}</span>
+            </div>
+            <div>
+                <label for="">City: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    restaurant.city
+                }}</span>
+            </div>
+            <div>
+                <label for="">District: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    restaurant.district
+                }}</span>
+            </div>
+            <div>
+                <label for="">Phone: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    restaurant.restaurant_owner.phone
+                }}</span>
             </div>
         </div>
         <div
@@ -72,42 +99,52 @@
             <div>
                 <label for="">Full Name: </label>
                 <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >RasimCem Aytan</span
+                    >{{ restaurant.restaurant_owner.user.name }}
+                    {{ restaurant.restaurant_owner.user.surname }}</span
                 >
             </div>
             <div>
                 <label for="">Mail Address: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >cemaytan_01@hotmail.com</span
-                >
-            </div>
-            <div>
-                <label for="">Address Description: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quam, vitae perferendis voluptates enim, voluptatum possimus
-                    iste modi magnam est aliquid saepe laboriosam rerum beatae
-                    obcaecati.</span
-                >
-            </div>
-            <div>
-                <label for="">Phone Number: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >0533 840 18 35</span
-                >
-            </div>
-            <div>
-                <label for="">Country: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >turkey</span
-                >
-            </div>
-            <div>
-                <label for="">City: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >adana</span
-                >
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    restaurant.restaurant_owner.user.mail
+                }}</span>
             </div>
         </div>
     </div>
 </template>
+<script>
+import axios from "axios";
+export default {
+    data() {
+        return {
+            restaurant: {
+                restaurant_owner: {
+                    user: {}
+                }
+            }
+        };
+    },
+    mounted() {
+        this.getRestaurantDetails();
+    },
+    methods: {
+        getRestaurantDetails() {
+            const restaurantId = this.$route.params.id;
+            axios
+                .get(
+                    "http://localhost:8000/api/restaurant/show/" + restaurantId,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization:
+                                "Bearer " + this.$store.getters.getToken
+                        }
+                    }
+                )
+                .then(response => {
+                    this.restaurant = response.data.data;
+                });
+        }
+    }
+};
+</script>

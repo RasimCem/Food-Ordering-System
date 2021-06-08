@@ -37,34 +37,34 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs">
-                        <tr>
+                        <tr v-for="menu in menus" :key="menu.id">
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                1
+                               {{menu.id}}
                             </td>
 
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Hamburger
+                              {{menu.name}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                Pickle, tomato, beef, onion
+                                {{menu.ingredient}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                25 $
+                                {{menu.price}} $
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center whitespace-nowrap"
                             >
                                 <button
                                     class="button bg-blue-500 hover:bg-blue-400 m-1"
-                                    @click="editMenu"
+                                    @click="editMenu(menu.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +83,7 @@
                                 </button>
                                 <button
                                     class="button bg-red-500 hover:bg-red-400 m-1"
-                                     @click="deleteMenu"
+                                     @click="deleteMenu(menu.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -109,11 +109,50 @@
     </div>
 </template>
 <script>
+import { ToastSuccess } from "../../toasters";
+import axios from "axios";
 export default {
-    methods:{
-        editMenu(){
-            this.$router.push({ name: "panel-admin-restaurant-menus-edit" });
+    data(){
+        return{
+            menus:null
         }
+    },
+    methods:{
+        editMenu(menuId){
+            this.$router.push({ name: "panel-admin-restaurant-menus-edit",params:{id:menuId} });
+        },
+        deleteMenu(menuId){
+              axios
+                .delete("http://localhost:8000/api/menu/"+menuId,{
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                     ToastSuccess.fire({
+                        icon: "success",
+                        title:response.data
+                    });
+                    this.getMenus();
+                });
+        },
+        getMenus(){
+            const restaurantId =  this.$route.params.id;
+             axios
+                .get("http://localhost:8000/api/menu/"+restaurantId,{
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.menus = response.data.data;
+                });
+        }
+    },
+    mounted(){
+       this.getMenus();
     }
 }
 </script>

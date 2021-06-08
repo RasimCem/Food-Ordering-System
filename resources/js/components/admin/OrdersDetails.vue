@@ -5,48 +5,45 @@
         <div class=" my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
                 <label for="">Order Id: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >1</span
-                >
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.id
+                }}</span>
+            </div>
+            <div>
+                <label for="">Status: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.status
+                }}</span>
             </div>
             <div>
                 <label for="">From: </label>
                 <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >RasimCem</span
+                    >{{ order.user.name }} {{ order.user.surname }}</span
                 >
+            </div>
+            <div>
+                <label for="">Order Owner Mail: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.user.mail
+                }}</span>
             </div>
             <div>
                 <label for="">Meals: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >3x hambuger, 2 cola</span
-                >
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.content
+                }}</span>
             </div>
             <div>
-                <label for="">Order Owner Address Description: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quam, vitae perferendis voluptates enim, voluptatum possimus
-                    iste modi magnam est aliquid saepe laboriosam rerum beatae
-                    obcaecati.</span
-                >
+                <label for="">Price: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.total_price
+                }}</span>
             </div>
             <div>
-                <label for="">Order Owner Phone Number: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >0533 840 18 35</span
-                >
-            </div>
-            <div>
-                <label for="">Country: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >turkey</span
-                >
-            </div>
-            <div>
-                <label for="">City: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >adana</span
-                >
+                <label for="">Date: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.created_at
+                }}</span>
             </div>
         </div>
         <h2 class="text-lg px-2 mt-5">Restaurant Details</h2>
@@ -54,16 +51,59 @@
         <div class=" my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
                 <label for="">Restaurant Id: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >4</span
-                >
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.restaurant_id
+                }}</span>
             </div>
             <div>
-                <label for="">Address: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint distinctio placeat eveniet eos nam voluptates?</span
-                >
+                <label for="">Restaurant Id: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.restaurant.name
+                }}</span>
+            </div>
+            <div>
+                <label for="">Country: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.restaurant.country
+                }}</span>
+            </div>
+            <div>
+                <label for="">City: </label>
+                <span class="font-extrabold text-gray-900 text-opacity-50">{{
+                    order.restaurant.city
+                }}</span>
             </div>
         </div>
     </div>
 </template>
+<script>
+import axios from "axios";
+export default {
+    data() {
+        return {
+            order:{
+                user:{},
+                restaurant:{}
+            }
+        };
+    },
+    mounted() {
+        this.getOrderDetails();
+    },
+    methods: {
+        getOrderDetails() {
+            const orderId = this.$route.params.id;
+            axios
+                .get("http://localhost:8000/api/order/show/" + orderId, {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.order = response.data;
+                });
+        }
+    }
+};
+</script>

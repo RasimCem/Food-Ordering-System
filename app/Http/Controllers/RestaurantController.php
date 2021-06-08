@@ -156,4 +156,14 @@ class RestaurantController extends Controller
         ]);
         return response()->json("Restaurant Updated",200);
     }
+
+    public function getAllRestaurants(){
+       return RestaurantResource::collection(Restaurant::all());
+    }
+
+    public function getRestaurant($restaurantId){
+        $restaurant = Restaurant::where('id',$restaurantId)->first();
+        $restaurant->restaurantOwner->user;
+        return new RestaurantResource($restaurant);
+    }
 }

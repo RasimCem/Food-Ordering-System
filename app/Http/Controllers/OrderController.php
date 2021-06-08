@@ -58,7 +58,12 @@ class OrderController extends Controller
     }
 
     public function getAllOrders(){
-        return response()->json(Order::all(),201);
+        $orders =Order::all();
+        foreach($orders as $order){
+            $order->restaurant;
+            $order->user;
+        }
+        return response()->json($orders,201);
     }
 
     public function updateOrderStatus($orderId, $status){
@@ -92,5 +97,12 @@ class OrderController extends Controller
            return Carbon::parse($date->created_at)->format('m');
         });
         return response()->json($orders,200);
+    }
+
+    public function showOrder($orderId){
+        $order = Order::find($orderId)->first();
+        $order->restaurant;
+        $order->user;
+        return response()->json($order,200);
     }
 }

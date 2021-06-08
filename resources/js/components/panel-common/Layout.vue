@@ -414,8 +414,9 @@ export default {
                         icon: "success",
                         title: "Logged out successfully"
                     });
-                    this.$store.commit("updateRole",null);
+                       this.$store.commit("updateRole",null);
                 });
+
         }
     },
     mounted() {

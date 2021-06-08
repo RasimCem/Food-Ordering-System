@@ -41,39 +41,39 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs">
-                        <tr>
+                        <tr v-for="order in orders" :key="order.id">
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                1
+                              {{order.id}}
                             </td>
 
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                RasimCem
+                               {{order.user.name}} {{order.user.surname}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Zimbalazup Restorant
+                                {{order.restaurant.name}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                12.01.2020
+                              {{order.created_at.substring(0,10)}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                16.32
+                                {{order.created_at.substring(11,16)}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center whitespace-nowrap"
                             >
                                 <button
                                     class="button bg-green-500 hover:bg-green-400 m-1"
-                                    @click="goToOrdersDetails"
+                                    @click="goToOrdersDetails(order.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -105,11 +105,32 @@
     </div>
 </template>
 <script>
+import axios from "axios";
 export default {
-    methods:{
-        goToOrdersDetails(){
-               this.$router.push({ name: "panel-admin-orders-details" });
+    data() {
+        return {
+            orders: null
+        };
+    },
+    mounted() {
+        this.getAllOrders();
+    },
+    methods: {
+        goToOrdersDetails(orderId) {
+            this.$router.push({ name: "panel-admin-orders-details",params:{id:orderId} });
+        },
+        getAllOrders() {
+            axios
+                .get("http://localhost:8000/api/orders", {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.orders = response.data;
+                });
         }
     }
-}
+};
 </script>

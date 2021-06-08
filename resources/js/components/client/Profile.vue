@@ -185,7 +185,7 @@ export default {
         getMyProfile() {
             this.token = this.$store.getters.getToken;
             axios
-                .get("http://localhost:8000/api/my-information/", {
+                .get("http://localhost:8000/api/my-information", {
                     headers: {
                         Accept: "application/json",
                         Authorization: "Bearer " + this.token

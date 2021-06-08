@@ -60,34 +60,37 @@
                         </tr>
                     </thead>
                     <tbody class="text-xs">
-                        <tr>
+                        <tr
+                            v-for="restaurant in restaurants"
+                            :key="restaurant.id"
+                        >
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                1
+                                {{ restaurant.id }}
                             </td>
 
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                Cemocan Restorant
+                                {{ restaurant.name }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                Adana
+                                {{ restaurant.city }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                Turkey
+                                {{ restaurant.country }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center whitespace-nowrap"
                             >
                                 <button
                                     class="button bg-purple-500 hover:bg-purple-400 m-1"
-                                    @click="goToMenu"
+                                    @click="goToMenu(restaurant.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -105,8 +108,28 @@
                                     </svg>
                                 </button>
                                 <button
+                                    class="button bg-pink-500 hover:bg-pink-400 m-1"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                                        />
+                                    </svg>
+                                </button>
+                                <button
                                     class="button bg-yellow-500 hover:bg-yellow-400 m-1"
-                                    @click="goToRestaurantDetails"
+                                    @click="
+                                        goToRestaurantDetails(restaurant.id)
+                                    "
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +154,7 @@
                                 </button>
                                 <button
                                     class="button bg-blue-500 hover:bg-blue-400 m-1"
-                                    @click="goToEditMenu"
+                                    @click="goToEditRestaurant(restaurant.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -150,6 +173,7 @@
                                 </button>
                                 <button
                                     class="button bg-red-500 hover:bg-red-400 m-1"
+                                    @click="deleteRestaurant(restaurant.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -176,23 +200,75 @@
 </template>
 
 <script>
+import { ToastSuccess } from "../../toasters";
+import axios from "axios";
 export default {
+    data() {
+        return {
+            restaurants: null
+        };
+    },
     methods: {
         goToAddMenu() {
             this.$router.push("panel-menu-add");
         },
-        goToRestaurantDetails() {
-            this.$router.push({ name: "panel-admin-restaurant-details" });
+        goToRestaurantDetails(restaurantId) {
+            this.$router.push({
+                name: "panel-admin-restaurant-details",
+                params: { id: restaurantId }
+            });
         },
-        goToMenu(){
-            this.$router.push({name:"panel-admin-restaurant-menus"});
+        goToMenu(restaurantId) {
+            this.$router.push({
+                name: "panel-admin-restaurant-menus",
+                params: { id: restaurantId }
+            });
         },
-        goToEditMenu(){
-             this.$router.push({name:"panel-admin-restaurant-edit"});
+        goToEditRestaurant(restaurantId) {
+            this.$router.push({
+                name: "panel-admin-restaurant-edit",
+                params: { id: restaurantId }
+            });
         },
-        goToAddRestaurant(){
-            this.$router.push({name:"panel-admin-restaurant-add"});
+        goToAddRestaurant() {
+            this.$router.push({ name: "panel-admin-restaurant-add" });
+        },
+        getAllRestaurants() {
+            axios
+                .get("http://localhost:8000/api/restaurants", {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.$store.getters.getToken
+                    }
+                })
+                .then(response => {
+                    this.restaurants = response.data.data;
+                });
+        },
+        deleteRestaurant(restaurantId) {
+            axios
+                .get(
+                    "http://localhost:8000/api/restaurant/delete/" +
+                        restaurantId,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization:
+                                "Bearer " + this.$store.getters.getToken
+                        }
+                    }
+                )
+                .then(response => {
+                    ToastSuccess.fire({
+                        icon: "success",
+                        title: response.data
+                    });
+                    this.getAllRestaurants();
+                });
         }
+    },
+    mounted() {
+        this.getAllRestaurants();
     }
 };
 </script>

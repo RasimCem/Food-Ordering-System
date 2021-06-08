@@ -15,8 +15,8 @@ Vue.component('main-component', require('./components/Main').default);
 Vue.component('layout-component', require('./components/client/Layout.vue').default);
 Vue.component('home-component', require('./components/client/Home.vue').default);
 Vue.component('modal-component', require('./components/client/Modal.vue').default);
-Vue.component('restaurant-component', require('./components/client/Restaurant.vue').default);
-
+Vue.component('restaurant-menu-component', require('./components/client/RestaurantMenu.vue').default);
+Vue.component('restaurant-comment-component', require('./components/client/RestaurantComment.vue').default);
 // RESTAURANT OWNER Components
 Vue.component('panel-layout-component', require('./components/panel-common/Layout.vue').default);
 Vue.component('home-owner-component', require('./components/owner/Home.vue').default);

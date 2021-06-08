@@ -1,6 +1,7 @@
 // Clients Routes
 import HomeComponent from "./components/client/Home.vue";
-import RestaurantComponent from "./components/client/Restaurant.vue";
+import RestaurantMenuComponent from "./components/client/RestaurantMenu.vue";
+import RestaurantCommentComponent from "./components/client/RestaurantComment.vue";
 import PaymentComponent from "./components/client/Payment.vue";
 import CartComponent from "./components/client/Cart.vue";
 import ProfileComponent from "./components/client/Profile.vue";
@@ -38,7 +39,12 @@ export const routes = [
     {
         name: "restaurant",
         path: "/restaurant",
-        component: RestaurantComponent
+        component: RestaurantMenuComponent
+    },
+    {
+        name: "restaurant-menu",
+        path: "/restaurant-menu/:id",
+        component: RestaurantCommentComponent
     },
     {
         name: "payment",
@@ -102,7 +108,7 @@ export const routes = [
     },
     {
         name: "panel-admin-edit-clients",
-        path: "/panel/admin/edit-clients",
+        path: "/panel/admin/edit-clients/:id",
         component: AdminEditClientsComponent
     },
     {
@@ -112,22 +118,22 @@ export const routes = [
     },
     {
         name: "panel-admin-restaurant-details",
-        path: "/restaurant-details",
+        path: "/restaurant-details/:id",
         component: AdminRestaurantDetailsComponent
     },
     {
         name: "panel-admin-restaurant-menus",
-        path: "/restaurant-menus",
+        path: "/restaurant-menus/:id",
         component: AdminRestaurantMenusComponent
     },
     {
         name: "panel-admin-restaurant-menus-edit",
-        path: "/restaurant-menus-edit",
+        path: "/restaurant-menus-edit/:id",
         component: AdminRestaurantMenusEditComponent
     },
     {
         name: "panel-admin-restaurant-edit",
-        path: "/restaurant-edit",
+        path: "/restaurant-edit/:id",
         component: AdminRestaurantEditComponent
     },
     {
@@ -147,7 +153,7 @@ export const routes = [
     },
     {
         name: "panel-admin-orders-details",
-        path: "/panel/admin/orders-details",
+        path: "/panel/admin/orders-details/:id",
         component: AdminOrdersDetailsComponent
     },
     {

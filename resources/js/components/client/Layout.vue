@@ -151,6 +151,9 @@ export default {
         }else{
              this.$router.push({ name: "home" });
         }
+        //reset Storage
+        //this.$store.commit("updateToken", null);
+
         //state
         //  console.log(this.$store.state.token);
         // getters

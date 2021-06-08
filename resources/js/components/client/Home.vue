@@ -144,6 +144,7 @@
                         </p>
                         <small
                             class="text-sm cursor-pointer hover:text-yellow-400"
+                            @click="goToComments(restaurant.id)"
                             >Go To Comments</small
                         >
                     </div>
@@ -202,6 +203,9 @@ export default {
             else{
                 alert("Yoy have to login for give an order!");
             }
+        },
+        goToComments(restaurantId){
+               this.$router.push({name:"restaurant-menu",params:{id:restaurantId}});
         }
     },
     watch: {

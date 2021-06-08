@@ -12,15 +12,21 @@ Route::post('login',[ App\Http\Controllers\UserController::class,'login']);
 
 Route::middleware('auth:api')->group(function () {
 	Route::post('logout',[ App\Http\Controllers\UserController::class,'logout']);
-    Route::get('users',[ App\Http\Controllers\UserController::class,'getAllUsers']);
+    Route::get('customers',[ App\Http\Controllers\UserController::class,'getAllCustomers']);
+    Route::get('customer/{id}',[ App\Http\Controllers\UserController::class,'getCustomerInformation']);
+    Route::put('customer/update/{id}',[ App\Http\Controllers\UserController::class,'updateCustomerInformation']); // admin
+    Route::put('customer/update-contact/{id}',[ App\Http\Controllers\UserController::class,'updateCustomerContactInformation']); // admin
+    Route::get('customer-delete/{id}',[ App\Http\Controllers\UserController::class,'deleteCustomer']);
     Route::get('my-information',[ App\Http\Controllers\UserController::class,'showMyInformation']);
     Route::post('my-information/update',[ App\Http\Controllers\UserController::class,'updateUserInformation']);
     Route::post('my-contact-information/update',[ App\Http\Controllers\UserController::class,'updateContactInformation']);
 
     //Restaurant Admin Operations
     Route::post('restaurant',[ App\Http\Controllers\RestaurantController::class,'store']);
+    Route::get('restaurant/show/{id}',[ App\Http\Controllers\RestaurantController::class,'getRestaurant']);
     Route::get('restaurant/delete/{id}',[ App\Http\Controllers\RestaurantController::class,'destroy']);
     Route::post('restaurant/update/{id}',[ App\Http\Controllers\RestaurantController::class,'update']);
+    Route::get('restaurants',[ App\Http\Controllers\RestaurantController::class,'getAllRestaurants']);
     // My Restaurant Operations
     Route::get('my-restaurant/details',[ App\Http\Controllers\RestaurantController::class,'getMyRestaurantDetails']);
     Route::post('my-restaurant/update',[ App\Http\Controllers\RestaurantController::class,'updateMyRestaurantDetails']);
@@ -33,8 +39,9 @@ Route::middleware('auth:api')->group(function () {
     Route::put('my-menu/update/{menuId}', [App\Http\Controllers\MenuController::class,'updateMyMenu']);
     // Get all the menus of the restaurant
     Route::get('menu/{restaurantId}', [App\Http\Controllers\MenuController::class,'show']);
-
-   // Route::delete('menu/{menuId}', [App\Http\Controllers\MenuController::class,'destroy']);
+    Route::get('menu/show/{menuId}', [App\Http\Controllers\MenuController::class,'showMenu']);
+    Route::put('menu/update/{menuId}', [App\Http\Controllers\MenuController::class,'updateMenu']);
+    Route::delete('menu/{menuId}', [App\Http\Controllers\MenuController::class,'destroy']);
 
     // Add Item To Cart
     Route::get('cart/{menuId}', [App\Http\Controllers\CartController::class,'addItemToCart']);
@@ -49,6 +56,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('order/active-owner/{restaurantId}', [App\Http\Controllers\OrderController::class,'showRestaurantsActiveOrders']);// admin
     Route::get('order/status-update/{orderId}/{status}', [App\Http\Controllers\OrderController::class,'updateOrderStatus']);
     Route::get('orders', [App\Http\Controllers\OrderController::class,'getAllOrders']);
+    Route::get('order/show/{orderId}', [App\Http\Controllers\OrderController::class,'showOrder']);
     Route::get('orders/my-restaurant', [App\Http\Controllers\OrderController::class,'showMyRestaurantOrderHistory']);
     Route::get('orders/my-restaurant/monthly', [App\Http\Controllers\OrderController::class,'showMyRestaurantOrderHistoryInMonthly']);
 
@@ -56,4 +64,6 @@ Route::middleware('auth:api')->group(function () {
     // Comments
     Route::put('comment/{orderId}',[ App\Http\Controllers\CommentController::class,'create']);
     Route::get('comment/my-restaurant',[ App\Http\Controllers\CommentController::class,'show']);
+    Route::get('comments',[ App\Http\Controllers\CommentController::class,'getAllComments']);//admin
+    Route::delete('comment/{commentId}',[ App\Http\Controllers\CommentController::class,'deleteComment']);//admin
 });
