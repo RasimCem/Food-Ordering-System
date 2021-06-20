@@ -10,12 +10,12 @@
                     >
                     <label for="image" class="cursor-pointer">
                         <img
-                            class="shadow-md rounded"
+                            class="shadow-md rounded h-48"
                             width="350"
                             height="100"
                             :src="
-                                image
-                                    ? image
+                                menu.image
+                                    ? menu.image
                                     : require('../../../../public/images/no-image.png')
                                           .default
                             "
@@ -35,7 +35,11 @@
                 </div>
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Ingredients</label>
-                    <input class="input py-1" type="text" v-model="menu.ingredient" />
+                    <input
+                        class="input py-1"
+                        type="text"
+                        v-model="menu.ingredient"
+                    />
                     <small
                         >Plese Add Items with comma (e.g onion, beef,
                         tomato...)</small
@@ -43,16 +47,35 @@
                 </div>
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Description</label>
-                    <input class="input py-1" type="text" v-model="menu.description" />
+                    <input
+                        class="input py-1"
+                        type="text"
+                        v-model="menu.description"
+                    />
                 </div>
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Price ($) </label>
-                    <input class="input py-1" type="number" v-model="menu.price" />
+                    <input
+                        class="input py-1"
+                        type="number"
+                        v-model="menu.price"
+                    />
+                </div>
+                <div class="mt-1 font-medium ">
+                    <label for="" class="block mb-0">Cal  </label>
+                    <input
+                        class="input py-1"
+                        type="number"
+                        v-model="menu.cal"
+                    />
                 </div>
             </form>
-            <button class="button mt-2 text-xs md:text-base w-48" @click="createMenu">
-                Create New Meal
-            </button>
+            <button
+                class="button mt-2 text-xs md:text-base w-48"
+                @click="createMenu"
+            >
+                Create New Meal</button
+            >
         </div>
     </div>
 </template>
@@ -62,40 +85,50 @@ import { ToastSuccess } from "../../toasters";
 export default {
     data() {
         return {
-            image: null,
             menu: {
                 name: null,
                 ingredient: null,
                 description: null,
-                price: null
-            }
+                price: null,
+                cal: null,
+                image: null
+            },
+            file: null
         };
     },
     methods: {
         fileChanged(e) {
-            const file = e.target.files[0];
+            this.file = e.target.files[0];
             let reader = new FileReader();
             reader.onloadend = file => {
-                this.image = reader.result;
+                this.menu.image = reader.result;
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(this.file);
             e.target.value = "";
         },
-        createMenu(){
-               axios
-                .post("http://localhost:8000/api/my-menu/create",this.menu,{
+        createMenu() {
+            let formData = new FormData();
+            formData.append("image", this.file);
+            formData.append("name", this.menu.name);
+            formData.append("ingredient", this.menu.ingredient);
+            formData.append("description", this.menu.description);
+            formData.append("price", this.menu.price);
+            formData.append("cal", this.menu.cal);
+            axios
+                .post("http://localhost:8000/api/my-menu/create", formData, {
                     headers: {
                         Accept: "application/json",
-                        Authorization: "Bearer " + this.$store.getters.getToken
+                        Authorization: "Bearer " + this.$store.getters.getToken,
+                        "Content-Type": "multipart/form-data"
                     }
                 })
                 .then(response => {
-                     ToastSuccess.fire({
+                    ToastSuccess.fire({
                         icon: "success",
-                        title:response.data
+                        title: response.data
                     });
                 });
-                this.$router.push({name:"panel-menu"});
+            this.$router.push({ name: "panel-menu" });
         }
     }
 };

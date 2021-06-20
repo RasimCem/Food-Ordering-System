@@ -8,36 +8,18 @@ use App\Models\Restaurant;
 use App\Models\Menu;
 use App\Models\RestaurantOwner;
 use App\Http\Resources\MenuResource;
+use Carbon\Carbon;
 class MenuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function createMyMenu(MenuRequest $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeMyMenu(MenuRequest $request)
-    {
+        $fileName=null;
+        if($request->file('image')){
+            $date = Carbon::now()->toDateString();
+            $fileName = $date."-".uniqid().".".$request->file('image')->getClientOriginalExtension();
+            $path = $request->file('image')->move(public_path('images'),$fileName);
+        }
         $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
         Menu::create([
             "restaurant_id"=>$restaurantId,
@@ -45,25 +27,39 @@ class MenuController extends Controller
             "ingredient"=>$request->ingredient,
             "description" => $request->description,
             "price"=>$request->price,
+            "cal"=>$request->cal,
+            "image"=>$fileName
         ]);
         return response()->json("Menu Created",200);
 
     }
 
-    public function showMyMenu(){
+    public function showMyMenus(){
         $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
-        return MenuResource::collection(Menu::where('restaurant_id',$restaurantId)->get());
+        $menus = Menu::where('restaurant_id',$restaurantId)->get();
+        foreach($menus as $menu){
+            $menu->image = url('/images/'. $menu->image);
+        }
+        return MenuResource::collection($menus);
     }
 
     public function deleteMyMenu($menuId){
         $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
-        Menu::where('id',$menuId)->where('restaurant_id',$restaurantId)->delete();
+        $menu = Menu::where('id',$menuId)->where('restaurant_id',$restaurantId);
+        $oldImage =$menu->first()->image;
+        if($oldImage){
+            @unlink('images/'.$oldImage);
+        }
+        $menu->delete();
         return response()->json('Menu Deleted',200);
     }
 
     public function getMyMenuById($menuId){
         $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
         $menu  = Menu::where('id',$menuId)->where('restaurant_id',$restaurantId)->first();
+        if($menu->image){
+            $menu->image =url('/images/'. $menu->image);
+        }
         return response()->json($menu,200);
     }
 
@@ -73,14 +69,19 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($restaurantId)
+    public function getAllMenusOfTheRestaurant($restaurantId)
     {
         $restaurant = Restaurant::find($restaurantId);
         if(empty($restaurant)){
             return response()->json("Restaurant Not Found",404);
         }
-        $menu = Menu::where('restaurant_id',$restaurantId)->get();
-        return MenuResource::collection($menu);
+        $menus = Menu::where('restaurant_id',$restaurantId)->get();
+        foreach($menus as $menu){
+            if($menu->image){
+                $menu->image = url('/images/'.$menu->image);
+            }
+        }
+        return MenuResource::collection($menus);
     }
 
     /**
@@ -106,13 +107,33 @@ class MenuController extends Controller
         $restaurantId = RestaurantOwner::where('user_id',Auth::user()->id)->first()->restaurant_id;
         $menu  = Menu::where('id',$menuId)->where('restaurant_id',$restaurantId)->first();
         if($menu){
-            $menu->update([
-                "name"=>$request->name,
-                "ingredient"=>$request->ingredient,
-                "description" => $request->description,
-                "price"=>$request->price,
-            ]);
+            if($request->file('image')){
+                if(file_exists('images/'.$menu->image)) {
+                    @unlink('images/'.$menu->image);
+                }
+                $date = Carbon::now()->toDateString();
+                $fileName = $date."-".uniqid().".".$request->file('image')->getClientOriginalExtension();
+                $path = $request->file('image')->move(public_path('images'),$fileName);
+                $menu->update([
+                    "name"=>$request->name,
+                    "ingredient"=>$request->ingredient,
+                    "description" => $request->description,
+                    "price"=>$request->price,
+                    "cal"=>$request->cal,
+                    "image"=>$fileName
+                ]);
+                return response()->json("Menu Updated",200);
+
+            }else{
+                $menu->update([
+                    "name"=>$request->name,
+                    "ingredient"=>$request->ingredient,
+                    "description" => $request->description,
+                    "price"=>$request->price,
+                    "cal"=>$request->cal,
+                ]);
             return response()->json("Menu Updated",200);
+            }
         }
         return response()->json("Menu Not Found",404);
     }
@@ -123,7 +144,7 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteMenu($id)
     {
         $menu = Menu::find($id);
         if($menu){
@@ -143,7 +164,8 @@ class MenuController extends Controller
             "ingredient"=>$request->ingredient,
             "description" => $request->description,
             "price"=>$request->price,
+            "cal"=>$request->cal
         ]);
-        return response()->json('Menu Updated',200);
+        return response()->json('Menu Updated',201);
     }
 }

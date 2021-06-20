@@ -49,67 +49,83 @@
         <!-- CONTENT -->
         <div class="cotainer  h-full  my-16 p-1 sm:p-5  rounded ">
             <h2 class="text-gray-900 font-bold text-2xl text-center">
-                Most Popular Meals Of The Restaurant
+                Latest Comments
             </h2>
-            <div
-                class="container border-2 my-4 border-primarycolor p-3 sm:flex "
-
-
-            >
-                <div class="relative w-full sm:w-64 ">
-                    <img
-                        class="w-full  object-cover rounded h-54 sm:h-full"
-                        alt=""
-                        :src="
-                            require('../../../../public/images/hamburger.jpg')
-                                .default
-                        "
-                    />
-                </div>
-                <div class="w-3/6 p-3 tracking-wide ">
-                    <h3 class="text-2xl cursor-pointer hover:text-yellow-400">
-
-                    </h3>
-                    <p class="text-md cursor-pointer"></p>
-                    <p class="text-md cursor-pointer"><i>Chef: </i>Andre</p>
-                </div>
+            <div class="container border-2 my-4 border-primarycolor p-3 ">
                 <div
-                    class="md:w-2/6 flex items-center justify-center font-bold m-1 w-full"
+                    class="w-full bg-gray-100 m-2 p-2 flex"
+                    v-for="comment in comments"
+                    :key="comment.id"
                 >
-                    <button
-                        class="border-2 border-primarycolor py-2 px-4 rounded-lg hover:bg-yellow-300  hover:text-gray-100 flex"
-
+                    <span
+                        class="text-primarycolor w-1/6 text-center m-auto font-black sm:text-lg"
+                        >{{ comment.point }}</span
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5 mr-2"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                    <div
+                        class="text-right text-gray-800  w-5/6 overflow-auto text-sm"
+                    >
+                        <p>
+                            {{ comment.user.name }} {{ comment.user.surname }}
+                        </p>
+                        <p class="font-black">
+                            {{ comment.comment }}
+                        </p>
+                        <small v-if="comment.created_at">
+                            {{ comment.created_at.substring(0, 10) }}
+                            {{ comment.created_at.substring(11, 16) }}</small
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                            />
-                        </svg>
-                        Add To Cart
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import axios from "axios";
 export default {
-    data(){
+    data() {
         return {
-
-        }
+            currentImgId: 0,
+            images: ["slider-img.jpg", "hamburger.jpg", "icon.svg"],
+            comments: null
+        };
     },
-    mounted(){
-        console.log(this.$route.params.id);
+    mounted() {
+        this.getCommentsOfTheRestaurant();
+    },
+    methods: {
+        nextImg() {
+            if (this.currentImgId == this.images.length - 1) {
+                this.currentImgId = 0;
+            } else {
+                this.currentImgId++;
+            }
+        },
+        previousImg() {
+            if (this.currentImgId == 0) {
+                this.currentImgId = this.images.length - 1;
+            } else {
+                this.currentImgId--;
+            }
+        },
+        getCommentsOfTheRestaurant() {
+            const restaurantId = this.$route.params.id;
+            axios
+                .get(
+                    "http://localhost:8000/api/comment/restaurant/" +
+                        restaurantId,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization:
+                                "Bearer " + this.$store.getters.getToken
+                        }
+                    }
+                )
+                .then(response => {
+                    this.comments = response.data.data;
+                });
+        }
     }
-}
+};
 </script>

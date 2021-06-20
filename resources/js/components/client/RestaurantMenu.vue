@@ -4,10 +4,16 @@
             <img
                 class="w-full h-full object-cover"
                 alt=""
+                v-if="images.length > 0"
+                :src="images[currentImgId]"
+            />
+            <img
+                class="w-full h-full object-cover"
                 :src="
-                    require('../../../../public/images/' + images[currentImgId])
-                        .default
+                    require('../../../../public/images/slider-img.jpg').default
                 "
+                alt=""
+                v-else
             />
         </div>
         <div
@@ -95,20 +101,30 @@
             >
                 <div class="relative w-full sm:w-64 ">
                     <img
-                        class="w-full  object-cover rounded h-54 sm:h-full"
+                        class="w-full   object-cover rounded h-44"
                         alt=""
-                        :src="
-                            require('../../../../public/images/hamburger.jpg')
-                                .default
-                        "
+                        v-if="menu.image"
+                        :src="menu.image"
                     />
+                       <img
+                            class="w-full  object-cover rounded  h-44 "
+                            alt=""
+                            v-else
+                            :src="
+                                require('../../../../public/images/no-image.png')
+                                    .default
+                            "
+                        />
                 </div>
                 <div class="w-3/6 p-3 tracking-wide ">
                     <h3 class="text-2xl cursor-pointer hover:text-yellow-400">
                         {{ menu.name }}
                     </h3>
+                    <p class="text-md cursor-pointer">{{ menu.description }}</p>
                     <p class="text-md cursor-pointer">{{ menu.ingredient }}</p>
-                    <p class="text-md cursor-pointer"><i>Chef: </i>Andre</p>
+                    <p class="text-md cursor-pointer">
+                        <i>Cal: </i>{{ menu.cal }}
+                    </p>
                 </div>
                 <div
                     class="md:w-2/6 flex items-center justify-center font-bold m-1 w-full"
@@ -135,27 +151,38 @@
                     </button>
                 </div>
             </div>
+                       <div
+                class="w-full bg-red-500 px-5 p-4 rounded h-48 my-8"
+                v-if="menus.length < 1 "
+            >
+                <p class="text-lg">There is no Menus found...</p>
+                <p>
+                   This restaurant has not any menus. Please go and order from other restaurants using the home page.
+                </p>
+            </div>
         </div>
     </div>
 </template>
 <script>
-import { ToastSuccess } from "../../toasters";
+import { ToastSuccess, ToastError } from "../../toasters";
 import axios from "axios";
 export default {
     data() {
         return {
             currentImgId: 0,
-            images: ["slider-img.jpg", "hamburger.jpg", "icon.svg"],
-            menus: null,
-            token:null
+            images: [],
+            menus: [],
+            token: null,
+            restaurantId:null
         };
     },
     mounted() {
-        const restaurantId = this.$route.params.restaurantId;
+        this.restaurantId = this.$route.params.id;
         this.token = this.$store.getters.getToken;
+        this.getSliderImages();
         // console.log(token);
         axios
-            .get("http://localhost:8000/api/menu/" + restaurantId, {
+            .get("http://localhost:8000/api/menu/" + this.restaurantId, {
                 headers: {
                     Accept: "application/json",
                     Authorization: "Bearer " + this.token
@@ -193,7 +220,30 @@ export default {
                         icon: "success",
                         title: response.data
                     });
+                })
+                .catch(error => {
+                    ToastError.fire({
+                        icon: "error",
+                        title: error.response.data
+                    });
                 });
+        },
+        getSliderImages(){
+             axios
+                .get("http://localhost:8000/api/sliders/" + this.restaurantId, {
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: "Bearer " + this.token
+                    }
+                })
+                .then(response => {
+                    let imageData = response.data.data;
+                    imageData.forEach(element => {
+                            this.images.push(element.image)
+                    });
+
+                });
+
         }
     }
 };

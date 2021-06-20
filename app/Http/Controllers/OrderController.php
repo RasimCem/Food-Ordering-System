@@ -13,11 +13,11 @@ use App\Models\RestaurantOwner;
 use Illuminate\Support\Carbon;
 class OrderController extends Controller
 {
-    public function createOrder($userId){
-
-        $customer = User::where('user_id',$userId);
-        if($customer){
-            $carts = Cart::where('user_id',$userId)->get();
+    public function createOrder(){
+        $customer = Customer::where('user_id',Auth::user()->id)->first();
+        if($customer->city && $customer->district && $customer->street && $customer->address_description){
+            $userId = Auth::user()->id;
+            $carts = Cart::where('user_id', $userId)->get();
             if($carts->isNotEmpty()){
                 $content="";
                 $price = 0;
@@ -33,17 +33,20 @@ class OrderController extends Controller
                     "total_price"=>$price
                 ]);
                 // Clean the Cart
-              //  Cart::where('user_id',$userId)->delete();
+                Cart::where('user_id',$userId)->delete();
                 return response()->json('Order Created!',200);
             }
             return response()->json('Your Cart Is Empty',404);
         }
-        return response()->json('Customer Not Found',404);
+        return response()->json('Address Details Not Found',404);
     }
 
-    public function showClientsOrderHistory($userId){
-       $orders = Order::where('user_id',$userId)->get();
-       return response()->json($orders,201);
+    public function showCustomersOrderHistory(){
+       $orders = Order::where('user_id',Auth::user()->id)->get();
+       foreach($orders as $order){
+           $order->restaurant;
+       }
+       return response()->json($orders,200);
 
     }
 
@@ -78,7 +81,7 @@ class OrderController extends Controller
         foreach($myOrders as $myOrder){
             $myOrder->user->customer;
         }
-        return response()->json($myOrders,201);
+         return response()->json($myOrders,200);
 
     }
 

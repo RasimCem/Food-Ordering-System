@@ -150,7 +150,7 @@
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                8 (db'den gelmiyor degisecek)
+                               {{comment.point}}
                             </td>
                         </tr>
                     </tbody>

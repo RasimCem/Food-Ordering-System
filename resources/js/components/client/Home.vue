@@ -49,24 +49,25 @@
                 >
                     <div class="relative w-full sm:w-64">
                         <img
-                            class="w-full  object-cover rounded h-54 sm:h-full"
+                            class="w-full  object-cover rounded  h-44"
                             alt=""
+                            v-if="restaurant.image"
+                            :src="restaurant.image"
+                        />
+                        <img
+                            class="w-full  object-cover rounded  h-44"
+                            alt=""
+                            v-else
                             :src="
-                                require('../../../../public/images/hamburger.jpg')
+                                require('../../../../public/images/no-image.png')
                                     .default
                             "
                         />
-                        <div class=" p-1 absolute top-1 right-0">
-                            <a
-                                class="text bg-green-300 p-1 rounded-full hover:no-underline cursor-default hover:text-gray-100 my-1"
-                                title="Average Point"
-                                >10</a
-                            >
-                        </div>
                     </div>
                     <div class="w-3/6 p-3 tracking-wide ">
                         <h3
                             class="text-2xl cursor-pointer hover:text-yellow-400"
+                            @click="giveAnOrder"
                         >
                             {{ restaurant.name }}
                         </h3>
@@ -77,6 +78,7 @@
                             <i>Chef: </i>{{ restaurant.chef }}
                         </p>
                         <small
+                            @click="goToComments(restaurant.id)"
                             class="text-sm cursor-pointer hover:text-yellow-400"
                             >Go To Comments</small
                         >
@@ -109,30 +111,38 @@
             </div>
             <div v-else>
                 <div
-                    v-for="restaurant in restaurants"
+                    v-for="(restaurant, index) in restaurants"
                     :key="restaurant.id"
                     class="container border-2 my-4 border-yellow-300 p-3 sm:flex "
                 >
                     <div class="relative w-full sm:w-64">
                         <img
-                            class="w-full  object-cover rounded h-54 sm:h-full"
+                            class="w-full  object-cover rounded h-44"
                             alt=""
+                            v-if="restaurant.image"
+                            :src="restaurant.image"
+                        />
+                        <img
+                            class="w-full  object-cover rounded  h-44 "
+                            alt=""
+                            v-else
                             :src="
-                                require('../../../../public/images/hamburger.jpg')
+                                require('../../../../public/images/no-image.png')
                                     .default
                             "
                         />
                         <div class=" p-1 absolute top-1 right-0">
                             <a
-                                class="text bg-green-300 p-1 rounded-full hover:no-underline cursor-default hover:text-gray-100 my-1"
+                                class="text bg-green-300 px-2 py-1 rounded-full hover:no-underline cursor-default hover:text-gray-100 m-1"
                                 title="Average Point"
-                                >10</a
+                                >{{ averagePoints[index] }}</a
                             >
                         </div>
                     </div>
                     <div class="w-3/6 p-3 tracking-wide ">
                         <h3
                             class="text-2xl cursor-pointer hover:text-yellow-400"
+                            @click="giveAnOrder(restaurant.id)"
                         >
                             {{ restaurant.name }}
                         </h3>
@@ -174,39 +184,97 @@
                     </div>
                 </div>
             </div>
+            <div
+                class="w-full bg-red-500 px-5 p-4 rounded h-48 my-8"
+                v-if="restaurants.length < 1 && !filterOn"
+            >
+                <p class="text-lg">
+                    There is no restaurants in your location...
+                </p>
+                <p>
+                    Please make sure you select correct location information.
+                    Otherwise Food Ordering System in not active in your
+                    location. We are very sorry about that. :((
+                </p>
+                <p>
+                    We hope see you soon...
+                </p>
+            </div>
+            <div
+                class="w-full bg-red-500 px-5 p-4 rounded h-48 my-8"
+                v-if="filteredRestaurants.length < 1 && filterOn"
+            >
+                <p class="text-lg">There is no restaurants found...</p>
+                <p>
+                    We couldn't find any restaurants according to your seacrhing
+                    results...
+                </p>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import axios from "axios";
 export default {
     data() {
         return {
-            restaurants: null,
+            restaurants: [],
             search: null,
             filterOn: false,
             filteredRestaurants: [],
+            averagePoints: []
         };
     },
     mounted() {
         //Get All Restaurants\
         axios.get("http://localhost:8000/api/restaurant").then(response => {
             this.restaurants = response.data.data;
+            this.restaurants.forEach(restaurant => {
+                axios
+                    .get(
+                        "http://localhost:8000/api/comment/average-point/" +
+                            restaurant.id
+                    )
+                    .then(response => {
+                        this.averagePoints.push(response.data);
+                    });
+            });
         });
     },
     methods: {
         giveAnOrder(restaurantId) {
-            if(this.$store.getters.getToken!=null){
-                 this.$router.push({name:"restaurant",params:{restaurantId:restaurantId}});
-            }
-            else{
-                alert("Yoy have to login for give an order!");
+            if (this.$store.getters.getToken != null) {
+                this.$router.push({
+                    name: "restaurant",
+                    params: { id: restaurantId }
+                });
+            } else {
+                Swal.fire({
+                    text: "You have to login for give an order!",
+                    confirmButtonColor: "orange"
+                });
             }
         },
-        goToComments(restaurantId){
-               this.$router.push({name:"restaurant-menu",params:{id:restaurantId}});
+        goToComments(restaurantId) {
+            if (this.$store.getters.getToken != null) {
+                this.$router.push({
+                    name: "restaurant-menu",
+                    params: { id: restaurantId }
+                });
+            } else {
+                Swal.fire({
+                    text: "You have to login for display comments!",
+                    confirmButtonColor: "orange"
+                });
+            }
         }
+        // getAveragePoint() {
+        //     axios.get("http://localhost:8000/api/comment/average-point"+restaurantId).then(response => {
+        //         this.averagePoint = response.data;
+        //     });
+        // }
     },
     watch: {
         search: function(newValue) {
@@ -221,9 +289,9 @@ export default {
                         this.filteredRestaurants.push(restaurant);
                     }
                 });
-                 this.filterOn = true;
-            }else{
-                this.filterOn=false;
+                this.filterOn = true;
+            } else {
+                this.filterOn = false;
             }
         }
     }

@@ -15,10 +15,10 @@ class CreateRestaurantOwnersTable extends Migration
     {
         Schema::create('restaurant_owners', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('restaurant_id');
-            $table->foreign('restaurant_id')->references('id')->on('restaurants');
-            $table->char('phone', 25);
+            $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            $table->char('phone', 25)->nullable();
         });
     }
 

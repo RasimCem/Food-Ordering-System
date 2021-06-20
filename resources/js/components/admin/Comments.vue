@@ -61,12 +61,12 @@
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                <!-- {{comment.created_at.substring(0,10)}} -->
+                                {{comment.created_at.substring(0,10)}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                <!-- {{comment.created_at.substring(11,16)}} -->
+                                {{comment.created_at.substring(11,16)}}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center whitespace-nowrap"

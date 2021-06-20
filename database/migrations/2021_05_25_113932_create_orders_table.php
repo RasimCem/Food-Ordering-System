@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->enum('status',['waiting','accepted','received','canceled']);
             $table->longText('content');
             $table->float('total_price');
+            $table->enum('payment_method',['online','door']);
             $table->timestamps();
         });
     }

@@ -12,21 +12,23 @@ import PanelComponent from "./components/panel-common/Layout.vue";
 // Restaurant Owner Routes
 import OwnerHomeComponent from "./components/owner/Home.vue";
 import OwnerMyRestaurantComponent from "./components/owner/MyRestaurant.vue";
+import OwnerProfileComponent from "./components/owner/Profile.vue";
 import OwnerMenuComponent from "./components/owner/Menu.vue";
 import OwnerMenuAddComponent from "./components/owner/NewMenu.vue";
 import OwnerMenuEditComponent from "./components/owner/MenuEdit.vue";
 import OwnerOrderHistoryComponent from "./components/owner/OrderHistory.vue";
 // Admin Routes
 import AdminHomeComponent from "./components/admin/Home.vue";
+import AdminProfileComponent from "./components/admin/Profile.vue";
 import AdminClientsComponent from "./components/admin/Clients.vue";
 import AdminEditClientsComponent from "./components/admin/EditClients.vue";
 import AdminRestaurantsComponent from "./components/admin/Restaurants.vue";
+import AdminRestaurantAssignOwnerComponentt from "./components/admin/RestaurantAssignOwner.vue";
 import AdminRestaurantDetailsComponent from "./components/admin/RestaurantDetails.vue";
 import AdminRestaurantMenusComponent from "./components/admin/RestaurantMenus.vue";
 import AdminRestaurantMenusEditComponent from "./components/admin/RestaurantMenusEdit.vue";
 import AdminRestaurantEditComponent from "./components/admin/RestaurantEdit.vue";
 import AdminRestaurantAddComponent from "./components/admin/RestaurantAdd.vue";
-import AdminComplaintsComponent from "./components/admin/Complaints.vue";
 import AdminOrdersComponent from "./components/admin/Orders.vue";
 import AdminOrdersDetailsComponent from "./components/admin/OrdersDetails.vue";
 import AdminCommentsComponent from "./components/admin/Comments.vue";
@@ -38,7 +40,7 @@ export const routes = [
     },
     {
         name: "restaurant",
-        path: "/restaurant",
+        path: "/restaurant/:id",
         component: RestaurantMenuComponent
     },
     {
@@ -77,6 +79,11 @@ export const routes = [
         component: OwnerMyRestaurantComponent
     },
     {
+        name: "panel-owner-profile",
+        path: "/panel/owner-profile",
+        component: OwnerProfileComponent
+    },
+    {
         name: "panel-menu",
         path: "/panel/menu",
         component: OwnerMenuComponent
@@ -102,6 +109,11 @@ export const routes = [
         component: AdminHomeComponent
     },
     {
+        name: "panel-admin-profile",
+        path: "/panel/admin/profile",
+        component: AdminProfileComponent
+    },
+    {
         name: "panel-admin-clients",
         path: "/panel/admin/clients",
         component: AdminClientsComponent
@@ -116,6 +128,12 @@ export const routes = [
         path: "/panel/admin/restaurants",
         component: AdminRestaurantsComponent
     },
+    {
+        name: "panel-admin-restaurant-assign-owner",
+        path: "/restaurant-assign-owner/:id",
+        component: AdminRestaurantAssignOwnerComponentt
+    },
+
     {
         name: "panel-admin-restaurant-details",
         path: "/restaurant-details/:id",
@@ -140,11 +158,6 @@ export const routes = [
         name: "panel-admin-restaurant-add",
         path: "/restaurant-add",
         component: AdminRestaurantAddComponent
-    },
-    {
-        name: "panel-admin-complaints",
-        path: "/panel/admin/complaints",
-        component: AdminComplaintsComponent
     },
     {
         name: "panel-admin-orders",

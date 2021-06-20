@@ -69,9 +69,16 @@
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
                                 <img
+                                    v-if="menu.image"
+                                    class=" object-contain mx-auto h-20 rounded"
+                                    :src="menu.image"
+                                    alt=""
+                                />
+                                <img
+                                    v-else
                                     class=" object-contain mx-auto h-20 rounded"
                                     :src="
-                                        require('../../../../public/images/hamburger.jpg')
+                                        require('../../../../public/images/no-image.png')
                                             .default
                                     "
                                     alt=""
@@ -80,23 +87,23 @@
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                {{menu.name}}
+                                {{ menu.name }}
                             </td>
 
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                              {{menu.ingredient}}
+                                {{ menu.ingredient }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                                {{menu.description}}
+                                {{ menu.description }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                {{menu.price}} $
+                                {{ menu.price }} $
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
@@ -154,19 +161,22 @@ import { ToastSuccess } from "../../toasters";
 export default {
     data() {
         return {
-            menus:null
-        }
+            menus: []
+        };
+    },
+    mounted() {
+        this.getMyMenus();
     },
     methods: {
         goToAddMenu() {
-            this.$router.push({name:"panel-menu-add"});
+            this.$router.push({ name: "panel-menu-add" });
         },
         goToEditMenu(id) {
-            this.$router.push({ name: 'panel-menu-edit', params: { id: id }});
+            this.$router.push({ name: "panel-menu-edit", params: { id: id } });
         },
-        getMyMenus(){
-              axios
-                .get("http://localhost:8000/api/my-menu/show",{
+        getMyMenus() {
+            axios
+                .get("http://localhost:8000/api/my-menu/show", {
                     headers: {
                         Accept: "application/json",
                         Authorization: "Bearer " + this.$store.getters.getToken
@@ -176,9 +186,9 @@ export default {
                     this.menus = response.data.data;
                 });
         },
-        deleteMenu(id){
-             axios
-                .get("http://localhost:8000/api/my-menu/delete/"+id,{
+        deleteMenu(id) {
+            axios
+                .get("http://localhost:8000/api/my-menu/delete/" + id, {
                     headers: {
                         Accept: "application/json",
                         Authorization: "Bearer " + this.$store.getters.getToken
@@ -187,14 +197,11 @@ export default {
                 .then(response => {
                     ToastSuccess.fire({
                         icon: "success",
-                        title:response.data
+                        title: response.data
                     });
                 });
-                this.getMyMenus();
+            this.getMyMenus();
         }
-    },
-    mounted(){
-        this.getMyMenus();
     }
 };
 </script>

@@ -21,12 +21,14 @@ Vue.component('restaurant-comment-component', require('./components/client/Resta
 Vue.component('panel-layout-component', require('./components/panel-common/Layout.vue').default);
 Vue.component('home-owner-component', require('./components/owner/Home.vue').default);
 Vue.component('my-restaurant-component', require('./components/owner/MyRestaurant.vue').default);
+Vue.component('owner-profile-component', require('./components/owner/Profile.vue').default);
 Vue.component('menu-component', require('./components/owner/Menu.vue').default);
 Vue.component('menu-add-component', require('./components/owner/NewMenu.vue').default);
 Vue.component('menu-edit-component', require('./components/owner/MenuEdit.vue').default);
 Vue.component('order-history-component', require('./components/owner/OrderHistory.vue').default);
 // ADMIN COMPONENTS
 Vue.component('admin-home-component', require('./components/admin/Home.vue').default);
+Vue.component('admin-profile-component', require('./components/admin/Profile.vue').default);
 Vue.component('admin-client-component', require('./components/admin/Clients.vue').default);
 Vue.component('admin-restaurants-component', require('./components/admin/Restaurants.vue').default);
 Vue.component('admin-restaurant-details-component', require('./components/admin/RestaurantDetails.vue').default);
@@ -34,7 +36,6 @@ Vue.component('admin-restaurant-menus-component', require('./components/admin/Re
 Vue.component('admin-restaurant-menus-edit-component', require('./components/admin/RestaurantMenusEdit.vue').default);
 Vue.component('admin-restaurant-edit-component', require('./components/admin/RestaurantEdit.vue').default);
 Vue.component('admin-restaurant-add-component', require('./components/admin/RestaurantAdd.vue').default);
-Vue.component('admin-complaints-component', require('./components/admin/Complaints.vue').default);
 Vue.component('admin-orders-component', require('./components/admin/Orders.vue').default);
 Vue.component('admin-orders-details-component', require('./components/admin/OrdersDetails.vue').default);
 Vue.component('admin-orders-comments', require('./components/admin/OrdersDetails.vue').default);

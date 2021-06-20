@@ -12,6 +12,11 @@
                             >
                                 #Id
                             </th>
+                            <th
+                                class="border-2 border-gray-600 p-2 text-center"
+                            >
+                                Image
+                            </th>
 
                             <th
                                 class="border-2 border-gray-600 p-2 text-center"
@@ -41,23 +46,41 @@
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                               {{menu.id}}
+                                {{ menu.id }}
                             </td>
-
                             <td
                                 class="border-2 border-gray-600 p-2 text-center"
                             >
-                              {{menu.name}}
+                                <img
+                                    v-if="menu.image"
+                                    class=" object-contain mx-auto h-20 rounded"
+                                    :src="menu.image"
+                                    alt=""
+                                />
+                                <img
+                                    v-else
+                                    class=" object-contain mx-auto h-20 rounded"
+                                    :src="
+                                        require('../../../../public/images/no-image.png')
+                                            .default
+                                    "
+                                    alt=""
+                                />
+                            </td>
+                            <td
+                                class="border-2 border-gray-600 p-2 text-center"
+                            >
+                                {{ menu.name }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                {{menu.ingredient}}
+                                {{ menu.ingredient }}
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-red-500 text-center"
                             >
-                                {{menu.price}} $
+                                {{ menu.price }} $
                             </td>
                             <td
                                 class="border-2 border-gray-600 p-2 text-center whitespace-nowrap"
@@ -83,7 +106,7 @@
                                 </button>
                                 <button
                                     class="button bg-red-500 hover:bg-red-400 m-1"
-                                     @click="deleteMenu(menu.id)"
+                                    @click="deleteMenu(menu.id)"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -112,35 +135,38 @@
 import { ToastSuccess } from "../../toasters";
 import axios from "axios";
 export default {
-    data(){
-        return{
-            menus:null
-        }
+    data() {
+        return {
+            menus: null
+        };
     },
-    methods:{
-        editMenu(menuId){
-            this.$router.push({ name: "panel-admin-restaurant-menus-edit",params:{id:menuId} });
+    methods: {
+        editMenu(menuId) {
+            this.$router.push({
+                name: "panel-admin-restaurant-menus-edit",
+                params: { id: menuId }
+            });
         },
-        deleteMenu(menuId){
-              axios
-                .delete("http://localhost:8000/api/menu/"+menuId,{
+        deleteMenu(menuId) {
+            axios
+                .delete("http://localhost:8000/api/menu/" + menuId, {
                     headers: {
                         Accept: "application/json",
                         Authorization: "Bearer " + this.$store.getters.getToken
                     }
                 })
                 .then(response => {
-                     ToastSuccess.fire({
+                    ToastSuccess.fire({
                         icon: "success",
-                        title:response.data
+                        title: response.data
                     });
                     this.getMenus();
                 });
         },
-        getMenus(){
-            const restaurantId =  this.$route.params.id;
-             axios
-                .get("http://localhost:8000/api/menu/"+restaurantId,{
+        getMenus() {
+            const restaurantId = this.$route.params.id;
+            axios
+                .get("http://localhost:8000/api/menu/" + restaurantId, {
                     headers: {
                         Accept: "application/json",
                         Authorization: "Bearer " + this.$store.getters.getToken
@@ -151,8 +177,8 @@ export default {
                 });
         }
     },
-    mounted(){
-       this.getMenus();
+    mounted() {
+        this.getMenus();
     }
-}
+};
 </script>

@@ -14,7 +14,15 @@ import Swal from 'sweetalert2';
     timer: 3000,
     timerProgressBar: true,
   })
+  const ToastError = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    iconColor:'red',
+  })
 export{
-    ToastSuccess,ToastInfo
+    ToastSuccess,ToastInfo,ToastError
 }
 

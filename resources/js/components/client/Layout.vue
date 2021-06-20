@@ -143,27 +143,17 @@ export default {
         };
     },
     mounted() {
+        //reset Storage
+       // this.$store.commit("updateToken", null);
+       // this.$store.commit("updateRole", null);
         if (
             this.$store.getters.getRole == "restaurantOwner" ||
             this.$store.getters.getRole == "admin"
         ) {
             this.$router.push({ name: "panel" });
-        }else{
-             this.$router.push({ name: "home" });
+        } else {
+            this.$router.push({ name: "home" });
         }
-        //reset Storage
-        //this.$store.commit("updateToken", null);
-
-        //state
-        //  console.log(this.$store.state.token);
-        // getters
-        // console.log(this.$store.getters.getToken);
-        // mutations
-        // this.$store.commit('updateToken','what is new token');
-        //console.log(this.$store.getters.getToken);
-        //actions
-        //    this.$store.dispatch('updateToken','my token');
-        //     console.log(this.$store.getters.getToken);
     },
     methods: {
         openMenu() {
@@ -215,6 +205,8 @@ export default {
                         icon: "success",
                         title: "Logged out successfully"
                     });
+                    if (this.$route.path !== "/home")
+                        this.$router.push({ name: "home" });
                 })
                 .catch(error => {
                     console.log(error);

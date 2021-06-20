@@ -19,6 +19,6 @@ class Order extends Model
     }
 
     public function comments(){
-        return $this->hasOne(Comment::class,'order_id','id');
+        return $this->hasMany(Comment::class,'order_id','id');
     }
 }

@@ -11,11 +11,10 @@
                     <label for="image" class="cursor-pointer">
                         <img
                             class="shadow-md  object-contain h-40 rounded"
-                            v-if="image"
+                            v-if="menu.image"
                             width="350"
                             height="100"
-                            :src="image"
-                            :key="image"
+                            :src="menu.image"
                             alt=""
                         />
                         <img
@@ -24,11 +23,8 @@
                             width="350"
                             height="100"
                             :src="
-                                imageFromDB
-                                    ? require('../../../../public/images/hamburger.jpg')
-                                          .default
-                                    : require('../../../../public/images/no-image.png')
-                                          .default
+                                require('../../../../public/images/no-image.png')
+                                    .default
                             "
                             alt=""
                         />
@@ -72,6 +68,14 @@
                         v-model="menu.price"
                     />
                 </div>
+                <div class="mt-1 font-medium ">
+                    <label for="" class="block mb-0">Cal </label>
+                    <input
+                        class="input py-1"
+                        type="number"
+                        v-model="menu.cal"
+                    />
+                </div>
             </form>
             <button
                 class="button mt-2 text-xs md:text-base w-36"
@@ -88,24 +92,25 @@ import { ToastSuccess } from "../../toasters";
 export default {
     data() {
         return {
-            image: null,
-            imageFromDB: "asdas",
+            file: null,
             menu: {
                 name: null,
                 ingredient: null,
                 description: null,
-                price: null
+                price: null,
+                cal: null,
+                image: null
             }
         };
     },
     methods: {
         fileChanged(e) {
-            const file = e.target.files[0];
+            this.file = e.target.files[0];
             let reader = new FileReader();
             reader.onloadend = file => {
-                this.image = reader.result;
+                this.menu.image = reader.result;
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(this.file);
             e.target.value = "";
         },
         getMenu() {
@@ -122,15 +127,25 @@ export default {
                 });
         },
         updateMyMenu(menuId) {
+            let formData = new FormData();
+            formData.append("image", this.file);
+            formData.append("name", this.menu.name);
+            formData.append("ingredient", this.menu.ingredient);
+            formData.append("description", this.menu.description);
+            formData.append("price", this.menu.price);
+            formData.append("cal", this.menu.cal);
             axios
-                .put(
-                    "http://localhost:8000/api/my-menu/update/" + menuId,
-                    this.menu,
+                .post(
+                    "http://localhost:8000/api/my-menu/update/" +
+                        menuId +
+                        "?_method=PUT",
+                    formData,
                     {
                         headers: {
                             Accept: "application/json",
                             Authorization:
-                                "Bearer " + this.$store.getters.getToken
+                                "Bearer " + this.$store.getters.getToken,
+                            "Content-Type": "multipart/form-data"
                         }
                     }
                 )

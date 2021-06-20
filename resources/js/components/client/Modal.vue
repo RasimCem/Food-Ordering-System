@@ -63,6 +63,32 @@
                     <h2 class="text-center text-xl font-semibold mt-2">
                         Welcome Back!
                     </h2>
+                    <div
+                        class="w-full h-auto bg-red-500 px-5 py-2 rounded"
+                        v-if="loginErrors != null"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 float-right text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                        <ul v-for="error in loginErrors" :key="error[0]">
+                            <li>{{ error[0] }}</li>
+                        </ul>
+                    </div>
+                    <div
+                        v-if="error"
+                        class="w-full h-auto bg-red-500 px-5 py-2 rounded"
+                    >
+                        <p>{{ error }}</p>
+                    </div>
                     <form action="">
                         <div class="mt-2 text-base font-medium">
                             <label for="" class="block mb-0">User Mail</label>
@@ -97,11 +123,11 @@
                     </h2>
                     <div
                         class="w-full h-auto bg-red-500 px-5 py-2 rounded"
-                        v-if="errors"
+                        v-if="registrationErrors"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            class="h-6 w-6 md:h-8 md:w-8 float-right text-white"
+                            class="h-6 w-6  float-right text-white"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                         >
@@ -111,7 +137,7 @@
                                 clip-rule="evenodd"
                             />
                         </svg>
-                        <ul v-for="error in errors" :key="error[0]">
+                        <ul v-for="error in registrationErrors" :key="error[0]">
                             <li>{{ error[0] }}</li>
                         </ul>
                     </div>
@@ -213,8 +239,10 @@ export default {
                 password: null,
                 password2: null
             },
-            errors: null,
-            accessToken: null
+            registrationErrors: null,
+            loginErrors: null,
+            accessToken: null,
+            error: null
         };
     },
     methods: {
@@ -223,10 +251,10 @@ export default {
         },
         register(e) {
             e.preventDefault();
+            this.registrationErrors =null;
             axios
                 .post("http://localhost:8000/api/register", this.user)
                 .then(response => {
-                    this.errors = [];
                     this.$emit("closeModal");
                     this.accessToken = response.data.access_token;
                     this.$store.commit("updateToken", this.accessToken);
@@ -239,33 +267,36 @@ export default {
                 })
                 .catch(error => {
                     if (typeof error !== "undefined") {
-                        this.errors = error.response.data.errors;
-                        this.errors = Object.values(this.errors);
+                        this.registrationErrors = error.response.data.errors;
+                        this.registrationErrors = Object.values(
+                            this.registrationErrors
+                        );
                     }
                 });
         },
         login(e) {
             e.preventDefault();
+            this.loginErrors =null;
+            this.error = null;
             axios
                 .post("http://localhost:8000/api/login", this.user)
                 .then(response => {
-                    this.errors = [];
                     this.$emit("closeModal");
                     this.accessToken = response.data.access_token;
                     this.$store.commit("updateToken", this.accessToken);
-                    // console.log(this.$store.getters.getToken);
                     //Toaster
                     ToastSuccess.fire({
                         icon: "success",
                         title: "Signed in successfully"
                     });
-                  this.$store.commit("updateRole",response.data.role);
+                    this.$store.commit("updateRole", response.data.role);
                 })
                 .catch(error => {
-                    if (typeof error !== "undefined") {
-                        this.errors = error.response.data.errors;
-                        this.errors = Object.values(this.errors);
+                    if (error.response.status == 404) {
+                        this.error = error.response.data.error;
                     }
+                    this.loginErrors = error.response.data.errors;
+                    this.loginErrors = Object.values(this.loginErrors);
                 });
         }
     }

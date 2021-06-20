@@ -12,7 +12,7 @@
             <div>
                 <label for="">Points: </label>
                 <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >10 Duzelt!!!!</span
+                    >{{averagePoint}}</span
                 >
             </div>
             <div class="col-span-2">
@@ -45,7 +45,7 @@
                     restaurant.district
                 }}</span>
             </div>
-            <div>
+            <div v-if="restaurant.restaurant_owner != null">
                 <label for="">Phone: </label>
                 <span class="font-extrabold text-gray-900 text-opacity-50">{{
                     restaurant.restaurant_owner.phone
@@ -55,60 +55,39 @@
         <div
             class="md:m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         >
-            <div>
+            <div v-for="slider in restaurant.sliders" :key="slider.id">
                 <small>Slider1</small>
                 <img
                     width="350"
                     height="100"
-                    :src="
-                        require('../../../../public/images/slider-img.jpg')
-                            .default
-                    "
+                    :src="slider.image"
                     alt=""
-                />
-            </div>
-            <div>
-                <small>Slider2</small>
-                <img
-                    width="350"
-                    height="100"
-                    :src="
-                        require('../../../../public/images/slider-img.jpg')
-                            .default
-                    "
-                    alt=""
-                />
-            </div>
-            <div>
-                <small>Slider3</small>
-                <img
-                    width="350"
-                    height="100"
-                    :src="
-                        require('../../../../public/images/slider-img.jpg')
-                            .default
-                    "
-                    alt=""
+                    class="h-44"
                 />
             </div>
         </div>
-
-        <h2 class="text-lg px-2 mt-5">Owner Of The Restaurant</h2>
-        <hr />
-        <div class=" my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div>
-                <label for="">Full Name: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50"
-                    >{{ restaurant.restaurant_owner.user.name }}
-                    {{ restaurant.restaurant_owner.user.surname }}</span
-                >
+        <div v-if="restaurant.restaurant_owner != null">
+            <h2 class="text-lg px-2 mt-5">Owner Of The Restaurant</h2>
+            <hr />
+            <div class=" my-2 md:p-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                    <label for="">Full Name: </label>
+                    <span class="font-extrabold text-gray-900 text-opacity-50"
+                        >{{ restaurant.restaurant_owner.user.name }}
+                        {{ restaurant.restaurant_owner.user.surname }}</span
+                    >
+                </div>
+                <div>
+                    <label for="">Mail Address: </label>
+                    <span
+                        class="font-extrabold text-gray-900 text-opacity-50"
+                        >{{ restaurant.restaurant_owner.user.mail }}</span
+                    >
+                </div>
             </div>
-            <div>
-                <label for="">Mail Address: </label>
-                <span class="font-extrabold text-gray-900 text-opacity-50">{{
-                    restaurant.restaurant_owner.user.mail
-                }}</span>
-            </div>
+        </div>
+        <div v-else class="w-full h-auto bg-red-500 px-5 py-2 rounded">
+            There is not any owner assigned to this restaurant...
         </div>
     </div>
 </template>
@@ -120,8 +99,10 @@ export default {
             restaurant: {
                 restaurant_owner: {
                     user: {}
-                }
-            }
+                },
+                sliders: []
+            },
+            averagePoint:null
         };
     },
     mounted() {
@@ -143,6 +124,23 @@ export default {
                 )
                 .then(response => {
                     this.restaurant = response.data.data;
+                    this.getAveragePointOfTheRestaurant(this.restaurant.id);
+                });
+        },
+          getAveragePointOfTheRestaurant(id) {
+            axios
+                .get(
+                    "http://localhost:8000/api/comment/average-point/" +
+                       id,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            Authorization: "Bearer " + this.$store.getters.getToken
+                        }
+                    }
+                )
+                .then(response => {
+                    this.averagePoint = response.data;
                 });
         }
     }

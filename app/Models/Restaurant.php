@@ -17,4 +17,8 @@ class Restaurant extends Model
     public function orders(){
         return $this->hasMany(Order::class,'restaurant_id','id');
     }
+
+    public function sliders(){
+        return $this->hasMany(Slider::class,'restaurant_id','id');
+    }
 }

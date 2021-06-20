@@ -12,9 +12,22 @@
                     <label for="" class="block mb-0">Ingradients</label>
                     <input class="input py-1" type="text" v-model="menu.ingredient"/>
                 </div>
+                         <div class="mt-1 font-medium ">
+                    <label for="" class="block mb-0"
+                        >Menu Description</label
+                    >
+                    <textarea
+                        class="input py-1"
+                        v-model="menu.description"
+                    ></textarea>
+                </div>
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Unit Price</label>
                     <input class="input py-1" type="text" placeholder="in $" v-model="menu.price"/>
+                </div>
+                      <div class="mt-1 font-medium ">
+                    <label for="" class="block mb-0">Cal</label>
+                    <input class="input py-1" type="text" placeholder="in $" v-model="menu.cal"/>
                 </div>
             </form>
             <button class="button mt-2 text-xs md:text-base w-36" @click="updateMenu(menu.id)">
@@ -33,7 +46,8 @@ export default {
                 name:null,
                 ingredient:null,
                 description:null,
-                price:null
+                price:null,
+                cal:null
             }
         };
     },

@@ -89,9 +89,10 @@
                                 class="border-2 border-gray-600 p-2 text-center whitespace-nowrap"
                             >
                                 <button
-                                    class="button bg-purple-500 hover:bg-purple-400 m-1"
+                                    class="button bg-purple-500 hover:bg-purple-400 m-1 group relative"
                                     @click="goToMenu(restaurant.id)"
                                 >
+                                       <span class='opacity-0 group-hover:opacity-100 z-50 rounded shadow-lg p-1 bg-gray-800 text-gray-50 absolute  right-7 top-6'>Show Menus</span>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-4 w-4"
@@ -108,8 +109,10 @@
                                     </svg>
                                 </button>
                                 <button
-                                    class="button bg-pink-500 hover:bg-pink-400 m-1"
+                                @click="goToCreateOwner(restaurant.id,restaurant.restaurant_owner)"
+                                    class="button bg-pink-500 hover:bg-pink-400 m-1 relative group"
                                 >
+                                   <span class='opacity-0 group-hover:opacity-100 z-50 rounded shadow-lg p-1 bg-gray-800 text-gray-50 absolute  right-7 top-6'>Create Owner</span>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-4 w-4"
@@ -126,11 +129,12 @@
                                     </svg>
                                 </button>
                                 <button
-                                    class="button bg-yellow-500 hover:bg-yellow-400 m-1"
+                                    class="button bg-yellow-500 hover:bg-yellow-400 m-1 relative group"
                                     @click="
                                         goToRestaurantDetails(restaurant.id)
                                     "
                                 >
+                                   <span class='opacity-0 group-hover:opacity-100 z-50 rounded shadow-lg p-1 bg-gray-800 text-gray-50 absolute  right-7 top-6'>Restaurant Details</span>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-4 w-4"
@@ -153,9 +157,10 @@
                                     </svg>
                                 </button>
                                 <button
-                                    class="button bg-blue-500 hover:bg-blue-400 m-1"
+                                    class="button bg-blue-500 hover:bg-blue-400 m-1 relative group"
                                     @click="goToEditRestaurant(restaurant.id)"
                                 >
+                                   <span class='opacity-0 group-hover:opacity-100 z-50 rounded shadow-lg p-1 bg-gray-800 text-gray-50 absolute  right-7 top-6'>Edit</span>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-4 w-4"
@@ -172,9 +177,10 @@
                                     </svg>
                                 </button>
                                 <button
-                                    class="button bg-red-500 hover:bg-red-400 m-1"
+                                    class="button bg-red-500 hover:bg-red-400 m-1 relative group"
                                     @click="deleteRestaurant(restaurant.id)"
                                 >
+                                   <span class='opacity-0 group-hover:opacity-100 z-50 rounded shadow-lg p-1 bg-gray-800 text-gray-50 absolute right-7 top-6'>Delete</span>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-4 w-4"
@@ -200,6 +206,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import { ToastSuccess } from "../../toasters";
 import axios from "axios";
 export default {
@@ -211,6 +218,17 @@ export default {
     methods: {
         goToAddMenu() {
             this.$router.push("panel-menu-add");
+        },
+        goToCreateOwner(restaurantId,owner){
+            if(owner==null){
+                 this.$router.push({name:"panel-admin-restaurant-assign-owner", params:{id:restaurantId}});
+            }else{
+                  Swal.fire({
+                    text: "This restaurant already has an Owner!",
+                    confirmButtonColor: 'orange',
+                });
+            }
+
         },
         goToRestaurantDetails(restaurantId) {
             this.$router.push({

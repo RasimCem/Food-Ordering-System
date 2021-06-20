@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2 class="text-lg mt-3">Edit Client</h2>
+        <h2 class="text-lg mt-3">Edit Customer</h2>
         <hr />
         <div class=" my-2 md:p-3 overflow-x-auto ">
             <form class=" p-1 text-sm grid md:grid-cols-2 gap-4">

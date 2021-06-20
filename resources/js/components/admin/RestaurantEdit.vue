@@ -12,10 +12,7 @@
                         v-model="restaurant.name"
                     />
                 </div>
-                <div class="mt-1 font-medium ">
-                    <label for="" class="block mb-0">Points</label>
-                    <input class="input py-1" type="text" disabled />
-                </div>
+
 
                 <div class="mt-1 font-medium ">
                     <label for="" class="block mb-0">Chef</label>

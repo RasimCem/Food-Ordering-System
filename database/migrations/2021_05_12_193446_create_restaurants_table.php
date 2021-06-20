@@ -21,6 +21,7 @@ class CreateRestaurantsTable extends Migration
             $table->string('country',50);
             $table->string('city',50);
             $table->string('district',50);
+            $table->string('image',200)->nullable();
             $table->timestamps();
         });
     }

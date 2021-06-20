@@ -115,6 +115,32 @@
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="2"
+                                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+                            </div>
+                            <router-link
+                                :to="{ name: 'panel-owner-profile' }"
+                                style="text-decoration:none"
+                                class=" hover:text-yellow-400"
+                                >Profile</router-link
+                            >
+                        </li>
+                        <li
+                            class="flex m-3 whitespace-nowrap justify-left items-center cursor-pointer  relative hover:text-yellow-400  px-3 py-1 border-b-2 border-gray-500"
+                        >
+                            <div class="icon mr-3">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                     />
                                 </svg>
@@ -154,7 +180,7 @@
                         </li>
                     </div>
                     <!-- Admin Panel -->
-                    <div v-else-if="role=='admin'">
+                    <div v-else-if="role == 'admin'">
                         <li
                             class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
                         >
@@ -182,6 +208,32 @@
                             >
                         </li>
                         <li
+                            class="flex m-3 whitespace-nowrap justify-left items-center cursor-pointer  relative hover:text-yellow-400  px-3 py-1 border-b-2 border-gray-500"
+                        >
+                            <div class="icon mr-3">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+                            </div>
+                            <router-link
+                                :to="{ name: 'panel-admin-profile' }"
+                                style="text-decoration:none"
+                                class=" hover:text-yellow-400"
+                                >Profile</router-link
+                            >
+                        </li>
+                        <li
                             class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
                         >
                             <div class="icon mr-3 ">
@@ -204,7 +256,7 @@
                                 :to="{ name: 'panel-admin-clients' }"
                                 style="text-decoration:none"
                                 class=" hover:text-yellow-400"
-                                >Clients</router-link
+                                >Customers</router-link
                             >
                         </li>
                         <li
@@ -231,32 +283,6 @@
                                 style="text-decoration:none"
                                 class=" hover:text-yellow-400 whitespace-nowrap"
                                 >Restaurants</router-link
-                            >
-                        </li>
-                        <li
-                            class="flex m-3  justify-left items-center cursor-pointer  relative hover:text-yellow-400 px-3 py-1 border-b-2  border-gray-500"
-                        >
-                            <div class="icon mr-3 ">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                                    />
-                                </svg>
-                            </div>
-                            <router-link
-                                :to="{ name: 'panel-admin-complaints' }"
-                                style="text-decoration:none"
-                                class=" hover:text-yellow-400"
-                                >Complaints</router-link
                             >
                         </li>
                         <li
@@ -381,7 +407,7 @@ export default {
     data() {
         return {
             sideBarOpen: true,
-            role:null
+            role: null
         };
     },
     methods: {
@@ -395,15 +421,16 @@ export default {
                 // sidebar.classList.remove("w-1/2");
             }
         },
-        logOut(){
-              axios
+        logOut() {
+            axios
                 .post(
                     "http://localhost:8000/api/logout",
                     {},
                     {
                         headers: {
                             Accept: "application/json",
-                            Authorization: "Bearer " + this.$store.getters.getToken
+                            Authorization:
+                                "Bearer " + this.$store.getters.getToken
                         }
                     }
                 )
@@ -414,18 +441,17 @@ export default {
                         icon: "success",
                         title: "Logged out successfully"
                     });
-                       this.$store.commit("updateRole",null);
+                    this.$store.commit("updateRole", null);
                 });
-
         }
     },
     mounted() {
-        this.role =   this.$store.getters.getRole;
-        if (this.role == 'restaurantOwner') {
+        this.role = this.$store.getters.getRole;
+        if (this.role == "restaurantOwner") {
             this.$router.push({ name: "panel-home" });
-        } else if(this.role == 'admin'){
+        } else if (this.role == "admin") {
             this.$router.push({ name: "panel-admin-home" });
-        }else{
+        } else {
             this.logOut();
         }
     }

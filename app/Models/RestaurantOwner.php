@@ -9,6 +9,10 @@ class RestaurantOwner extends Model
 {
     use HasFactory;
 
+    protected $guarded=[];
+
+    public $timestamps = false;
+
     public function myRestaurant(){
         return $this->hasOne(Restaurant::class,'id','restaurant_id');
     }
